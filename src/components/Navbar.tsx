@@ -13,6 +13,7 @@ const navLinks = [
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { openBooking } = useBooking();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
