@@ -2,6 +2,7 @@ import { FadeIn } from "./FadeIn";
 import { useBooking } from "@/contexts/BookingContext";
 
 const FinalCTA = () => {
+  const { openBooking } = useBooking();
   return (
     <section id="contacto" className="py-24 px-6">
       <FadeIn>
