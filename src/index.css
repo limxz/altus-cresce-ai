@@ -44,6 +44,18 @@
   }
   body {
     @apply bg-background text-foreground font-sans;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3 {
+    font-family: "Clash Display", "Inter", system-ui, -apple-system, sans-serif;
+    font-weight: 600;
+  }
+
+  button {
+    font-family: "Satoshi", "Inter", system-ui, -apple-system, sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
   }
 
   /* Custom scrollbar */

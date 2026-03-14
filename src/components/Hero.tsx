@@ -68,9 +68,9 @@ const Hero = () => {
           transition={{ delay: 1.5 }}
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
-          <a href="#contacto" className="btn-primary">
+          <button onClick={openBooking} className="btn-primary">
             Fala Connosco
-          </a>
+          </button>
           <a href="#servicos" className="btn-outline">
             Ver Serviços
           </a>

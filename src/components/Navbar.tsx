@@ -85,13 +85,12 @@ const Navbar = () => {
                   {link.label}
                 </a>
               ))}
-              <a
-                href="#contacto"
-                onClick={() => setMobileOpen(false)}
+              <button
+                onClick={() => { setMobileOpen(false); openBooking(); }}
                 className="btn-primary !text-center !text-sm mt-2"
               >
                 Fala Connosco
-              </a>
+              </button>
             </div>
           </motion.div>
         )}

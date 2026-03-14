@@ -47,6 +47,7 @@ const App = () => (
             </Routes>
             <ChatWidget />
           </BrowserRouter>
+          </BookingProvider>
         </AdminDataProvider>
       </AuthProvider>
     </TooltipProvider>
