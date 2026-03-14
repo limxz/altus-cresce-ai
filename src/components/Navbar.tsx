@@ -51,9 +51,9 @@ const Navbar = () => {
               {link.label}
             </a>
           ))}
-          <a href="#contacto" className="btn-primary !px-6 !py-2.5 !text-sm">
+          <button onClick={openBooking} className="btn-primary !px-6 !py-2.5 !text-sm">
             Fala Connosco
-          </a>
+          </button>
         </div>
 
         {/* Mobile toggle */}
