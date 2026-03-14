@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { useBooking } from "@/contexts/BookingContext";
 
 const Hero = () => {
   const words = "O teu negócio merece crescer.".split(" ");
