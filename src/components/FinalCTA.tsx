@@ -1,4 +1,5 @@
 import { FadeIn } from "./FadeIn";
+import { useBooking } from "@/contexts/BookingContext";
 
 const FinalCTA = () => {
   return (
