@@ -1,6 +1,8 @@
 import { FadeIn } from "./FadeIn";
+import { useBooking } from "@/contexts/BookingContext";
 
 const FinalCTA = () => {
+  const { openBooking } = useBooking();
   return (
     <section id="contacto" className="py-24 px-6">
       <FadeIn>
@@ -19,14 +21,12 @@ const FinalCTA = () => {
             <p className="text-primary-foreground/80 text-lg mb-10 max-w-xl mx-auto">
               Marca uma chamada gratuita de 20 minutos e descobre como a IA pode transformar o teu negócio.
             </p>
-            <a
-              href="https://calendly.com"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={openBooking}
               className="inline-block px-10 py-4 bg-primary-foreground text-primary rounded-full font-bold text-lg hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300 active:scale-95"
             >
               Agendar Chamada Gratuita
-            </a>
+            </button>
           </div>
         </div>
       </FadeIn>

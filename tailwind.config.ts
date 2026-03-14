@@ -12,8 +12,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Cormorant Garamond", "serif"],
-        sans: ["DM Sans", "sans-serif"],
+        display: ["Clash Display", "Inter", "system-ui", "-apple-system", "sans-serif"],
+        sans: ["Satoshi", "Inter", "system-ui", "-apple-system", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

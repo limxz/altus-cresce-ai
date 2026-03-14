@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useBooking } from "@/contexts/BookingContext";
 
 const navLinks = [
   { label: "Serviços", href: "#servicos" },
@@ -12,6 +13,7 @@ const navLinks = [
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { openBooking } = useBooking();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -49,9 +51,9 @@ const Navbar = () => {
               {link.label}
             </a>
           ))}
-          <a href="#contacto" className="btn-primary !px-6 !py-2.5 !text-sm">
+          <button onClick={openBooking} className="btn-primary !px-6 !py-2.5 !text-sm">
             Fala Connosco
-          </a>
+          </button>
         </div>
 
         {/* Mobile toggle */}
@@ -83,13 +85,12 @@ const Navbar = () => {
                   {link.label}
                 </a>
               ))}
-              <a
-                href="#contacto"
-                onClick={() => setMobileOpen(false)}
+              <button
+                onClick={() => { setMobileOpen(false); openBooking(); }}
                 className="btn-primary !text-center !text-sm mt-2"
               >
                 Fala Connosco
-              </a>
+              </button>
             </div>
           </motion.div>
         )}
