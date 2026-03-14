@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import SocialProof from "@/components/SocialProof";
 import Services from "@/components/Services";
 import HowItWorks from "@/components/HowItWorks";
+import Pricing from "@/components/Pricing";
 import Results from "@/components/Results";
 import AltusFAQ from "@/components/AltusFAQ";
 import FinalCTA from "@/components/FinalCTA";
