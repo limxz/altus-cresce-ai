@@ -17,6 +17,7 @@ const Index = () => {
       <SocialProof />
       <Services />
       <HowItWorks />
+      <Pricing />
       <Results />
       <AltusFAQ />
       <FinalCTA />
