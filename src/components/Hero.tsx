@@ -3,6 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { useBooking } from "@/contexts/BookingContext";
 
 const Hero = () => {
+  const { openBooking } = useBooking();
   const words = "O teu negócio merece crescer.".split(" ");
 
   return (
