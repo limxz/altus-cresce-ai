@@ -60,7 +60,7 @@ const AltusFooter = () => {
 
         <div className="border-t border-primary/10 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-muted-foreground text-xs">
-            © 2025 Altus Media · Braga, Portugal
+            © 2025 Altus Media · Portugal
           </p>
           <p className="text-muted-foreground text-xs">
             Feito com IA 🤖

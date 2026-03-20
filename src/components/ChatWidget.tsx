@@ -29,7 +29,7 @@ const getMockResponse = (message: string, count: number): string => {
   const defaults = [
     "Interessante! Qual é o teu principal objetivo — mais seguidores, mais clientes, ou ambos? 🤔",
     "Atualmente já fazes algum marketing digital, ou estás a começar do zero?",
-    "Muitos negócios em Braga têm esse desafio. Nós podemos ajudar! Queres marcar uma chamada gratuita para falarmos melhor? 📞",
+    "Muitos negócios têm esse desafio. Nós podemos ajudar! Queres marcar uma chamada gratuita para falarmos melhor? 📞",
   ];
   return defaults[count % defaults.length];
 };
