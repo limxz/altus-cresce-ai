@@ -11,7 +11,7 @@ const testimonials = [
   },
   {
     name: "Ana Costa",
-    business: "Clínica Estética Braga",
+    business: "Clínica Estética, Porto",
     quote: "Profissionalismo incrível. A IA deles responde aos clientes 24/7 e já não perdemos nenhum lead.",
     metric: "+25% clientes novos",
     stars: 5,
