@@ -16,7 +16,7 @@ const AltusFooter = () => {
               </span>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Cresce com Inteligência. Agência de marketing com IA em Braga, Portugal.
+              Cresce com Inteligência. Agência de marketing com IA, Portugal.
             </p>
           </div>
 
@@ -26,15 +26,15 @@ const AltusFooter = () => {
               Links Rápidos
             </h4>
             <div className="flex flex-col gap-2">
-              {["Serviços", "Resultados", "Sobre", "Contacto"].map((link) => (
-                <a
-                  key={link}
-                  href={`#${link.toLowerCase()}`}
-                  className="text-muted-foreground text-sm hover:text-accent transition-colors"
-                >
+              {["Serviços", "Resultados", "Sobre", "Contacto"].map((link) =>
+              <a
+                key={link}
+                href={`#${link.toLowerCase()}`}
+                className="text-muted-foreground text-sm hover:text-accent transition-colors">
+                
                   {link}
                 </a>
-              ))}
+              )}
             </div>
           </div>
 
@@ -48,16 +48,16 @@ const AltusFooter = () => {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary/20 hover:text-accent transition-all"
-              >
+                className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary/20 hover:text-accent transition-all">
+                
                 <Instagram size={18} />
               </a>
               <a
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary/20 hover:text-accent transition-all"
-              >
+                className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary/20 hover:text-accent transition-all">
+                
                 <Facebook size={18} />
               </a>
             </div>
@@ -73,8 +73,8 @@ const AltusFooter = () => {
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>);
+
 };
 
 export default AltusFooter;
