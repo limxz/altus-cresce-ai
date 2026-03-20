@@ -4,7 +4,7 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     name: "João Silva",
-    business: "Restaurante, Braga",
+    business: "Restaurante",
     quote: "A Altus Media transformou completamente a nossa presença online. Em 2 meses, duplicámos as reservas.",
     metric: "+40% seguidores",
     stars: 5,
