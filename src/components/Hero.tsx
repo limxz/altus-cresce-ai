@@ -20,41 +20,41 @@ const Hero = () => {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-6"
-        >
+          className="mb-6">
+          
           <span className="inline-block px-4 py-1.5 rounded-full text-xs font-medium tracking-widest uppercase border border-primary/20 text-accent bg-primary/5">
-            Agência de Marketing com IA · Braga
+            Agência de Marketing com IA 
           </span>
         </motion.div>
 
         <h1 className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-foreground leading-[1.05] mb-8">
-          {words.map((word, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: 0.3 + i * 0.12,
-                duration: 0.8,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="inline-block mr-[0.25em]"
-            >
-              {word === "crescer." ? (
-                <em className="text-gradient not-italic">{word}</em>
-              ) : (
-                word
-              )}
+          {words.map((word, i) =>
+          <motion.span
+            key={i}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              delay: 0.3 + i * 0.12,
+              duration: 0.8,
+              ease: [0.22, 1, 0.36, 1]
+            }}
+            className="inline-block mr-[0.25em]">
+            
+              {word === "crescer." ?
+            <em className="text-gradient not-italic">{word}</em> :
+
+            word
+            }
             </motion.span>
-          ))}
+          )}
         </h1>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.8 }}
-          className="text-lg md:text-xl text-muted-foreground font-sans max-w-2xl mx-auto mb-12 leading-relaxed"
-        >
+          className="text-lg md:text-xl text-muted-foreground font-sans max-w-2xl mx-auto mb-12 leading-relaxed">
+          
           Usamos inteligência artificial para trazer mais clientes ao teu
           negócio —{" "}
           <span className="italic text-foreground/90">
@@ -66,8 +66,8 @@ const Hero = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-        >
+          className="flex flex-col sm:flex-row gap-4 justify-center">
+          
           <button onClick={openBooking} className="btn-primary">
             Fala Connosco
           </button>
@@ -83,17 +83,17 @@ const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground hover:text-accent transition-colors"
-      >
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground hover:text-accent transition-colors">
+        
         <motion.div
           animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        >
+          transition={{ duration: 1.5, repeat: Infinity }}>
+          
           <ChevronDown size={28} />
         </motion.div>
       </motion.a>
-    </section>
-  );
+    </section>);
+
 };
 
 export default Hero;
