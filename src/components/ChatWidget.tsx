@@ -20,7 +20,7 @@ const getMockResponse = (message: string, count: number): string => {
     return "Oferecemos gestão de redes sociais com IA, publicidade Meta & Google Ads, e automações inteligentes. Qual te interessa mais? 🎯";
   }
   if (lower.includes("restaurante") || lower.includes("comida") || lower.includes("café")) {
-    return "Excelente! Temos ótimos resultados com restaurantes em Braga. Conseguimos aumentar reservas e visibilidade nas redes. Quantos clientes novos queres por mês?";
+    return "Excelente! Temos ótimos resultados com restaurantes. Conseguimos aumentar reservas e visibilidade nas redes. Quantos clientes novos queres por mês?";
   }
   if (lower.includes("clínica") || lower.includes("saúde") || lower.includes("estética")) {
     return "Clínicas são um dos nossos pontos fortes! Criamos sistemas que atraem pacientes e marcam consultas automaticamente. Queres saber mais?";
