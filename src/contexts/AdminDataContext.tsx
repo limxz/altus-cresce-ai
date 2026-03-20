@@ -69,7 +69,7 @@ const seedConversations: ChatConversation[] = [
     date: "2025-01-15",
     messages: [
       { role: "ai", content: "Olá! 👋 Sou o Altus AI. Que tipo de negócio tens?", time: "14:30" },
-      { role: "user", content: "Tenho um restaurante em Braga", time: "14:31" },
+      { role: "user", content: "Tenho um restaurante", time: "14:31" },
       { role: "ai", content: "Excelente! Temos ótimos resultados com restaurantes. Queres saber mais?", time: "14:31" },
     ],
   },
