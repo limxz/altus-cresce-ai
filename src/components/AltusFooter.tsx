@@ -1,4 +1,4 @@
-import { Instagram, Facebook } from "lucide-react";
+import { Instagram } from "lucide-react";
 
 const AltusFooter = () => {
   return (
@@ -43,22 +43,16 @@ const AltusFooter = () => {
             <h4 className="font-medium text-foreground mb-4 text-sm tracking-widest uppercase">
               Redes Sociais
             </h4>
-            <div className="flex gap-3">
+            <div className="flex flex-col gap-3">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/altusmedia.agency/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary/20 hover:text-accent transition-all">
-                
-                <Instagram size={18} />
-              </a>
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary/20 hover:text-accent transition-all">
-                
-                <Facebook size={18} />
+                className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors text-sm">
+                <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center hover:bg-primary/20 transition-all">
+                  <Instagram size={18} />
+                </div>
+                @altusmedia.agency
               </a>
             </div>
           </div>
@@ -66,7 +60,7 @@ const AltusFooter = () => {
 
         <div className="border-t border-primary/10 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-muted-foreground text-xs">
-            © 2025 Altus Media · Braga, Portugal
+            © 2025 Altus Media · Portugal
           </p>
           <p className="text-muted-foreground text-xs">
             Feito com IA 🤖

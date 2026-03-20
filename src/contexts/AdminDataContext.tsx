@@ -59,7 +59,7 @@ const defaultSettings: SiteSettings = {
 const seedLeads: Lead[] = [
   { id: "1", name: "João Silva", email: "joao@email.com", phone: "912345678", business: "Restaurante O Minho", date: "2025-01-15", status: "novo" },
   { id: "2", name: "Ana Costa", email: "ana@email.com", phone: "913456789", business: "Clínica Beleza Pura", date: "2025-01-14", status: "contactado" },
-  { id: "3", name: "Pedro Santos", email: "pedro@email.com", phone: "914567890", business: "Ginásio FitBraga", date: "2025-01-12", status: "fechado" },
+  { id: "3", name: "Pedro Santos", email: "pedro@email.com", phone: "914567890", business: "Ginásio FitPT", date: "2025-01-12", status: "fechado" },
 ];
 
 const seedConversations: ChatConversation[] = [
@@ -69,7 +69,7 @@ const seedConversations: ChatConversation[] = [
     date: "2025-01-15",
     messages: [
       { role: "ai", content: "Olá! 👋 Sou o Altus AI. Que tipo de negócio tens?", time: "14:30" },
-      { role: "user", content: "Tenho um restaurante em Braga", time: "14:31" },
+      { role: "user", content: "Tenho um restaurante", time: "14:31" },
       { role: "ai", content: "Excelente! Temos ótimos resultados com restaurantes. Queres saber mais?", time: "14:31" },
     ],
   },

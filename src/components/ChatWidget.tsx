@@ -20,7 +20,7 @@ const getMockResponse = (message: string, count: number): string => {
     return "Oferecemos gestão de redes sociais com IA, publicidade Meta & Google Ads, e automações inteligentes. Qual te interessa mais? 🎯";
   }
   if (lower.includes("restaurante") || lower.includes("comida") || lower.includes("café")) {
-    return "Excelente! Temos ótimos resultados com restaurantes em Braga. Conseguimos aumentar reservas e visibilidade nas redes. Quantos clientes novos queres por mês?";
+    return "Excelente! Temos ótimos resultados com restaurantes. Conseguimos aumentar reservas e visibilidade nas redes. Quantos clientes novos queres por mês?";
   }
   if (lower.includes("clínica") || lower.includes("saúde") || lower.includes("estética")) {
     return "Clínicas são um dos nossos pontos fortes! Criamos sistemas que atraem pacientes e marcam consultas automaticamente. Queres saber mais?";
@@ -29,7 +29,7 @@ const getMockResponse = (message: string, count: number): string => {
   const defaults = [
     "Interessante! Qual é o teu principal objetivo — mais seguidores, mais clientes, ou ambos? 🤔",
     "Atualmente já fazes algum marketing digital, ou estás a começar do zero?",
-    "Muitos negócios em Braga têm esse desafio. Nós podemos ajudar! Queres marcar uma chamada gratuita para falarmos melhor? 📞",
+    "Muitos negócios têm esse desafio. Nós podemos ajudar! Queres marcar uma chamada gratuita para falarmos melhor? 📞",
   ];
   return defaults[count % defaults.length];
 };

@@ -38,7 +38,7 @@ const SocialProof = () => {
       <FadeIn className="max-w-5xl mx-auto">
         <div className="glass-card p-8 md:p-12">
           <p className="text-center text-sm font-medium text-muted-foreground tracking-widest uppercase mb-10">
-            Já ajudámos negócios em Braga a crescer
+            Já ajudámos negócios em Portugal a crescer
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4">
             {stats.map((stat, i) => (
