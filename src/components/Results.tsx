@@ -4,14 +4,14 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     name: "João Silva",
-    business: "Restaurante Braga",
+    business: "Restaurante, Braga",
     quote: "A Altus Media transformou completamente a nossa presença online. Em 2 meses, duplicámos as reservas.",
     metric: "+40% seguidores",
     stars: 5,
   },
   {
     name: "Ana Costa",
-    business: "Clínica Estética Braga",
+    business: "Clínica Estética, Porto",
     quote: "Profissionalismo incrível. A IA deles responde aos clientes 24/7 e já não perdemos nenhum lead.",
     metric: "+25% clientes novos",
     stars: 5,
