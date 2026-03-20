@@ -25,7 +25,7 @@ const faqs = [
   },
   {
     q: "Como é feito o pagamento?",
-    a: "O pagamento é mensal, por transferência bancária ou MB Way. Sem contratos de fidelização — ficas connosco porque queres, não porque és obrigado.",
+    a: "O pagamento é mensal, por transferência bancária, MB Way ou Stripe. Sem contratos de fidelização — ficas connosco porque queres, não porque és obrigado.",
   },
 ];
 
