@@ -7,7 +7,7 @@ interface BookingModalProps {
   onClose: () => void;
 }
 
-const CAL_LINK = "altusmedia/30min";
+const CAL_LINK = "altusmedia";
 
 const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
   const calInitialized = useRef(false);
@@ -44,9 +44,9 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
           }
           p(cal, ar);
         };
-      })(window, "https://app.cal.com/embed/embed.js", "init");
+      })(window, "https://cal.eu/embed/embed.js", "init");
 
-      (window as any).Cal("init", { origin: "https://cal.com" });
+      (window as any).Cal("init", { origin: "https://cal.eu" });
       calInitialized.current = true;
     }
 
