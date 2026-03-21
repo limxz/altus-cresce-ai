@@ -14,7 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      diagnosticos: {
+        Row: {
+          contactado: boolean | null
+          created_at: string | null
+          diagnostico_json: Json | null
+          email: string
+          id: string
+          instagram_url: string
+          nome: string
+          score: number | null
+          setor: string | null
+          site_url: string | null
+        }
+        Insert: {
+          contactado?: boolean | null
+          created_at?: string | null
+          diagnostico_json?: Json | null
+          email: string
+          id?: string
+          instagram_url: string
+          nome: string
+          score?: number | null
+          setor?: string | null
+          site_url?: string | null
+        }
+        Update: {
+          contactado?: boolean | null
+          created_at?: string | null
+          diagnostico_json?: Json | null
+          email?: string
+          id?: string
+          instagram_url?: string
+          nome?: string
+          score?: number | null
+          setor?: string | null
+          site_url?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

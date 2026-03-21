@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import DiagnosticoSection from "@/components/DiagnosticoSection";
 import SocialProof from "@/components/SocialProof";
 import Services from "@/components/Services";
 import HowItWorks from "@/components/HowItWorks";
@@ -14,6 +15,7 @@ const Index = () => {
     <div className="min-h-screen bg-background noise-overlay">
       <Navbar />
       <Hero />
+      <DiagnosticoSection />
       <SocialProof />
       <Services />
       <HowItWorks />

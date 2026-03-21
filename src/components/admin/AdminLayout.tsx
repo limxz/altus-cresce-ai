@@ -11,6 +11,7 @@ import {
   X,
   DollarSign,
   Presentation,
+  Stethoscope,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -20,6 +21,7 @@ const navItems = [
   { label: "Conversas", path: "/admin/conversations", icon: MessageCircle },
   { label: "Clientes", path: "/admin/clients", icon: Users },
   { label: "Preços", path: "/admin/pricing", icon: DollarSign },
+  { label: "Diagnósticos", path: "/admin/diagnosticos", icon: Stethoscope },
   { label: "Apresentações", path: "/admin/presentations", icon: Presentation },
   { label: "Configurações", path: "/admin/settings", icon: Settings },
 ];
