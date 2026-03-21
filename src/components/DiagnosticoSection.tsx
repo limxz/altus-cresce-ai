@@ -4,7 +4,7 @@ import { Loader2, Star, Sparkles, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useBooking } from "@/contexts/BookingContext";
 import { Progress } from "@/components/ui/progress";
-import FadeIn from "@/components/FadeIn";
+import { FadeIn } from "@/components/FadeIn";
 
 const SETORES = [
   "Restauração",

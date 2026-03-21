@@ -15,6 +15,7 @@ const Index = () => {
     <div className="min-h-screen bg-background noise-overlay">
       <Navbar />
       <Hero />
+      <DiagnosticoSection />
       <SocialProof />
       <Services />
       <HowItWorks />
