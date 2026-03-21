@@ -17,6 +17,7 @@ import Clients from "./pages/admin/Clients";
 import Settings from "./pages/admin/Settings";
 import AdminPricing from "./pages/admin/Pricing";
 import Presentations from "./pages/admin/Presentations";
+import Diagnosticos from "./pages/admin/Diagnosticos";
 
 const queryClient = new QueryClient();
 
