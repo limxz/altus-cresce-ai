@@ -49,7 +49,7 @@ const App = () => (
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <ChatWidget />
+            
           </BrowserRouter>
           </BookingProvider>
         </AdminDataProvider>
