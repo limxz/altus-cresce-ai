@@ -7,7 +7,7 @@ import { AdminDataProvider } from "@/contexts/AdminDataContext";
 import { BookingProvider } from "@/contexts/BookingContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import ChatWidget from "./components/ChatWidget";
+
 import Login from "./pages/admin/Login";
 import AdminLayout from "./components/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
@@ -49,7 +49,7 @@ const App = () => (
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <ChatWidget />
+            
           </BrowserRouter>
           </BookingProvider>
         </AdminDataProvider>
