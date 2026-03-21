@@ -15,6 +15,8 @@ import LeadsPage from "./pages/admin/Leads";
 import Conversations from "./pages/admin/Conversations";
 import Clients from "./pages/admin/Clients";
 import Settings from "./pages/admin/Settings";
+import AdminPricing from "./pages/admin/Pricing";
+import Presentations from "./pages/admin/Presentations";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +44,8 @@ const App = () => (
                 <Route path="conversations" element={<Conversations />} />
                 <Route path="clients" element={<Clients />} />
                 <Route path="settings" element={<Settings />} />
+                <Route path="pricing" element={<AdminPricing />} />
+                <Route path="presentations" element={<Presentations />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
