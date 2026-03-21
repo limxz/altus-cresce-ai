@@ -192,6 +192,8 @@ const DiagnosticoSection = () => {
                   <label className="text-sm font-medium text-foreground">Link do Instagram *</label>
                   <input
                     required
+                    pattern="https?://(www\.)?instagram\.com/.+"
+                    title="Introduz um link válido do Instagram (ex: https://instagram.com/o-teu-negocio)"
                     value={form.instagram_url}
                     onChange={(e) => setForm({ ...form, instagram_url: e.target.value })}
                     className="w-full rounded-lg border border-border bg-input px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
