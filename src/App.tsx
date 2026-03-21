@@ -15,6 +15,8 @@ import LeadsPage from "./pages/admin/Leads";
 import Conversations from "./pages/admin/Conversations";
 import Clients from "./pages/admin/Clients";
 import Settings from "./pages/admin/Settings";
+import AdminPricing from "./pages/admin/Pricing";
+import Presentations from "./pages/admin/Presentations";
 
 const queryClient = new QueryClient();
 
