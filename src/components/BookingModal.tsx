@@ -7,7 +7,7 @@ interface BookingModalProps {
   onClose: () => void;
 }
 
-const CAL_LINK = "altusmedia/30min";
+const CAL_LINK = "altusmedia";
 
 const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
   const calInitialized = useRef(false);
