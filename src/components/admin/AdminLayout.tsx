@@ -11,6 +11,7 @@ import {
   X,
   DollarSign,
   Presentation,
+  Stethoscope,
 } from "lucide-react";
 import { useState } from "react";
 
