@@ -46,7 +46,7 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
         };
       })(window, "https://cal.eu/embed/embed.js", "init");
 
-      (window as any).Cal("init", { origin: "https://cal.com" });
+      (window as any).Cal("init", { origin: "https://cal.eu" });
       calInitialized.current = true;
     }
 
