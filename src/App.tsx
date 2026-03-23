@@ -21,6 +21,7 @@ import Presentations from "./pages/admin/Presentations";
 import WhatsAppAgents from "./pages/admin/WhatsAppAgents";
 import Setup from "./pages/admin/Setup";
 import Diagnosticos from "./pages/admin/Diagnosticos";
+import Analytics from "./pages/admin/Analytics";
 
 import ClientLogin from "./pages/clientes/ClientLogin";
 import ClientPortal from "./pages/clientes/ClientPortal";
