@@ -28,7 +28,7 @@ const useCountUp = (end: number, duration = 1500) => {
 };
 
 const stats = [
-  { value: 32, text: "de 50 restaurantes em Braga não responderam em 4 horas" },
+  { value: 32, text: "de 50 restaurantes em Portugal não responderam em 4 horas" },
   { value: 41, text: "não têm bot de WhatsApp" },
   { value: 38, text: "nunca publicam nas redes sociais" },
   { value: 3, text: "já usam IA — e estão a crescer 3x mais rápido" },
