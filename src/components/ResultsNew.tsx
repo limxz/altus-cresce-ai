@@ -58,7 +58,7 @@ const ResultsNew = () => {
       <div className="max-w-6xl mx-auto">
         <FadeIn>
           <h2 className="font-display text-3xl md:text-4xl text-center text-foreground mb-2">
-            Resultados reais. Negócios reais. Em Braga.
+            Resultados reais. Negócios reais. 
           </h2>
           <p className="text-muted-foreground text-center mb-12">
             Vê o que a automação com IA fez por negócios como o teu.
