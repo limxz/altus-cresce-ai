@@ -26,6 +26,7 @@ const navItems = [
   { label: "Configurações", path: "/admin/settings", icon: Settings },
 ];
 
+
 const AdminLayout = () => {
   const { logout } = useAuth();
   const location = useLocation();
