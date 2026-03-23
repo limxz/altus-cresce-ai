@@ -12,6 +12,8 @@ import {
   DollarSign,
   Presentation,
   Stethoscope,
+  Bot,
+  BookOpen,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -20,9 +22,11 @@ const navItems = [
   { label: "Leads", path: "/admin/leads", icon: Inbox },
   { label: "Conversas", path: "/admin/conversations", icon: MessageCircle },
   { label: "Clientes", path: "/admin/clients", icon: Users },
+  { label: "WhatsApp Agents", path: "/admin/whatsapp", icon: Bot },
   { label: "Preços", path: "/admin/pricing", icon: DollarSign },
   { label: "Diagnósticos", path: "/admin/diagnosticos", icon: Stethoscope },
   { label: "Apresentações", path: "/admin/presentations", icon: Presentation },
+  { label: "Setup", path: "/admin/setup", icon: BookOpen },
   { label: "Configurações", path: "/admin/settings", icon: Settings },
 ];
 

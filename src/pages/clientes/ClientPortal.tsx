@@ -3,7 +3,7 @@ import { useClientAuth } from "@/contexts/ClientAuthContext";
 import { LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 import ClientDashboardTab from "@/components/clientes/DashboardTab";
-import ClientLeadsTab from "@/components/clientes/LeadsTab";
+import WhatsAppLeadsTab from "@/components/clientes/WhatsAppLeadsTab";
 import ClientContentTab from "@/components/clientes/ContentTab";
 import ClientGrowthTab from "@/components/clientes/GrowthTab";
 import ClientSupportTab from "@/components/clientes/SupportTab";
@@ -79,7 +79,7 @@ const ClientPortal = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         <motion.div key={tab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}>
           {tab === "dashboard" && <ClientDashboardTab />}
-          {tab === "leads" && <ClientLeadsTab />}
+          {tab === "leads" && <WhatsAppLeadsTab />}
           {tab === "conteudo" && <ClientContentTab />}
           {tab === "crescimento" && <ClientGrowthTab />}
           {tab === "suporte" && <ClientSupportTab />}
