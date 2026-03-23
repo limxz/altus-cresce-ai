@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Menu, X, UserCircle, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useBooking } from "@/contexts/BookingContext";
 
@@ -13,12 +13,25 @@ const navLinks = [
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [clientDropdown, setClientDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const { openBooking } = useBooking();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handler);
     return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setClientDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, []);
 
   return (
@@ -51,6 +64,54 @@ const Navbar = () => {
               {link.label}
             </a>
           ))}
+
+          {/* Client area dropdown */}
+          <div ref={dropdownRef} className="relative">
+            <button
+              onClick={() => setClientDropdown(!clientDropdown)}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border border-primary/40 text-secondary hover:border-primary/60 transition-all"
+            >
+              <UserCircle size={16} />
+              Área de Cliente
+              <ChevronDown size={14} className={`transition-transform ${clientDropdown ? "rotate-180" : ""}`} />
+            </button>
+
+            <AnimatePresence>
+              {clientDropdown && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-xl shadow-2xl overflow-hidden"
+                >
+                  <a
+                    href="/clientes"
+                    className="flex items-start gap-3 px-4 py-3 hover:bg-muted transition-colors"
+                    onClick={() => setClientDropdown(false)}
+                  >
+                    <span className="text-lg">👤</span>
+                    <div>
+                      <p className="text-sm font-medium text-foreground">Sou Cliente</p>
+                      <p className="text-xs text-muted-foreground">Ver o meu portal</p>
+                    </div>
+                  </a>
+                  <a
+                    href="/admin"
+                    className="flex items-start gap-3 px-4 py-3 hover:bg-muted transition-colors border-t border-border"
+                    onClick={() => setClientDropdown(false)}
+                  >
+                    <span className="text-lg">⚙️</span>
+                    <div>
+                      <p className="text-sm font-medium text-foreground">Acesso Admin</p>
+                      <p className="text-xs text-muted-foreground">Painel de controlo</p>
+                    </div>
+                  </a>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
           <button onClick={openBooking} className="btn-primary !px-6 !py-2.5 !text-sm">
             Fala Connosco
           </button>
@@ -85,6 +146,22 @@ const Navbar = () => {
                   {link.label}
                 </a>
               ))}
+              <div className="border-t border-border pt-4 mt-2 space-y-3">
+                <a
+                  href="/clientes"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+                >
+                  👤 Portal do Cliente
+                </a>
+                <a
+                  href="/admin"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+                >
+                  ⚙️ Acesso Admin
+                </a>
+              </div>
               <button
                 onClick={() => { setMobileOpen(false); openBooking(); }}
                 className="btn-primary !text-center !text-sm mt-2"
