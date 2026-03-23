@@ -21,6 +21,7 @@ import Presentations from "./pages/admin/Presentations";
 import WhatsAppAgents from "./pages/admin/WhatsAppAgents";
 import Setup from "./pages/admin/Setup";
 import Diagnosticos from "./pages/admin/Diagnosticos";
+import Analytics from "./pages/admin/Analytics";
 
 import ClientLogin from "./pages/clientes/ClientLogin";
 import ClientPortal from "./pages/clientes/ClientPortal";
@@ -56,6 +57,7 @@ const App = () => (
                 <Route path="diagnosticos" element={<Diagnosticos />} />
                 <Route path="presentations" element={<Presentations />} />
                 <Route path="whatsapp" element={<WhatsAppAgents />} />
+                <Route path="analytics" element={<Analytics />} />
                 <Route path="setup" element={<Setup />} />
               </Route>
               <Route path="/clientes" element={<ClientLogin />} />

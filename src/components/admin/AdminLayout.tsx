@@ -14,6 +14,7 @@ import {
   Stethoscope,
   Bot,
   BookOpen,
+  BarChart3,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -23,6 +24,7 @@ const navItems = [
   { label: "Conversas", path: "/admin/conversations", icon: MessageCircle },
   { label: "Clientes", path: "/admin/clients", icon: Users },
   { label: "WhatsApp Agents", path: "/admin/whatsapp", icon: Bot },
+  { label: "Analytics", path: "/admin/analytics", icon: BarChart3 },
   { label: "Preços", path: "/admin/pricing", icon: DollarSign },
   { label: "Diagnósticos", path: "/admin/diagnosticos", icon: Stethoscope },
   { label: "Apresentações", path: "/admin/presentations", icon: Presentation },
