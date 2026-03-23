@@ -3,7 +3,7 @@ import { useClientAuth } from "@/contexts/ClientAuthContext";
 import { LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 import ClientDashboardTab from "@/components/clientes/DashboardTab";
-import ClientLeadsTab from "@/components/clientes/LeadsTab";
+import WhatsAppLeadsTab from "@/components/clientes/WhatsAppLeadsTab";
 import ClientContentTab from "@/components/clientes/ContentTab";
 import ClientGrowthTab from "@/components/clientes/GrowthTab";
 import ClientSupportTab from "@/components/clientes/SupportTab";
