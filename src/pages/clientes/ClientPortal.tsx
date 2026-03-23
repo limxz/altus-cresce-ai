@@ -7,6 +7,7 @@ import WhatsAppLeadsTab from "@/components/clientes/WhatsAppLeadsTab";
 import ClientContentTab from "@/components/clientes/ContentTab";
 import ClientGrowthTab from "@/components/clientes/GrowthTab";
 import ClientSupportTab from "@/components/clientes/SupportTab";
+import ROITab from "@/components/clientes/ROITab";
 
 const TABS = [
   { key: "dashboard", label: "Dashboard" },
