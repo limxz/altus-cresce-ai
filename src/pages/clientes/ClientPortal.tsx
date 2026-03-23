@@ -87,6 +87,7 @@ const ClientPortal = () => {
           {tab === "conteudo" && <ClientContentTab />}
           {tab === "crescimento" && <ClientGrowthTab />}
           {tab === "roi" && <ROITab />}
+          {tab === "lab" && <AILabTab />}
           {tab === "suporte" && <ClientSupportTab />}
         </motion.div>
       </main>
