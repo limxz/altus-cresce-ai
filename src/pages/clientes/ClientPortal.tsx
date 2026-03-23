@@ -7,12 +7,14 @@ import WhatsAppLeadsTab from "@/components/clientes/WhatsAppLeadsTab";
 import ClientContentTab from "@/components/clientes/ContentTab";
 import ClientGrowthTab from "@/components/clientes/GrowthTab";
 import ClientSupportTab from "@/components/clientes/SupportTab";
+import ROITab from "@/components/clientes/ROITab";
 
 const TABS = [
   { key: "dashboard", label: "Dashboard" },
   { key: "leads", label: "Leads" },
   { key: "conteudo", label: "Conteúdo" },
   { key: "crescimento", label: "Crescimento" },
+  { key: "roi", label: "O teu ROI" },
   { key: "suporte", label: "Suporte" },
 ];
 
@@ -82,6 +84,7 @@ const ClientPortal = () => {
           {tab === "leads" && <WhatsAppLeadsTab />}
           {tab === "conteudo" && <ClientContentTab />}
           {tab === "crescimento" && <ClientGrowthTab />}
+          {tab === "roi" && <ROITab />}
           {tab === "suporte" && <ClientSupportTab />}
         </motion.div>
       </main>

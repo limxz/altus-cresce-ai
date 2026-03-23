@@ -2,11 +2,13 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ROICalculator from "@/components/ROICalculator";
 import WhatsAppDemo from "@/components/WhatsAppDemo";
+import UrgencySection from "@/components/UrgencySection";
+import AuditWidget from "@/components/AuditWidget";
 import DiagnosticoSection from "@/components/DiagnosticoSection";
 import SocialProof from "@/components/SocialProof";
+import ResultsNew from "@/components/ResultsNew";
 import Services from "@/components/Services";
 import HowItWorks from "@/components/HowItWorks";
-import Results from "@/components/Results";
 import AltusFAQ from "@/components/AltusFAQ";
 import FinalCTA from "@/components/FinalCTA";
 import AltusFooter from "@/components/AltusFooter";
@@ -18,11 +20,13 @@ const Index = () => {
       <Hero />
       <ROICalculator />
       <WhatsAppDemo />
+      <UrgencySection />
+      <AuditWidget />
       <DiagnosticoSection />
       <SocialProof />
+      <ResultsNew />
       <Services />
       <HowItWorks />
-      <Results />
       <AltusFAQ />
       <FinalCTA />
       <AltusFooter />

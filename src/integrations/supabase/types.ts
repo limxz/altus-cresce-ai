@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      audits: {
+        Row: {
+          audit_json: Json | null
+          business_name: string | null
+          business_type: string | null
+          city: string | null
+          created_at: string | null
+          email: string | null
+          id: string
+          score: number | null
+          url: string | null
+        }
+        Insert: {
+          audit_json?: Json | null
+          business_name?: string | null
+          business_type?: string | null
+          city?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          score?: number | null
+          url?: string | null
+        }
+        Update: {
+          audit_json?: Json | null
+          business_name?: string | null
+          business_type?: string | null
+          city?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          score?: number | null
+          url?: string | null
+        }
+        Relationships: []
+      }
       client_conversations: {
         Row: {
           bot_type: string
@@ -321,6 +357,90 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      pipeline_leads: {
+        Row: {
+          business_name: string
+          contact_name: string | null
+          created_at: string | null
+          email: string | null
+          id: string
+          next_action: string | null
+          notes: string | null
+          phone: string | null
+          plan_value: number | null
+          score: number | null
+          stage: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          business_name: string
+          contact_name?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          next_action?: string | null
+          notes?: string | null
+          phone?: string | null
+          plan_value?: number | null
+          score?: number | null
+          stage?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          business_name?: string
+          contact_name?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          next_action?: string | null
+          notes?: string | null
+          phone?: string | null
+          plan_value?: number | null
+          score?: number | null
+          stage?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      plan_requests: {
+        Row: {
+          business_name: string | null
+          business_type: string | null
+          created_at: string | null
+          email: string | null
+          id: string
+          nome: string | null
+          plan_text: string | null
+          problems: string[] | null
+          revenue_range: string | null
+          telefone: string | null
+        }
+        Insert: {
+          business_name?: string | null
+          business_type?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          nome?: string | null
+          plan_text?: string | null
+          problems?: string[] | null
+          revenue_range?: string | null
+          telefone?: string | null
+        }
+        Update: {
+          business_name?: string | null
+          business_type?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          nome?: string | null
+          plan_text?: string | null
+          problems?: string[] | null
+          revenue_range?: string | null
+          telefone?: string | null
+        }
+        Relationships: []
       }
       whatsapp_agents: {
         Row: {
