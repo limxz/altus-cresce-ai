@@ -292,6 +292,223 @@ export type Database = {
           },
         ]
       }
+      whatsapp_agents: {
+        Row: {
+          agent_name: string
+          booking_link: string | null
+          business_description: string | null
+          client_id: string
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          phone_number: string | null
+          services_info: string | null
+          system_prompt: string | null
+          total_conversations: number | null
+          total_messages: number | null
+          twilio_number: string | null
+          working_hours: string | null
+        }
+        Insert: {
+          agent_name?: string
+          booking_link?: string | null
+          business_description?: string | null
+          client_id: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          phone_number?: string | null
+          services_info?: string | null
+          system_prompt?: string | null
+          total_conversations?: number | null
+          total_messages?: number | null
+          twilio_number?: string | null
+          working_hours?: string | null
+        }
+        Update: {
+          agent_name?: string
+          booking_link?: string | null
+          business_description?: string | null
+          client_id?: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          phone_number?: string | null
+          services_info?: string | null
+          system_prompt?: string | null
+          total_conversations?: number | null
+          total_messages?: number | null
+          twilio_number?: string | null
+          working_hours?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_agents_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_conversation_state: {
+        Row: {
+          agent_id: string
+          history: Json | null
+          id: string
+          last_updated: string | null
+          phone_number: string
+        }
+        Insert: {
+          agent_id: string
+          history?: Json | null
+          id?: string
+          last_updated?: string | null
+          phone_number: string
+        }
+        Update: {
+          agent_id?: string
+          history?: Json | null
+          id?: string
+          last_updated?: string | null
+          phone_number?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_conversation_state_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "whatsapp_agents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_conversations: {
+        Row: {
+          agent_id: string | null
+          classification_summary: string | null
+          client_id: string
+          contact_name: string | null
+          contact_phone: string
+          contact_type: string | null
+          first_message: string | null
+          id: string
+          is_read: boolean | null
+          last_message: string | null
+          last_message_at: string | null
+          lead_status: string | null
+          messages_count: number | null
+          primary_need: string | null
+          sentiment: string | null
+          started_at: string | null
+          status: string | null
+          tags: string[] | null
+          urgency: string | null
+        }
+        Insert: {
+          agent_id?: string | null
+          classification_summary?: string | null
+          client_id: string
+          contact_name?: string | null
+          contact_phone: string
+          contact_type?: string | null
+          first_message?: string | null
+          id?: string
+          is_read?: boolean | null
+          last_message?: string | null
+          last_message_at?: string | null
+          lead_status?: string | null
+          messages_count?: number | null
+          primary_need?: string | null
+          sentiment?: string | null
+          started_at?: string | null
+          status?: string | null
+          tags?: string[] | null
+          urgency?: string | null
+        }
+        Update: {
+          agent_id?: string | null
+          classification_summary?: string | null
+          client_id?: string
+          contact_name?: string | null
+          contact_phone?: string
+          contact_type?: string | null
+          first_message?: string | null
+          id?: string
+          is_read?: boolean | null
+          last_message?: string | null
+          last_message_at?: string | null
+          lead_status?: string | null
+          messages_count?: number | null
+          primary_need?: string | null
+          sentiment?: string | null
+          started_at?: string | null
+          status?: string | null
+          tags?: string[] | null
+          urgency?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_conversations_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "whatsapp_agents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "whatsapp_conversations_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_messages: {
+        Row: {
+          client_id: string
+          content: string
+          conversation_id: string
+          id: string
+          is_read: boolean | null
+          sender: string
+          timestamp: string | null
+        }
+        Insert: {
+          client_id: string
+          content: string
+          conversation_id: string
+          id?: string
+          is_read?: boolean | null
+          sender?: string
+          timestamp?: string | null
+        }
+        Update: {
+          client_id?: string
+          content?: string
+          conversation_id?: string
+          id?: string
+          is_read?: boolean | null
+          sender?: string
+          timestamp?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_messages_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "whatsapp_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "whatsapp_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
