@@ -68,6 +68,7 @@ export const ClientAuthProvider = ({ children }: { children: ReactNode }) => {
       facebook_baseline: d.facebook_baseline || 0,
       leads_baseline: d.leads_baseline || 0,
       niche: d.niche,
+      mrr: d.mrr || null,
     };
     setClient(clientData);
     localStorage.setItem("altus_client", JSON.stringify(clientData));
