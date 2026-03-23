@@ -14,6 +14,198 @@ export type Database = {
   }
   public: {
     Tables: {
+      client_conversations: {
+        Row: {
+          bot_type: string
+          client_id: string
+          contact_name: string | null
+          contact_phone: string | null
+          id: string
+          last_message_at: string | null
+          started_at: string | null
+          status: string
+        }
+        Insert: {
+          bot_type?: string
+          client_id: string
+          contact_name?: string | null
+          contact_phone?: string | null
+          id?: string
+          last_message_at?: string | null
+          started_at?: string | null
+          status?: string
+        }
+        Update: {
+          bot_type?: string
+          client_id?: string
+          contact_name?: string | null
+          contact_phone?: string | null
+          id?: string
+          last_message_at?: string | null
+          started_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_conversations_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      client_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string | null
+          id: string
+          sender: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string | null
+          id?: string
+          sender?: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string | null
+          id?: string
+          sender?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "client_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clients: {
+        Row: {
+          brand_color: string | null
+          business_name: string
+          contact_email: string | null
+          contact_name: string
+          contact_phone: string | null
+          created_at: string | null
+          facebook_baseline: number | null
+          id: string
+          instagram_baseline: number | null
+          internal_notes: string | null
+          leads_baseline: number | null
+          login_email: string
+          login_password: string
+          logo_url: string | null
+          mrr: number | null
+          niche: string
+          plan: string
+          services: Json | null
+          start_date: string | null
+          status: string
+        }
+        Insert: {
+          brand_color?: string | null
+          business_name: string
+          contact_email?: string | null
+          contact_name: string
+          contact_phone?: string | null
+          created_at?: string | null
+          facebook_baseline?: number | null
+          id?: string
+          instagram_baseline?: number | null
+          internal_notes?: string | null
+          leads_baseline?: number | null
+          login_email: string
+          login_password: string
+          logo_url?: string | null
+          mrr?: number | null
+          niche?: string
+          plan?: string
+          services?: Json | null
+          start_date?: string | null
+          status?: string
+        }
+        Update: {
+          brand_color?: string | null
+          business_name?: string
+          contact_email?: string | null
+          contact_name?: string
+          contact_phone?: string | null
+          created_at?: string | null
+          facebook_baseline?: number | null
+          id?: string
+          instagram_baseline?: number | null
+          internal_notes?: string | null
+          leads_baseline?: number | null
+          login_email?: string
+          login_password?: string
+          logo_url?: string | null
+          mrr?: number | null
+          niche?: string
+          plan?: string
+          services?: Json | null
+          start_date?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      content_posts: {
+        Row: {
+          caption: string | null
+          client_feedback: string | null
+          client_id: string
+          created_at: string | null
+          hashtags: string | null
+          id: string
+          image_url: string | null
+          platform: string
+          published_at: string | null
+          scheduled_at: string | null
+          status: string
+        }
+        Insert: {
+          caption?: string | null
+          client_feedback?: string | null
+          client_id: string
+          created_at?: string | null
+          hashtags?: string | null
+          id?: string
+          image_url?: string | null
+          platform?: string
+          published_at?: string | null
+          scheduled_at?: string | null
+          status?: string
+        }
+        Update: {
+          caption?: string | null
+          client_feedback?: string | null
+          client_id?: string
+          created_at?: string | null
+          hashtags?: string | null
+          id?: string
+          image_url?: string | null
+          platform?: string
+          published_at?: string | null
+          scheduled_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_posts_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       diagnosticos: {
         Row: {
           contactado: boolean | null
@@ -52,6 +244,53 @@ export type Database = {
           site_url?: string | null
         }
         Relationships: []
+      }
+      metrics: {
+        Row: {
+          bot_conversations: number | null
+          client_id: string
+          created_at: string | null
+          date: string
+          facebook_followers: number | null
+          health_score: number | null
+          id: string
+          instagram_followers: number | null
+          leads_count: number | null
+          posts_published: number | null
+        }
+        Insert: {
+          bot_conversations?: number | null
+          client_id: string
+          created_at?: string | null
+          date?: string
+          facebook_followers?: number | null
+          health_score?: number | null
+          id?: string
+          instagram_followers?: number | null
+          leads_count?: number | null
+          posts_published?: number | null
+        }
+        Update: {
+          bot_conversations?: number | null
+          client_id?: string
+          created_at?: string | null
+          date?: string
+          facebook_followers?: number | null
+          health_score?: number | null
+          id?: string
+          instagram_followers?: number | null
+          leads_count?: number | null
+          posts_published?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "metrics_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
