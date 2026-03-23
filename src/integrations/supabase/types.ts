@@ -245,6 +245,36 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          id: string
+          monthly_loss: number | null
+          nome: string | null
+          source: string | null
+          telefone: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          monthly_loss?: number | null
+          nome?: string | null
+          source?: string | null
+          telefone?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          monthly_loss?: number | null
+          nome?: string | null
+          source?: string | null
+          telefone?: string | null
+        }
+        Relationships: []
+      }
       metrics: {
         Row: {
           bot_conversations: number | null

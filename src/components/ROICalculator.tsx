@@ -32,13 +32,14 @@ const ROICalculator = () => {
     if (!formData.nome || !formData.email) return;
     setLoading(true);
     try {
-      await supabase.from("leads").insert({
+      const { error } = await supabase.from("leads" as any).insert({
         nome: formData.nome,
         email: formData.email,
         telefone: formData.telefone || null,
         monthly_loss: monthlyLoss,
         source: "calculadora",
       } as any);
+      if (error) throw error;
       setSubmitted(true);
       toast({ title: "Recebido!", description: "Entraremos em contacto em 24h." });
     } catch {
