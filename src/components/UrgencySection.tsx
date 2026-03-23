@@ -58,7 +58,7 @@ const UrgencySection = () => {
       <div className="max-w-6xl mx-auto">
         <FadeIn>
           <h2 className="font-display text-3xl md:text-4xl text-center text-foreground mb-4">
-            Os teus concorrentes em Braga já respondem em segundos?
+            Os teus concorrentes já respondem em segundos?
           </h2>
           <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
             Estes números são reais. O mercado já está a mudar.
