@@ -4,7 +4,7 @@ import ROICalculator from "@/components/ROICalculator";
 import WhatsAppDemo from "@/components/WhatsAppDemo";
 import UrgencySection from "@/components/UrgencySection";
 import AuditWidget from "@/components/AuditWidget";
-import DiagnosticoSection from "@/components/DiagnosticoSection";
+
 import SocialProof from "@/components/SocialProof";
 import ResultsNew from "@/components/ResultsNew";
 import Services from "@/components/Services";
