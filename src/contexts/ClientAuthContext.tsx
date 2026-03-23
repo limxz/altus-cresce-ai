@@ -16,6 +16,7 @@ interface ClientData {
   facebook_baseline: number;
   leads_baseline: number;
   niche: string;
+  mrr: number | null;
 }
 
 interface ClientAuthContextType {

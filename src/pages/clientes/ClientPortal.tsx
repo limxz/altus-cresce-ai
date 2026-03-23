@@ -84,6 +84,7 @@ const ClientPortal = () => {
           {tab === "leads" && <WhatsAppLeadsTab />}
           {tab === "conteudo" && <ClientContentTab />}
           {tab === "crescimento" && <ClientGrowthTab />}
+          {tab === "roi" && <ROITab />}
           {tab === "suporte" && <ClientSupportTab />}
         </motion.div>
       </main>

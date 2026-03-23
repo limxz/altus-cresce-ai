@@ -6,7 +6,7 @@ import { useBooking } from "@/contexts/BookingContext";
 const navLinks = [
   { label: "Serviços", href: "#servicos" },
   { label: "Resultados", href: "#resultados" },
-  { label: "Sobre", href: "#sobre" },
+  { label: "Plano Grátis", href: "/plano-gratis" },
   { label: "Contacto", href: "#contacto" },
 ];
 
