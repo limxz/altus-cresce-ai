@@ -8,6 +8,7 @@ import ClientContentTab from "@/components/clientes/ContentTab";
 import ClientGrowthTab from "@/components/clientes/GrowthTab";
 import ClientSupportTab from "@/components/clientes/SupportTab";
 import ROITab from "@/components/clientes/ROITab";
+import AILabTab from "@/components/clientes/AILabTab";
 
 const TABS = [
   { key: "dashboard", label: "Dashboard" },
@@ -15,6 +16,7 @@ const TABS = [
   { key: "conteudo", label: "Conteúdo" },
   { key: "crescimento", label: "Crescimento" },
   { key: "roi", label: "O teu ROI" },
+  { key: "lab", label: "Laboratório IA" },
   { key: "suporte", label: "Suporte" },
 ];
 
@@ -85,6 +87,7 @@ const ClientPortal = () => {
           {tab === "conteudo" && <ClientContentTab />}
           {tab === "crescimento" && <ClientGrowthTab />}
           {tab === "roi" && <ROITab />}
+          {tab === "lab" && <AILabTab />}
           {tab === "suporte" && <ClientSupportTab />}
         </motion.div>
       </main>

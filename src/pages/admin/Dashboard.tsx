@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import ClientHealthScores from "@/components/admin/ClientHealthScores";
 import {
   MessageCircle, Users, Bot, TrendingUp,
   Inbox, Zap, Phone, BarChart3
@@ -162,6 +163,9 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
+      {/* Client Health Scores */}
+      <ClientHealthScores />
+
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {kpis.map((kpi, i) => (
