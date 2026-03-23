@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import ClientHealthScores from "@/components/admin/ClientHealthScores";
 import {
   MessageCircle, Users, Bot, TrendingUp,
   Inbox, Zap, Phone, BarChart3
