@@ -22,7 +22,7 @@ const Index = () => {
       <WhatsAppDemo />
       <UrgencySection />
       <AuditWidget />
-      <DiagnosticoSection />
+      
       <SocialProof />
       <ResultsNew />
       <Services />
