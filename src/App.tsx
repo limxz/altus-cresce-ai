@@ -8,6 +8,7 @@ import { BookingProvider } from "@/contexts/BookingContext";
 import { ClientAuthProvider, ProtectedClientRoute } from "@/contexts/ClientAuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import PlanoGratis from "./pages/PlanoGratis";
 
 import Login from "./pages/admin/Login";
 import AdminLayout from "./components/admin/AdminLayout";
@@ -22,6 +23,7 @@ import WhatsAppAgents from "./pages/admin/WhatsAppAgents";
 import Setup from "./pages/admin/Setup";
 import Diagnosticos from "./pages/admin/Diagnosticos";
 import Analytics from "./pages/admin/Analytics";
+import Pipeline from "./pages/admin/Pipeline";
 
 import ClientLogin from "./pages/clientes/ClientLogin";
 import ClientPortal from "./pages/clientes/ClientPortal";
