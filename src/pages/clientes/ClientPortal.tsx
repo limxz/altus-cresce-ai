@@ -14,6 +14,7 @@ const TABS = [
   { key: "leads", label: "Leads" },
   { key: "conteudo", label: "Conteúdo" },
   { key: "crescimento", label: "Crescimento" },
+  { key: "roi", label: "O teu ROI" },
   { key: "suporte", label: "Suporte" },
 ];
 
