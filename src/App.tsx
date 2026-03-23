@@ -57,6 +57,7 @@ const App = () => (
                 <Route path="diagnosticos" element={<Diagnosticos />} />
                 <Route path="presentations" element={<Presentations />} />
                 <Route path="whatsapp" element={<WhatsAppAgents />} />
+                <Route path="analytics" element={<Analytics />} />
                 <Route path="setup" element={<Setup />} />
               </Route>
               <Route path="/clientes" element={<ClientLogin />} />
