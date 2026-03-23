@@ -15,6 +15,7 @@ import {
   Bot,
   BookOpen,
   BarChart3,
+  Kanban,
 } from "lucide-react";
 import { useState } from "react";
 
