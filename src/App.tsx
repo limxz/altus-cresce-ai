@@ -18,6 +18,8 @@ import ClientsManagement from "./pages/admin/ClientsManagement";
 import Settings from "./pages/admin/Settings";
 import AdminPricing from "./pages/admin/Pricing";
 import Presentations from "./pages/admin/Presentations";
+import WhatsAppAgents from "./pages/admin/WhatsAppAgents";
+import Setup from "./pages/admin/Setup";
 import Diagnosticos from "./pages/admin/Diagnosticos";
 
 import ClientLogin from "./pages/clientes/ClientLogin";
