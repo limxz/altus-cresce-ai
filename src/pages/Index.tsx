@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar";
-import HeroNew from "@/components/HeroNew";
+import Hero from "@/components/Hero";
 import ROICalculator from "@/components/ROICalculator";
 import WhatsAppDemo from "@/components/WhatsAppDemo";
 import DiagnosticoSection from "@/components/DiagnosticoSection";
@@ -15,7 +15,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background noise-overlay">
       <Navbar />
-      <HeroNew />
+      <Hero />
       <ROICalculator />
       <WhatsAppDemo />
       <DiagnosticoSection />
