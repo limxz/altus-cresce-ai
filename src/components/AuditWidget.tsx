@@ -43,6 +43,11 @@ const AuditWidget = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.business_name || !form.email) return;
+    if (!form.instagram.startsWith("@") || form.instagram.length < 2) {
+      setIgError("Introduz o Instagram começando por @ (ex: @omeutnegocio)");
+      return;
+    }
+    setIgError("");
 
     setLoading(true);
     setError("");
