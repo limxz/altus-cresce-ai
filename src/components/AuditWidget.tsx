@@ -32,7 +32,8 @@ const LOADING_MESSAGES = [
 ];
 
 const AuditWidget = () => {
-  const [form, setForm] = useState({ url: "", business_name: "", business_type: "Restauração", city: "Braga", email: "" });
+  const [form, setForm] = useState({ url: "", business_name: "", business_type: "Restauração", city: "Braga", email: "", instagram: "" });
+  const [igError, setIgError] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingMsg, setLoadingMsg] = useState(0);
   const [progress, setProgress] = useState(0);
