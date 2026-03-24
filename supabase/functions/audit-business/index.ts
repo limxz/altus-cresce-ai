@@ -9,7 +9,7 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { business_name, business_type, city, url } = await req.json();
+    const { business_name, business_type, city, url, instagram } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
@@ -21,31 +21,44 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: `És um especialista de marketing digital português. Cria auditorias de negócios locais. Responde APENAS com JSON válido, sem markdown. Sê realista e crítico nas pontuações — a maioria dos negócios locais tem pontuações entre 20 e 55. Nunca dês mais de 70 na pontuação geral.`
+            content: `És um auditor de marketing digital português especializado em negócios locais. Analisa o perfil de Instagram e presença online do negócio de forma realista e crítica. Responde APENAS com JSON válido, sem markdown nem backticks.
+
+REGRAS DE PONTUAÇÃO OBRIGATÓRIAS:
+- A pontuação geral NUNCA pode ser superior a 79. Máximo absoluto: 79.
+- Cada categoria NUNCA pode ter mais de 79 pontos.
+- A maioria dos negócios locais tem pontuações entre 15 e 55.
+- Sê honesto e crítico — isto é para ajudar o negócio a melhorar.
+- Analisa o Instagram (${instagram || "não fornecido"}) com base em: frequência de publicações, qualidade visual, engagement, bio, highlights, CTAs, hashtags, stories.
+- Se tiverem site, analisa também: velocidade, SEO, mobile, CTAs.`
           },
           {
             role: "user",
-            content: `Negócio: "${business_name}", Tipo: "${business_type}", Cidade: "${city || "Braga"}", URL: "${url || "não fornecido"}".
+            content: `Faz uma auditoria completa deste negócio:
+- Nome: "${business_name}"
+- Tipo: "${business_type}"  
+- Cidade: "${city || "Braga"}"
+- Instagram: "${instagram || "não fornecido"}"
+- Site: "${url || "não fornecido"}"
 
-Cria uma auditoria completa com este JSON exacto:
+Responde com este JSON exacto (pontuações realistas, NUNCA acima de 79):
 {
-  "score": 45,
+  "score": 42,
   "score_label": "Precisa de Atenção",
   "categories": [
-    {"name": "Presença Digital", "score": 30, "issues": ["issue1", "issue2"], "opportunities": ["opp1", "opp2"]},
-    {"name": "Redes Sociais", "score": 45, "issues": ["issue1", "issue2"], "opportunities": ["opp1", "opp2"]},
-    {"name": "Captação de Clientes", "score": 25, "issues": ["issue1", "issue2"], "opportunities": ["opp1", "opp2"]},
-    {"name": "Competitividade", "score": 50, "issues": ["issue1", "issue2"], "opportunities": ["opp1", "opp2"]}
+    {"name": "Instagram & Redes Sociais", "score": 35, "issues": ["problema real 1", "problema real 2", "problema real 3"], "opportunities": ["oportunidade 1", "oportunidade 2"]},
+    {"name": "Presença Digital & SEO", "score": 40, "issues": ["problema real 1", "problema real 2"], "opportunities": ["oportunidade 1", "oportunidade 2"]},
+    {"name": "Captação de Clientes", "score": 25, "issues": ["problema real 1", "problema real 2"], "opportunities": ["oportunidade 1", "oportunidade 2"]},
+    {"name": "Competitividade Local", "score": 50, "issues": ["problema real 1", "problema real 2"], "opportunities": ["oportunidade 1", "oportunidade 2"]}
   ],
-  "estimated_monthly_loss": 1200,
-  "top_recommendation": "...",
-  "quick_wins": ["win1", "win2", "win3"]
+  "estimated_monthly_loss": 1500,
+  "top_recommendation": "recomendação personalizada e específica",
+  "quick_wins": ["vitória rápida 1", "vitória rápida 2", "vitória rápida 3"]
 }
 
-Personaliza tudo para este negócio específico em ${city || "Braga"}. Sê genuíno e útil.`
+Personaliza TUDO para este negócio. Menciona o Instagram ${instagram} especificamente nos problemas e oportunidades. Sê genuíno, crítico e útil.`
           }
         ],
-        max_tokens: 800,
+        max_tokens: 1000,
       }),
     });
 

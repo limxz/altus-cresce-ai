@@ -32,7 +32,8 @@ const LOADING_MESSAGES = [
 ];
 
 const AuditWidget = () => {
-  const [form, setForm] = useState({ url: "", business_name: "", business_type: "Restauração", city: "Braga", email: "" });
+  const [form, setForm] = useState({ url: "", business_name: "", business_type: "Restauração", city: "Braga", email: "", instagram: "" });
+  const [igError, setIgError] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingMsg, setLoadingMsg] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -42,6 +43,11 @@ const AuditWidget = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.business_name || !form.email) return;
+    if (!form.instagram.startsWith("@") || form.instagram.length < 2) {
+      setIgError("Introduz o Instagram começando por @ (ex: @omeutnegocio)");
+      return;
+    }
+    setIgError("");
 
     setLoading(true);
     setError("");
@@ -59,7 +65,7 @@ const AuditWidget = () => {
 
     try {
       const { data, error: fnError } = await supabase.functions.invoke("audit-business", {
-        body: { business_name: form.business_name, business_type: form.business_type, city: form.city, url: form.url }
+        body: { business_name: form.business_name, business_type: form.business_type, city: form.city, url: form.url, instagram: form.instagram }
       });
 
       if (fnError) throw fnError;
@@ -123,12 +129,24 @@ const AuditWidget = () => {
                 </select>
               </div>
               <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <input
+                    placeholder="@o_teu_instagram *"
+                    value={form.instagram}
+                    onChange={e => { setForm(f => ({ ...f, instagram: e.target.value })); setIgError(""); }}
+                    required
+                    className={`w-full px-4 py-3 rounded-lg bg-muted border ${igError ? "border-red-500" : "border-border"} text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary text-sm`}
+                  />
+                  {igError && <p className="text-red-400 text-xs mt-1">{igError}</p>}
+                </div>
                 <input
                   placeholder="URL do teu site (opcional)"
                   value={form.url}
                   onChange={e => setForm(f => ({ ...f, url: e.target.value }))}
                   className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary text-sm"
                 />
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
                 <input
                   placeholder="Cidade"
                   value={form.city}
