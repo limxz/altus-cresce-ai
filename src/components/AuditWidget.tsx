@@ -65,7 +65,7 @@ const AuditWidget = () => {
 
     try {
       const { data, error: fnError } = await supabase.functions.invoke("audit-business", {
-        body: { business_name: form.business_name, business_type: form.business_type, city: form.city, url: form.url }
+        body: { business_name: form.business_name, business_type: form.business_type, city: form.city, url: form.url, instagram: form.instagram }
       });
 
       if (fnError) throw fnError;
