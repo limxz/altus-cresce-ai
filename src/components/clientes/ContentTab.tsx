@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useClientAuth } from "@/contexts/ClientAuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { Check, X, Instagram, Facebook, Clock } from "lucide-react";
+import { Check, X, Instagram, Facebook, Clock, Upload, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useSearchParams } from "react-router-dom";
 
 const ContentTab = () => {
   const { client } = useClientAuth();
@@ -10,6 +11,8 @@ const ContentTab = () => {
   const [subTab, setSubTab] = useState("pending");
   const [feedback, setFeedback] = useState<Record<string, string>>({});
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  const isAdmin = searchParams.get("admin") === "true";
 
   useEffect(() => {
     if (!client) return;
@@ -37,6 +40,12 @@ const ContentTab = () => {
     await supabase.from("content_posts" as any).update({ status: "rejected", client_feedback: fb } as any).eq("id", id);
     setPosts(prev => prev.map(p => p.id === id ? { ...p, status: "rejected", client_feedback: fb } : p));
     toast({ title: "Feedback enviado à equipa" });
+  };
+
+  const publish = async (id: string) => {
+    await supabase.from("content_posts" as any).update({ status: "published", published_at: new Date().toISOString() } as any).eq("id", id);
+    setPosts(prev => prev.map(p => p.id === id ? { ...p, status: "published", published_at: new Date().toISOString() } : p));
+    toast({ title: "Post marcado como publicado!" });
   };
 
   const tabs = [
@@ -96,6 +105,7 @@ const ContentTab = () => {
                   </div>
                 )}
 
+                {/* Client: Approve/Reject pending posts */}
                 {subTab === "pending" && (
                   <div className="space-y-2 pt-2 border-t border-border">
                     <div className="flex gap-2">
@@ -116,11 +126,34 @@ const ContentTab = () => {
                   </div>
                 )}
 
-                {subTab === "scheduled" && p.scheduled_at && (
-                  <div className="flex items-center gap-1 text-xs text-accent">
-                    <Clock size={12} />
-                    Publica {getCountdown(p.scheduled_at)}
+                {/* Scheduled: show countdown + admin publish */}
+                {subTab === "scheduled" && (
+                  <div className="flex items-center justify-between pt-2 border-t border-border">
+                    {p.scheduled_at && (
+                      <div className="flex items-center gap-1 text-xs text-accent">
+                        <Clock size={12} />
+                        Publica {getCountdown(p.scheduled_at)}
+                      </div>
+                    )}
+                    {isAdmin && (
+                      <button
+                        onClick={() => publish(p.id)}
+                        className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-green-500/20 text-green-400 text-xs font-medium hover:bg-green-500/30 transition-colors"
+                      >
+                        <Send size={12} /> Publicar
+                      </button>
+                    )}
                   </div>
+                )}
+
+                {/* Admin: publish pending posts directly */}
+                {isAdmin && subTab === "pending" && (
+                  <button
+                    onClick={() => publish(p.id)}
+                    className="w-full flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-green-500/20 text-green-400 text-xs font-medium hover:bg-green-500/30 transition-colors"
+                  >
+                    <Upload size={12} /> Publicar directamente
+                  </button>
                 )}
               </div>
             </div>

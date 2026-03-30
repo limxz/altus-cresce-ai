@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useClientAuth } from "@/contexts/ClientAuthContext";
-import { Lightbulb, AlertTriangle, Rocket, Check, X } from "lucide-react";
+import { Lightbulb, AlertTriangle, Rocket, Check, X, Send } from "lucide-react";
 import { motion } from "framer-motion";
+import { useSearchParams } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 interface Suggestion {
   type: "Oportunidade" | "Alerta" | "Crescimento";
@@ -22,6 +24,10 @@ const AILabTab = () => {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [dismissed, setDismissed] = useState<number[]>([]);
+  const [published, setPublished] = useState<number[]>([]);
+  const [searchParams] = useSearchParams();
+  const isAdmin = searchParams.get("admin") === "true";
+  const { toast } = useToast();
 
   useEffect(() => {
     if (client) generateSuggestions();
@@ -30,7 +36,6 @@ const AILabTab = () => {
   const generateSuggestions = async () => {
     if (!client) return;
 
-    // Fetch metrics
     const { data: metrics } = await supabase
       .from("metrics")
       .select("*")
@@ -67,7 +72,6 @@ const AILabTab = () => {
         }
       }
     } catch (e) {
-      // Fallback suggestions
       setSuggestions([
         { type: "Oportunidade", title: "Activar respostas automáticas", explanation: `Com ${leads} leads este mês, podes converter mais com respostas instantâneas 24/7.`, impact: "+5 leads/mês" },
         { type: "Alerta", title: "Frequência de publicação baixa", explanation: `Apenas ${posts} posts publicados. O recomendado para o teu nicho são pelo menos 15 posts/mês.`, impact: "+30% engagement" },
@@ -75,6 +79,11 @@ const AILabTab = () => {
       ]);
     }
     setLoading(false);
+  };
+
+  const publishSuggestion = (idx: number) => {
+    setPublished(p => [...p, idx]);
+    toast({ title: "Sugestão publicada no portal do cliente!" });
   };
 
   if (loading) {
@@ -113,6 +122,7 @@ const AILabTab = () => {
             const realIdx = suggestions.indexOf(s);
             const style = TYPE_STYLES[s.type] || TYPE_STYLES.Oportunidade;
             const Icon = style.icon;
+            const isPublished = published.includes(realIdx);
             return (
               <motion.div
                 key={realIdx}
@@ -127,6 +137,11 @@ const AILabTab = () => {
                       <Icon size={12} />
                       {s.type === "Oportunidade" ? "💡" : s.type === "Alerta" ? "⚠️" : "🚀"} {s.type}
                     </span>
+                    {isPublished && (
+                      <span className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-[10px] font-medium">
+                        ✓ Publicado
+                      </span>
+                    )}
                   </div>
                 </div>
                 <h3 className="text-foreground font-medium mb-1">{s.title}</h3>
@@ -140,6 +155,14 @@ const AILabTab = () => {
                     >
                       <X size={12} /> Ignorar
                     </button>
+                    {isAdmin && !isPublished && (
+                      <button
+                        onClick={() => publishSuggestion(realIdx)}
+                        className="text-xs bg-green-500/20 text-green-400 px-3 py-1.5 rounded-lg hover:bg-green-500/30 transition-colors flex items-center gap-1"
+                      >
+                        <Send size={12} /> Publicar
+                      </button>
+                    )}
                     <button className="text-xs bg-primary/20 text-primary px-3 py-1.5 rounded-lg hover:bg-primary/30 transition-colors flex items-center gap-1">
                       <Check size={12} /> Implementar
                     </button>
