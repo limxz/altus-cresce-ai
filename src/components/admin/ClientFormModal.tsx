@@ -68,7 +68,48 @@ const ClientFormModal = ({ client, onClose, onSaved }: Props) => {
     status: client?.status || "active",
   });
 
+  // Metrics state for override
+  const [metrics, setMetrics] = useState({
+    instagram_followers: 0,
+    facebook_followers: 0,
+    leads_count: 0,
+    bot_conversations: 0,
+    posts_published: 0,
+    health_score: 50,
+  });
+  const [metricsId, setMetricsId] = useState<string | null>(null);
+  const [metricsLoaded, setMetricsLoaded] = useState(false);
+
+  useEffect(() => {
+    if (isEdit && client) {
+      (async () => {
+        const { data } = await supabase
+          .from("metrics")
+          .select("*")
+          .eq("client_id", client.id)
+          .order("date", { ascending: false })
+          .limit(1);
+        if (data && data.length > 0) {
+          const m = data[0];
+          setMetrics({
+            instagram_followers: m.instagram_followers || 0,
+            facebook_followers: m.facebook_followers || 0,
+            leads_count: m.leads_count || 0,
+            bot_conversations: m.bot_conversations || 0,
+            posts_published: m.posts_published || 0,
+            health_score: m.health_score || 50,
+          });
+          setMetricsId(m.id);
+        }
+        setMetricsLoaded(true);
+      })();
+    } else {
+      setMetricsLoaded(true);
+    }
+  }, []);
+
   const update = (key: string, value: any) => setForm(p => ({ ...p, [key]: value }));
+  const updateMetric = (key: string, value: number) => setMetrics(p => ({ ...p, [key]: value }));
 
   const toggleService = (s: string) => {
     const arr = form.services as string[];
@@ -86,13 +127,30 @@ const ClientFormModal = ({ client, onClose, onSaved }: Props) => {
       mrr: MRR_MAP[form.plan] || 0,
     };
 
+    let clientId = client?.id;
+
     if (isEdit && client) {
       await supabase.from("clients" as any).update(payload as any).eq("id", client.id);
-      toast({ title: "Cliente atualizado com sucesso!" });
     } else {
-      await supabase.from("clients" as any).insert(payload as any);
-      toast({ title: "Cliente criado com sucesso!" });
+      const { data } = await supabase.from("clients" as any).insert(payload as any).select("id").single();
+      if (data) clientId = (data as any).id;
     }
+
+    // Save metrics
+    if (clientId) {
+      const metricsPayload = {
+        ...metrics,
+        client_id: clientId,
+        date: new Date().toISOString().split("T")[0],
+      };
+      if (metricsId) {
+        await supabase.from("metrics" as any).update(metricsPayload as any).eq("id", metricsId);
+      } else {
+        await supabase.from("metrics" as any).insert(metricsPayload as any);
+      }
+    }
+
+    toast({ title: isEdit ? "Cliente atualizado com sucesso!" : "Cliente criado com sucesso!" });
     setSaving(false);
     onSaved();
   };
