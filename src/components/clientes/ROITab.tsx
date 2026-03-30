@@ -2,15 +2,33 @@ import { useState, useEffect } from "react";
 import { useClientAuth } from "@/contexts/ClientAuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { MessageCircle, Instagram, Clock, TrendingUp } from "lucide-react";
+import { MessageCircle, Instagram, Clock, TrendingUp, Settings2, Save } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const ROITab = () => {
   const { client } = useClientAuth();
+  const [searchParams] = useSearchParams();
+  const isAdmin = searchParams.get("admin") === "true";
+  const { toast } = useToast();
+
   const [hotConvos, setHotConvos] = useState(0);
   const [followers, setFollowers] = useState(0);
   const [baseline, setBaseline] = useState(0);
   const [monthlyData, setMonthlyData] = useState<{ month: string; value: number }[]>([]);
   const [period, setPeriod] = useState("month");
+
+  // Admin override state
+  const [showOverride, setShowOverride] = useState(false);
+  const [override, setOverride] = useState({
+    hot_convos: 0,
+    followers: 0,
+    baseline: 0,
+    avg_value: 150,
+    hours_saved: 0,
+    hour_rate: 15,
+  });
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (!client) return;
@@ -20,7 +38,6 @@ const ROITab = () => {
   const loadData = async () => {
     if (!client) return;
 
-    // Hot conversations
     const { count } = await supabase
       .from("whatsapp_conversations")
       .select("*", { count: "exact", head: true })
@@ -28,7 +45,6 @@ const ROITab = () => {
       .in("lead_status", ["interessado", "marcou_consulta"]);
     setHotConvos(count || 0);
 
-    // Metrics for followers
     const { data: metrics } = await supabase
       .from("metrics")
       .select("instagram_followers, date")
@@ -39,30 +55,133 @@ const ROITab = () => {
       setFollowers(metrics[metrics.length - 1].instagram_followers || 0);
       setBaseline(client.instagram_baseline || 0);
 
-      // Build monthly chart data
       const chartData = metrics.map(m => ({
         month: new Date(m.date).toLocaleDateString("pt-PT", { month: "short" }),
         value: ((m.instagram_followers || 0) - (client.instagram_baseline || 0)) * 2 + (count || 0) * 150,
       }));
       setMonthlyData(chartData);
     }
+
+    // Init override with real data
+    setOverride(prev => ({
+      ...prev,
+      hot_convos: count || 0,
+      followers: metrics?.length ? metrics[metrics.length - 1].instagram_followers || 0 : 0,
+      baseline: client.instagram_baseline || 0,
+      hours_saved: Math.round((count || 0) * 0.5 + 20),
+    }));
+  };
+
+  const saveOverride = async () => {
+    if (!client) return;
+    setSaving(true);
+
+    // Update the latest metrics row with overridden followers
+    const { data: latest } = await supabase
+      .from("metrics")
+      .select("id")
+      .eq("client_id", client.id)
+      .order("date", { ascending: false })
+      .limit(1);
+
+    if (latest && latest.length > 0) {
+      await supabase
+        .from("metrics")
+        .update({ instagram_followers: override.followers } as any)
+        .eq("id", latest[0].id);
+    }
+
+    // Update baseline on client
+    await supabase
+      .from("clients" as any)
+      .update({ instagram_baseline: override.baseline } as any)
+      .eq("id", client.id);
+
+    setHotConvos(override.hot_convos);
+    setFollowers(override.followers);
+    setBaseline(override.baseline);
+
+    setSaving(false);
+    toast({ title: "ROI atualizado com sucesso!" });
   };
 
   if (!client) return null;
 
-  const avgValue = 150;
-  const botROI = hotConvos * avgValue;
-  const followersGained = Math.max(0, followers - baseline);
+  // Use override values if admin is tweaking, otherwise use real data
+  const displayConvos = showOverride ? override.hot_convos : hotConvos;
+  const displayFollowers = showOverride ? override.followers : followers;
+  const displayBaseline = showOverride ? override.baseline : baseline;
+  const avgValue = showOverride ? override.avg_value : 150;
+  const hourRate = showOverride ? override.hour_rate : 15;
+
+  const botROI = displayConvos * avgValue;
+  const followersGained = Math.max(0, displayFollowers - displayBaseline);
   const igROI = Math.round(followersGained * 2);
-  const hoursSaved = Math.round(hotConvos * 0.5 + 20);
-  const timeROI = hoursSaved * 15;
+  const hoursSaved = showOverride ? override.hours_saved : Math.round(displayConvos * 0.5 + 20);
+  const timeROI = hoursSaved * hourRate;
   const totalROI = botROI + igROI + timeROI;
   const mrr = Number(client.mrr) || 297;
   const ratio = mrr > 0 ? (totalROI / mrr).toFixed(1) : "0";
   const ratioNum = parseFloat(ratio);
 
+  const inputClass = "w-full bg-muted border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:border-primary/40";
+  const labelClass = "text-xs text-muted-foreground uppercase tracking-wider block mb-1";
+
   return (
     <div className="space-y-6">
+      {/* Admin Override Panel */}
+      {isAdmin && (
+        <div className="glass-card p-4 border border-amber-500/30 bg-amber-500/5">
+          <button
+            onClick={() => setShowOverride(!showOverride)}
+            className="flex items-center gap-2 text-sm text-amber-400 font-medium w-full"
+          >
+            <Settings2 size={16} />
+            {showOverride ? "Fechar painel de override" : "Personalizar valores de ROI"}
+          </button>
+          {showOverride && (
+            <div className="mt-4 space-y-4">
+              <p className="text-xs text-muted-foreground">
+                A IA calcula automaticamente. Edita apenas se necessário corrigir valores.
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className={labelClass}>Conversas quentes</label>
+                  <input type="number" value={override.hot_convos} onChange={e => setOverride(p => ({ ...p, hot_convos: +e.target.value }))} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Valor médio/conversa (€)</label>
+                  <input type="number" value={override.avg_value} onChange={e => setOverride(p => ({ ...p, avg_value: +e.target.value }))} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Seguidores IG atuais</label>
+                  <input type="number" value={override.followers} onChange={e => setOverride(p => ({ ...p, followers: +e.target.value }))} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Baseline IG</label>
+                  <input type="number" value={override.baseline} onChange={e => setOverride(p => ({ ...p, baseline: +e.target.value }))} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Horas poupadas</label>
+                  <input type="number" value={override.hours_saved} onChange={e => setOverride(p => ({ ...p, hours_saved: +e.target.value }))} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Valor/hora (€)</label>
+                  <input type="number" value={override.hour_rate} onChange={e => setOverride(p => ({ ...p, hour_rate: +e.target.value }))} className={inputClass} />
+                </div>
+              </div>
+              <button
+                onClick={saveOverride}
+                disabled={saving}
+                className="btn-primary !px-5 !py-2 !text-sm !rounded-lg flex items-center gap-2"
+              >
+                <Save size={14} /> {saving ? "A guardar..." : "Guardar alterações"}
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Hero ROI */}
       <div className="glass-card p-8 text-center bg-gradient-to-br from-primary/10 to-accent/5">
         <p className="text-muted-foreground text-sm mb-2">A Altus Media gerou para o teu negócio:</p>
@@ -73,7 +192,7 @@ const ROITab = () => {
       {/* Breakdown */}
       <div className="grid md:grid-cols-3 gap-4">
         {[
-          { icon: MessageCircle, label: "Bot WhatsApp", detail: `${hotConvos} conversas quentes`, value: `€${botROI}`, color: "text-primary" },
+          { icon: MessageCircle, label: "Bot WhatsApp", detail: `${displayConvos} conversas quentes`, value: `€${botROI}`, color: "text-primary" },
           { icon: Instagram, label: "Instagram", detail: `+${followersGained} seguidores`, value: `€${igROI}`, color: "text-pink-400" },
           { icon: Clock, label: "Tempo poupado", detail: `${hoursSaved}h poupadas`, value: `€${timeROI}`, color: "text-amber-400" },
         ].map((card, i) => (
