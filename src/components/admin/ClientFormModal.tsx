@@ -284,23 +284,64 @@ const ClientFormModal = ({ client, onClose, onSaved }: Props) => {
             </div>
           </div>
 
-          {/* Metrics */}
+          {/* Baseline Metrics */}
           <div>
-            <h4 className="text-xs font-semibold text-accent uppercase tracking-widest mb-3">Métricas Iniciais</h4>
+            <h4 className="text-xs font-semibold text-accent uppercase tracking-widest mb-3">Métricas Iniciais (Baseline)</h4>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className={labelClass}>Seguidores IG</label>
+                <label className={labelClass}>Seguidores IG (início)</label>
                 <input type="number" value={form.instagram_baseline} onChange={e => update("instagram_baseline", +e.target.value)} className={inputClass} />
               </div>
               <div>
-                <label className={labelClass}>Seguidores FB</label>
+                <label className={labelClass}>Seguidores FB (início)</label>
                 <input type="number" value={form.facebook_baseline} onChange={e => update("facebook_baseline", +e.target.value)} className={inputClass} />
               </div>
               <div>
-                <label className={labelClass}>Leads/mês</label>
+                <label className={labelClass}>Leads/mês (início)</label>
                 <input type="number" value={form.leads_baseline} onChange={e => update("leads_baseline", +e.target.value)} className={inputClass} />
               </div>
             </div>
+          </div>
+
+          {/* Performance Override */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <BarChart3 size={14} className="text-accent" />
+              <h4 className="text-xs font-semibold text-accent uppercase tracking-widest">Performance Atual (Override)</h4>
+            </div>
+            <p className="text-xs text-muted-foreground mb-3">
+              A IA atualiza estes valores automaticamente. Edita apenas se necessário corrigir algo.
+            </p>
+            {!metricsLoaded ? (
+              <p className="text-xs text-muted-foreground animate-pulse">A carregar métricas...</p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label className={labelClass}>Seguidores Instagram</label>
+                  <input type="number" value={metrics.instagram_followers} onChange={e => updateMetric("instagram_followers", +e.target.value)} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Seguidores Facebook</label>
+                  <input type="number" value={metrics.facebook_followers} onChange={e => updateMetric("facebook_followers", +e.target.value)} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Leads este mês</label>
+                  <input type="number" value={metrics.leads_count} onChange={e => updateMetric("leads_count", +e.target.value)} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Conversas Bot</label>
+                  <input type="number" value={metrics.bot_conversations} onChange={e => updateMetric("bot_conversations", +e.target.value)} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Posts publicados</label>
+                  <input type="number" value={metrics.posts_published} onChange={e => updateMetric("posts_published", +e.target.value)} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Health Score (0-100)</label>
+                  <input type="number" min={0} max={100} value={metrics.health_score} onChange={e => updateMetric("health_score", Math.min(100, Math.max(0, +e.target.value)))} className={inputClass} />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Notes */}
