@@ -16,14 +16,13 @@ const Index = () => {
     <div className="min-h-screen bg-background noise-overlay mesh-gradient-bg">
       <Navbar />
       <Hero />
-      <SocialProof />
-      <ROICalculator />
-      <WhatsAppDemo />
-      
-      <Services />
-      <HowItWorks />
-      <AltusFAQ />
-      <FinalCTA />
+      <div className="section-glow-purple"><SocialProof /></div>
+      <div className="section-glow-blue"><ROICalculator /></div>
+      <div className="section-glow-cyan"><WhatsAppDemo /></div>
+      <div className="section-glow-right"><Services /></div>
+      <div className="section-glow-left"><HowItWorks /></div>
+      <div className="section-glow-center"><AltusFAQ /></div>
+      <div className="section-glow-purple"><FinalCTA /></div>
       <AltusFooter />
     </div>
   );
