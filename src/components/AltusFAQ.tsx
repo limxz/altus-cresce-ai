@@ -34,7 +34,7 @@ const AltusFAQ = () => {
     <section className="py-24 px-6">
       <div className="max-w-3xl mx-auto">
         <FadeIn className="text-center mb-16">
-          <h2 className="font-display text-4xl md:text-6xl text-foreground mb-4">
+          <h2 className="font-display text-4xl md:text-6xl text-foreground mb-4" style={{ fontWeight: 800 }}>
             Perguntas <em className="text-gradient not-italic">frequentes</em>
           </h2>
         </FadeIn>
@@ -45,12 +45,12 @@ const AltusFAQ = () => {
               <AccordionItem
                 key={i}
                 value={`item-${i}`}
-                className="glass-card px-6 border-none"
+                className="rounded-[20px] px-6 border border-[#2A2040] bg-[#1C1829] data-[state=open]:border-[rgba(139,92,246,0.3)]"
               >
-                <AccordionTrigger className="text-foreground text-left font-medium hover:text-accent transition-colors py-5 hover:no-underline">
+                <AccordionTrigger className="text-foreground text-left font-medium hover:text-[#A78BFA] transition-colors duration-200 py-5 hover:no-underline">
                   {faq.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
+                <AccordionContent className="text-[#9CA3AF] leading-relaxed pb-5">
                   {faq.a}
                 </AccordionContent>
               </AccordionItem>

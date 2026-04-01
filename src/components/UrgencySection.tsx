@@ -55,12 +55,12 @@ const solutionsComAltus = [
 const UrgencySection = () => {
   return (
     <section className="py-20 px-6">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-[1200px] mx-auto">
         <FadeIn>
-          <h2 className="font-display text-3xl md:text-4xl text-center text-foreground mb-4">
+          <h2 className="font-display text-3xl md:text-4xl text-center text-foreground mb-4" style={{ fontWeight: 800 }}>
             Os teus concorrentes já respondem em segundos?
           </h2>
-          <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+          <p className="text-[#9CA3AF] text-center mb-12 max-w-2xl mx-auto">
             Estes números são reais. O mercado já está a mudar.
           </p>
         </FadeIn>
@@ -76,12 +76,12 @@ const UrgencySection = () => {
         <div className="grid md:grid-cols-2 gap-6 mb-12">
           <FadeIn delay={0.1}>
             <div className="glass-card p-6 border-l-4 border-l-red-500">
-              <h3 className="font-display text-lg text-foreground mb-4">
+              <h3 className="font-display text-lg text-foreground mb-4" style={{ fontWeight: 700 }}>
                 Grupo A — Sem IA
               </h3>
               <ul className="space-y-3">
                 {problemsSemIA.map((p, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <li key={i} className="flex items-center gap-3 text-sm text-[#9CA3AF]">
                     <X size={16} className="text-red-400 shrink-0" />
                     {p}
                   </li>
@@ -92,12 +92,12 @@ const UrgencySection = () => {
 
           <FadeIn delay={0.2}>
             <div className="glass-card p-6 border-l-4 border-l-green-500">
-              <h3 className="font-display text-lg text-foreground mb-4">
+              <h3 className="font-display text-lg text-foreground mb-4" style={{ fontWeight: 700 }}>
                 Grupo B — Com Altus Media
               </h3>
               <ul className="space-y-3">
                 {solutionsComAltus.map((s, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <li key={i} className="flex items-center gap-3 text-sm text-[#9CA3AF]">
                     <Check size={16} className="text-green-400 shrink-0" />
                     {s}
                   </li>
@@ -127,10 +127,10 @@ const StatCard = ({ value, text, highlight }: { value: number; text: string; hig
   return (
     <FadeIn>
       <div ref={ref} className={`glass-card p-6 text-center ${highlight ? "border-green-500/30" : ""}`}>
-        <div className={`font-display text-4xl md:text-5xl mb-2 ${highlight ? "text-green-400" : "text-primary"}`}>
+        <div className={`font-mono text-4xl md:text-5xl mb-2 ${highlight ? "text-green-400" : "text-[#8B5CF6]"}`} style={{ textShadow: highlight ? undefined : "0 0 20px rgba(139,92,246,0.3)" }}>
           {count}
         </div>
-        <p className="text-muted-foreground text-xs leading-relaxed">{text}</p>
+        <p className="text-[#9CA3AF] text-xs leading-relaxed">{text}</p>
       </div>
     </FadeIn>
   );

@@ -15,7 +15,6 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
   useEffect(() => {
     if (!isOpen) return;
 
-    // Load Cal.com embed script
     if (!calInitialized.current) {
       (function (C: any, A: string, L: string) {
         let p = function (a: any, ar: any) { a.q.push(ar); };
@@ -50,7 +49,6 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
       calInitialized.current = true;
     }
 
-    // Small delay to ensure DOM element exists
     const timer = setTimeout(() => {
       (window as any).Cal("inline", {
         elementOrSelector: "#cal-booking-inline",
@@ -95,15 +93,16 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-[720px] h-[90vh] md:h-[80vh] rounded-2xl overflow-hidden border border-primary/20 bg-background"
+            className="relative w-full max-w-[720px] h-[90vh] md:h-[80vh] rounded-3xl overflow-hidden border border-[rgba(139,92,246,0.2)] bg-background"
             style={{
-              boxShadow: "0 0 60px hsl(262 83% 58% / 0.15), 0 25px 50px -12px hsl(0 0% 0% / 0.6)",
+              boxShadow: "0 0 60px rgba(139,92,246,0.15), 0 25px 50px -12px rgba(0,0,0,0.6)",
             }}
           >
             {/* Close button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-muted/80 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary/20 transition-all"
+              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full flex items-center justify-center text-[#9CA3AF] hover:text-white hover:bg-[rgba(139,92,246,0.2)] transition-all duration-200"
+              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid #2A2040" }}
             >
               <X size={20} />
             </button>

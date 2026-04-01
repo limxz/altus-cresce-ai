@@ -35,9 +35,9 @@ const stats = [
 const SocialProof = () => {
   return (
     <section id="social-proof" className="py-16 px-6">
-      <FadeIn className="max-w-5xl mx-auto">
+      <FadeIn className="max-w-[1200px] mx-auto">
         <div className="glass-card p-8 md:p-12">
-          <p className="text-center text-sm font-medium text-muted-foreground tracking-widest uppercase mb-10">
+          <p className="text-center font-mono text-xs text-[#6B7280] tracking-[0.1em] uppercase mb-10">
             Já ajudámos negócios em Portugal a crescer
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4">
@@ -55,11 +55,11 @@ const StatItem = ({ value, suffix, label }: { value: number; suffix: string; lab
   const { count, ref } = useCountUp(value);
   return (
     <div ref={ref} className="text-center">
-      <div className="font-display text-5xl md:text-6xl text-gradient font-medium">
+      <div className="font-mono text-5xl md:text-6xl text-gradient font-medium" style={{ textShadow: "0 0 20px rgba(167,139,250,0.4)" }}>
         {count}
         {suffix}
       </div>
-      <p className="text-muted-foreground text-sm mt-2">{label}</p>
+      <p className="text-[#9CA3AF] text-sm mt-2">{label}</p>
     </div>
   );
 };
