@@ -11,22 +11,22 @@ const HowItWorks = () => {
     <section id="sobre" className="py-24 px-6">
       <div className="max-w-[1200px] mx-auto">
         <FadeIn className="text-center mb-16">
-          <h2 className="font-display text-4xl md:text-6xl text-foreground mb-4" style={{ fontWeight: 800 }}>
+          <h2 className="font-display text-foreground mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 700, letterSpacing: "-0.03em" }}>
             Como <em className="text-gradient not-italic">funciona</em>
           </h2>
         </FadeIn>
 
         <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Connecting line */}
-          <div className="hidden md:block absolute top-16 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-[rgba(139,92,246,0.3)] to-transparent" />
+          <div className="hidden md:block absolute top-[30px] left-[16%] right-[16%] h-px" style={{ background: "linear-gradient(to right, transparent, rgba(139,92,246,0.3), rgba(139,92,246,0.3), transparent)" }} />
 
           {steps.map((step, i) => (
             <FadeIn key={i} delay={i * 0.2} className="text-center relative">
-              <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#7C3AED] flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(139,92,246,0.3)]">
-                <span className="text-white font-mono font-bold text-lg">{step.num}</span>
+              <div className="w-[60px] h-[60px] mx-auto rounded-full flex items-center justify-center mb-6" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))", boxShadow: "0 0 28px rgba(139,92,246,0.35)" }}>
+                <span className="text-white font-mono font-medium text-base">{step.num}</span>
               </div>
-              <h3 className="font-display text-2xl text-foreground mb-2" style={{ fontWeight: 700 }}>{step.title}</h3>
-              <p className="text-[#9CA3AF] text-sm leading-relaxed max-w-xs mx-auto">{step.desc}</p>
+              <h3 className="font-display text-xl text-foreground mb-3" style={{ fontWeight: 600, letterSpacing: "-0.02em" }}>{step.title}</h3>
+              <p className="text-muted-foreground text-[0.9375rem] leading-relaxed max-w-xs mx-auto">{step.desc}</p>
             </FadeIn>
           ))}
         </div>

@@ -12,8 +12,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Be Vietnam Pro", "system-ui", "sans-serif"],
-        sans: ["Be Vietnam Pro", "system-ui", "sans-serif"],
+        display: ["Be Vietnam Pro", "sans-serif"],
+        sans: ["Be Vietnam Pro", "sans-serif"],
         mono: ["DM Mono", "monospace"],
       },
       colors: {
@@ -93,7 +93,7 @@ export default {
           to: { height: "0", opacity: "0" },
         },
         "fade-up-in": {
-          from: { opacity: "0", transform: "translateY(20px)" },
+          from: { opacity: "0", transform: "translateY(24px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
         "fade-in": {

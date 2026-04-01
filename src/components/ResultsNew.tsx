@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useInView } from "framer-motion";
 import { FadeIn } from "./FadeIn";
+import { Shield } from "lucide-react";
 
 const useCountUp = (end: number, duration = 1500) => {
   const [count, setCount] = useState(0);
@@ -24,8 +25,8 @@ const useCountUp = (end: number, duration = 1500) => {
 
 const cases = [
   {
-    emoji: "🍽️",
     type: "Restaurante",
+    category: "Restauração",
     before: "2 reservas/semana",
     after: "23 reservas/semana",
     metric: 1050,
@@ -33,8 +34,8 @@ const cases = [
     quote: "Bot responde a 100% das mensagens em 2 segundos",
   },
   {
-    emoji: "💆",
     type: "Clínica Estética",
+    category: "Saúde & Beleza",
     before: "40 seguidores",
     after: "847 seguidores",
     metric: 606,
@@ -42,8 +43,8 @@ const cases = [
     quote: "Posts diários sem trabalho da equipa",
   },
   {
-    emoji: "🏋️",
     type: "Ginásio",
+    category: "Fitness",
     before: "6h/semana em marketing",
     after: "0 horas",
     metric: 90,
@@ -54,18 +55,18 @@ const cases = [
 
 const ResultsNew = () => {
   return (
-    <section id="resultados" className="py-20 px-6">
+    <section id="resultados" className="py-24 px-6">
       <div className="max-w-[1200px] mx-auto">
         <FadeIn>
-          <h2 className="font-display text-3xl md:text-4xl text-center text-foreground mb-2" style={{ fontWeight: 800 }}>
-            Resultados reais. Negócios reais. 
+          <h2 className="font-display text-center text-foreground mb-3" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 700, letterSpacing: "-0.03em" }}>
+            Resultados reais. Negócios reais.
           </h2>
-          <p className="text-[#9CA3AF] text-center mb-12">
+          <p className="text-muted-foreground text-center mb-14">
             Vê o que a automação com IA fez por negócios como o teu.
           </p>
         </FadeIn>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid md:grid-cols-3 gap-6 mb-14">
           {cases.map((c, i) => (
             <CaseCard key={i} {...c} delay={i * 0.15} />
           ))}
@@ -73,9 +74,12 @@ const ResultsNew = () => {
 
         {/* Guarantee */}
         <FadeIn>
-          <div className="rounded-[20px] p-6 md:p-8 border-2 border-green-500/30 bg-green-950/10 text-center" style={{ backdropFilter: "blur(12px)" }}>
-            <p className="text-green-400 font-display text-lg mb-2" style={{ fontWeight: 700 }}>✅ GARANTIA DE RESULTADOS</p>
-            <p className="text-[#9CA3AF] text-sm max-w-lg mx-auto">
+          <div className="rounded-[20px] p-8 text-center" style={{ background: "rgba(52,211,153,0.04)", border: "1px solid rgba(52,211,153,0.2)" }}>
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <Shield size={18} className="text-[hsl(var(--success))]" />
+              <p className="text-[hsl(var(--success))] font-display text-lg" style={{ fontWeight: 700 }}>GARANTIA DE RESULTADOS</p>
+            </div>
+            <p className="text-muted-foreground text-sm max-w-lg mx-auto">
               Se não trouxermos pelo menos 3 clientes novos no primeiro mês,
               devolvemos o dinheiro. Sem perguntas. Sem letras pequenas.
             </p>
@@ -86,22 +90,25 @@ const ResultsNew = () => {
   );
 };
 
-const CaseCard = ({ emoji, type, before, after, metric, metricLabel, quote, delay }: any) => {
+const CaseCard = ({ type, category, before, after, metric, metricLabel, quote, delay }: any) => {
   const { count, ref } = useCountUp(metric);
   return (
     <FadeIn delay={delay}>
-      <div ref={ref} className="glass-card p-6 h-full flex flex-col">
-        <div className="text-2xl mb-3">{emoji} {type}</div>
-        <div className="flex items-center gap-3 mb-4">
-          <div className="text-[#6B7280] text-xs line-through">{before}</div>
-          <span className="text-[#8B5CF6]">→</span>
+      <div ref={ref} className="glass-card p-7 h-full flex flex-col">
+        <span className="font-mono text-[0.625rem] tracking-[0.12em] uppercase px-3 py-1 rounded-full inline-block w-fit mb-5" style={{ color: "hsl(var(--accent))", background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.2)" }}>
+          {category}
+        </span>
+        <h3 className="font-display text-lg text-foreground mb-4" style={{ fontWeight: 600 }}>{type}</h3>
+        <div className="flex items-center gap-3 mb-5">
+          <div className="text-muted-foreground text-xs line-through">{before}</div>
+          <span className="text-primary">→</span>
           <div className="text-foreground text-sm font-medium">{after}</div>
         </div>
-        <div className="font-mono text-3xl mb-1 text-[#A78BFA]" style={{ textShadow: "0 0 20px rgba(167,139,250,0.4)" }}>
-          +{count}{metricLabel.startsWith("€") ? "" : ""}{metricLabel.startsWith("€") ? `€` : ""}
+        <div className="font-mono text-[2.5rem] mb-1 text-accent leading-none" style={{ textShadow: "0 0 20px rgba(167,139,250,0.3)" }}>
+          +{count}
         </div>
-        <p className="font-mono text-xs text-[#6B7280] mb-4">{metricLabel}</p>
-        <p className="text-[#9CA3AF] text-xs italic mt-auto">"{quote}"</p>
+        <p className="font-mono text-[0.625rem] tracking-[0.12em] uppercase text-muted-foreground mb-5">{metricLabel}</p>
+        <p className="text-muted-foreground text-[0.8125rem] italic mt-auto pl-3" style={{ borderLeft: "2px solid rgba(139,92,246,0.3)" }}>"{quote}"</p>
       </div>
     </FadeIn>
   );

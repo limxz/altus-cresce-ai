@@ -34,13 +34,16 @@ const stats = [
 
 const SocialProof = () => {
   return (
-    <section id="social-proof" className="py-16 px-6">
+    <section id="social-proof" className="py-20 px-6">
       <FadeIn className="max-w-[1200px] mx-auto">
-        <div className="glass-card p-8 md:p-12">
-          <p className="text-center font-mono text-xs text-[#6B7280] tracking-[0.1em] uppercase mb-10">
+        <div className="rounded-[24px] p-10 md:p-14" style={{
+          background: "linear-gradient(hsl(var(--surface-card)), hsl(var(--surface-card))) padding-box, linear-gradient(135deg, rgba(139,92,246,0.4), rgba(167,139,250,0.2)) border-box",
+          border: "1px solid transparent",
+        }}>
+          <p className="text-center font-mono text-[0.625rem] tracking-[0.12em] uppercase text-muted-foreground mb-12">
             Já ajudámos negócios em Portugal a crescer
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-4">
             {stats.map((stat, i) => (
               <StatItem key={i} value={stat.value} suffix={stat.suffix} label={stat.label} />
             ))}
@@ -55,11 +58,11 @@ const StatItem = ({ value, suffix, label }: { value: number; suffix: string; lab
   const { count, ref } = useCountUp(value);
   return (
     <div ref={ref} className="text-center">
-      <div className="font-mono text-5xl md:text-6xl text-gradient font-medium" style={{ textShadow: "0 0 20px rgba(167,139,250,0.4)" }}>
+      <div className="font-display text-gradient font-extrabold" style={{ fontSize: "clamp(3rem, 5vw, 4rem)", letterSpacing: "-0.04em", textShadow: "0 0 20px rgba(167,139,250,0.3)" }}>
         {count}
         {suffix}
       </div>
-      <p className="text-[#9CA3AF] text-sm mt-2">{label}</p>
+      <p className="text-muted-foreground text-sm mt-2">{label}</p>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
-import { Send } from "lucide-react";
+import { Send, Bot } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
@@ -9,12 +9,12 @@ interface Message {
 }
 
 const BUSINESS_TYPES = [
-  { key: "restaurante", emoji: "🍽️", label: "Restaurante" },
-  { key: "clinica", emoji: "💆", label: "Clínica Estética" },
-  { key: "ginasio", emoji: "🏋️", label: "Ginásio" },
-  { key: "imobiliaria", emoji: "🏠", label: "Imobiliária" },
-  { key: "cabeleireiro", emoji: "✂️", label: "Cabeleireiro" },
-  { key: "outro", emoji: "⚙️", label: "Outro" },
+  { key: "restaurante", label: "Restaurante" },
+  { key: "clinica", label: "Clínica Estética" },
+  { key: "ginasio", label: "Ginásio" },
+  { key: "imobiliaria", label: "Imobiliária" },
+  { key: "cabeleireiro", label: "Cabeleireiro" },
+  { key: "outro", label: "Outro" },
 ];
 
 const BUSINESS_NAMES: Record<string, string> = {
@@ -37,14 +37,12 @@ const WhatsAppDemo = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-  // Scroll to bottom on new messages
   useEffect(() => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [messages, isTyping]);
 
-  // Reset when business type changes
   useEffect(() => {
     setMessages([]);
     setMsgCount(0);
@@ -73,10 +71,7 @@ const WhatsAppDemo = () => {
 
       const elapsed = ((Date.now() - start) / 1000).toFixed(1);
       setResponseTime(Number(elapsed));
-
-      // Simulate typing delay
       await new Promise((r) => setTimeout(r, 1500));
-
       setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
       setMsgCount((c) => c + 1);
     } catch (err) {
@@ -99,7 +94,7 @@ const WhatsAppDemo = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-10"
         >
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl text-foreground mb-4">
+          <h2 className="font-display text-foreground mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 700, letterSpacing: "-0.03em" }}>
             Experimenta o teu <span className="text-gradient">agente IA</span> agora
           </h2>
           <p className="text-muted-foreground text-lg">
@@ -118,42 +113,50 @@ const WhatsAppDemo = () => {
             <button
               key={bt.key}
               onClick={() => setBusinessType(bt.key)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              className={`px-5 py-2 rounded-full text-[0.8125rem] font-medium transition-all duration-200 ${
                 businessType === bt.key
-                  ? "bg-primary text-primary-foreground"
-                  : "border border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                  ? "text-accent"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
+              style={{
+                background: businessType === bt.key ? "rgba(139,92,246,0.12)" : "transparent",
+                border: `1px solid ${businessType === bt.key ? "rgba(139,92,246,0.5)" : "hsl(var(--border-subtle))"}`,
+              }}
             >
-              {bt.emoji} {bt.label}
+              {bt.label}
             </button>
           ))}
         </motion.div>
 
-        {/* WhatsApp-styled chat */}
+        {/* Chat window */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.3 }}
-          className="rounded-2xl overflow-hidden border border-border shadow-2xl"
+          className="rounded-[20px] overflow-hidden"
+          style={{
+            border: "1px solid hsl(var(--border-subtle))",
+            boxShadow: "0 0 40px rgba(139,92,246,0.08), 0 24px 48px rgba(0,0,0,0.4)",
+          }}
         >
           {/* Chat header */}
-          <div className="bg-[#1D9E75] px-4 py-3 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-sm">
-              IA
+          <div className="px-5 py-4 flex items-center gap-3" style={{ background: "linear-gradient(135deg, hsl(var(--surface-card)), hsl(var(--surface-elevated)))", borderBottom: "1px solid hsl(var(--border-subtle))" }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))", boxShadow: "0 0 12px rgba(139,92,246,0.4)" }}>
+              <Bot size={18} className="text-white" />
             </div>
             <div>
-              <p className="text-white font-semibold text-sm">
+              <p className="text-foreground font-semibold text-sm">
                 {BUSINESS_NAMES[businessType]}
               </p>
-              <p className="text-white/70 text-xs flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-green-300 inline-block" />
+              <p className="text-muted-foreground text-xs flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[hsl(var(--success))] inline-block" />
                 Online agora
               </p>
             </div>
           </div>
 
           {/* Messages area */}
-          <div ref={chatRef} className="bg-[#0B0B14] h-64 overflow-y-auto p-4 space-y-3">
+          <div ref={chatRef} className="h-64 overflow-y-auto p-5 space-y-3" style={{ background: "hsl(var(--background))" }}>
             {messages.length === 0 && (
               <p className="text-center text-muted-foreground text-sm mt-8">
                 Envia uma mensagem para começar...
@@ -167,12 +170,17 @@ const WhatsAppDemo = () => {
                 <div
                   className={`max-w-[80%] px-4 py-2.5 text-sm ${
                     msg.role === "user"
-                      ? "bg-[#1D9E75] text-white rounded-2xl rounded-br-sm"
-                      : "bg-[#1A1730] text-[#CCCCDD] rounded-2xl rounded-bl-sm"
+                      ? "text-white rounded-2xl rounded-br-sm"
+                      : "text-muted-foreground rounded-2xl rounded-bl-sm"
                   }`}
+                  style={{
+                    background: msg.role === "user"
+                      ? "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))"
+                      : "hsl(var(--surface-card))",
+                  }}
                 >
                   {msg.role === "assistant" && (
-                    <p className="text-[10px] text-primary/70 mb-0.5">🤖 Assistente IA</p>
+                    <p className="text-[10px] text-primary/70 mb-0.5 font-mono">Assistente IA</p>
                   )}
                   {msg.content}
                 </div>
@@ -180,7 +188,7 @@ const WhatsAppDemo = () => {
             ))}
             {isTyping && (
               <div className="flex justify-start">
-                <div className="bg-[#1A1730] text-[#CCCCDD] rounded-2xl rounded-bl-sm px-4 py-3">
+                <div className="rounded-2xl rounded-bl-sm px-4 py-3" style={{ background: "hsl(var(--surface-card))" }}>
                   <div className="flex gap-1">
                     <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
                     <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
@@ -193,13 +201,13 @@ const WhatsAppDemo = () => {
 
           {/* Speed counter */}
           {responseTime && (
-            <div className="bg-[#0B0B14] px-4 pb-1">
-              <p className="text-xs text-primary/70">⚡ Respondido em {responseTime}s</p>
+            <div className="px-5 pb-1" style={{ background: "hsl(var(--background))" }}>
+              <p className="text-xs text-primary/70 font-mono">Respondido em {responseTime}s</p>
             </div>
           )}
 
           {/* Input bar */}
-          <div className="bg-[#12101F] px-3 py-2 flex gap-2">
+          <div className="px-4 py-3 flex gap-2" style={{ background: "hsl(var(--surface))", borderTop: "1px solid hsl(var(--border-subtle))" }}>
             <input
               type="text"
               value={input}
@@ -211,7 +219,8 @@ const WhatsAppDemo = () => {
             <button
               onClick={sendMessage}
               disabled={isTyping || !input.trim()}
-              className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground disabled:opacity-40 transition-opacity"
+              className="w-10 h-10 rounded-full flex items-center justify-center text-white disabled:opacity-40 transition-all duration-200"
+              style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))", boxShadow: "0 0 12px rgba(139,92,246,0.3)" }}
             >
               <Send size={16} />
             </button>
@@ -226,7 +235,7 @@ const WhatsAppDemo = () => {
             className="mt-6 glass-card p-5 text-center"
           >
             <p className="text-foreground text-sm mb-3">
-              🚀 Este agente responde 24/7 sem custo de pessoal. Queres para o teu negócio?
+              Este agente responde 24/7 sem custo de pessoal. Queres para o teu negócio?
             </p>
             <a
               href="https://cal.com/altusmedia"
@@ -234,7 +243,7 @@ const WhatsAppDemo = () => {
               rel="noopener noreferrer"
               className="btn-primary !px-6 !py-2.5 !text-sm inline-block"
             >
-              Ver como funciona →
+              Ver como funciona
             </a>
           </motion.div>
         )}
