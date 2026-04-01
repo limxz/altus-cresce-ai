@@ -1,5 +1,5 @@
 import { FadeIn } from "./FadeIn";
-import { Check, X } from "lucide-react";
+import { Check, X, Share2, Megaphone, Globe, Bot, Mic, Package } from "lucide-react";
 import { useBooking } from "@/contexts/BookingContext";
 
 const plans = [
@@ -59,13 +59,15 @@ const plans = [
   },
 ];
 
+const serviceIcons = [Share2, Megaphone, Globe, Bot, Mic, Package];
+
 const services = [
-  { icon: "📱", title: "Gestão de Redes Sociais", description: "Posts criados com IA para Instagram e Facebook", price: "A partir de €150/mês", link: "Saber mais →" },
-  { icon: "📢", title: "Facebook & Instagram Ads", description: "Campanhas que chegam aos clientes certos", price: "A partir de €197/mês", link: "Saber mais →" },
-  { icon: "🌐", title: "Site Profissional", description: "Site moderno, rápido e otimizado para converter", price: "A partir de €89/mês", link: "Saber mais →" },
-  { icon: "🤖", title: "Agente WhatsApp IA", description: "Responde clientes e qualifica leads 24/7", price: "€297 setup + €77/mês", link: "Saber mais →" },
-  { icon: "🎙️", title: "Agente de Voz IA", description: "Atende chamadas automaticamente com voz natural", price: "€397 setup + €97/mês", link: "Saber mais →" },
-  { icon: "📦", title: "Bundle Personalizado", description: "Combinamos serviços para o teu negócio específico", price: "Preço personalizado", link: "Pedir proposta →" },
+  { icon: Share2, title: "Gestão de Redes Sociais", description: "Posts criados com IA para Instagram e Facebook", price: "A partir de €150/mês", link: "Saber mais" },
+  { icon: Megaphone, title: "Facebook & Instagram Ads", description: "Campanhas que chegam aos clientes certos", price: "A partir de €197/mês", link: "Saber mais" },
+  { icon: Globe, title: "Site Profissional", description: "Site moderno, rápido e otimizado para converter", price: "A partir de €89/mês", link: "Saber mais" },
+  { icon: Bot, title: "Agente WhatsApp IA", description: "Responde clientes e qualifica leads 24/7", price: "€297 setup + €77/mês", link: "Saber mais" },
+  { icon: Mic, title: "Agente de Voz IA", description: "Atende chamadas automaticamente com voz natural", price: "€397 setup + €97/mês", link: "Saber mais" },
+  { icon: Package, title: "Bundle Personalizado", description: "Combinamos serviços para o teu negócio específico", price: "Preço personalizado", link: "Pedir proposta" },
 ];
 
 const Pricing = () => {
@@ -73,15 +75,13 @@ const Pricing = () => {
 
   return (
     <section id="precos" className="py-24 px-6 relative">
-      {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] rounded-full bg-primary/5 blur-[120px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] rounded-full blur-[120px]" style={{ background: "rgba(139,92,246,0.05)" }} />
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
-        {/* Header */}
         <FadeIn className="text-center mb-16">
-          <h2 className="font-display text-4xl md:text-6xl text-foreground mb-4">
+          <h2 className="font-display text-foreground mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 700, letterSpacing: "-0.03em" }}>
             Planos & <em className="text-gradient not-italic">Preços</em>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
@@ -94,34 +94,27 @@ const Pricing = () => {
           {plans.map((plan, i) => (
             <FadeIn key={plan.name} delay={i * 0.15}>
               <div
-                className={`relative rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 ${
-                  plan.popular
-                    ? "md:scale-105 border-primary/40"
-                    : "border-primary/20"
-                }`}
+                className={`relative rounded-[20px] p-8 transition-all duration-300 hover:-translate-y-1 ${plan.popular ? "md:scale-105" : ""}`}
                 style={{
-                  background: "rgba(255,255,255,0.03)",
+                  background: "rgba(28,24,41,0.6)",
                   backdropFilter: "blur(20px)",
-                  WebkitBackdropFilter: "blur(20px)",
-                  border: `1px solid ${plan.popular ? "rgba(124,58,237,0.4)" : "rgba(124,58,237,0.2)"}`,
-                  boxShadow: plan.popular
-                    ? "0 0 40px rgba(124,58,237,0.3)"
-                    : "none",
+                  border: `1px solid ${plan.popular ? "rgba(139,92,246,0.4)" : "rgba(42,32,64,0.9)"}`,
+                  boxShadow: plan.popular ? "0 0 40px rgba(139,92,246,0.15)" : "none",
                 }}
               >
                 {plan.popular && (
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-primary to-accent text-primary-foreground text-xs font-sans font-semibold px-4 py-1.5 rounded-full">
+                    <span className="font-mono text-[0.625rem] tracking-[0.1em] uppercase px-4 py-1.5 rounded-full text-white" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)))" }}>
                       Mais Popular
                     </span>
                   </div>
                 )}
 
-                <h3 className="font-display text-2xl text-foreground mb-1">{plan.name}</h3>
+                <h3 className="font-display text-xl text-foreground mb-1" style={{ fontWeight: 600 }}>{plan.name}</h3>
                 <p className="text-muted-foreground text-sm mb-6">{plan.subtitle}</p>
 
                 <div className="mb-8">
-                  <span className="font-display text-5xl text-foreground">{plan.price}</span>
+                  <span className="font-display text-5xl text-foreground" style={{ fontWeight: 800 }}>{plan.price}</span>
                   <span className="text-muted-foreground text-sm">/mês</span>
                 </div>
 
@@ -140,11 +133,15 @@ const Pricing = () => {
 
                 <button
                   onClick={openBooking}
-                  className={`w-full py-3 rounded-lg font-sans font-semibold text-sm tracking-wide transition-all duration-300 ${
+                  className={`w-full py-3 rounded-full font-semibold text-sm transition-all duration-300 ${
                     plan.filled
-                      ? "bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90"
-                      : "border border-primary/40 text-foreground hover:bg-primary/10"
+                      ? "text-white"
+                      : "text-foreground hover:bg-primary/10"
                   }`}
+                  style={plan.filled
+                    ? { background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)))" }
+                    : { border: "1px solid rgba(139,92,246,0.4)" }
+                  }
                 >
                   {plan.cta}
                 </button>
@@ -155,7 +152,7 @@ const Pricing = () => {
 
         {/* Individual Services */}
         <FadeIn className="text-center mb-12">
-          <h3 className="font-display text-2xl md:text-3xl text-foreground mb-2">
+          <h3 className="font-display text-2xl md:text-3xl text-foreground mb-2" style={{ fontWeight: 600 }}>
             Ou escolhe apenas o que precisas
           </h3>
         </FadeIn>
@@ -164,13 +161,25 @@ const Pricing = () => {
           {services.map((s, i) => (
             <FadeIn key={i} delay={i * 0.1}>
               <div
-                className="bg-altus-surface rounded-xl p-6 border-l-[3px] border-l-primary hover:-translate-y-1 transition-all duration-300 hover:shadow-[0_0_20px_rgba(124,58,237,0.15)] h-full"
+                className="rounded-[16px] p-6 h-full transition-all duration-300 hover:-translate-y-1"
+                style={{
+                  background: "hsl(var(--surface))",
+                  borderLeft: "3px solid hsl(var(--primary))",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = "0 0 20px rgba(139,92,246,0.1)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = "none";
+                }}
               >
-                <span className="text-2xl mb-3 block">{s.icon}</span>
-                <h4 className="font-display text-lg text-foreground mb-1">{s.title}</h4>
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ background: "rgba(139,92,246,0.1)" }}>
+                  <s.icon size={18} className="text-primary" />
+                </div>
+                <h4 className="font-display text-foreground mb-1" style={{ fontWeight: 600 }}>{s.title}</h4>
                 <p className="text-muted-foreground text-sm mb-3">{s.description}</p>
-                <p className="font-display text-foreground text-sm mb-3">{s.price}</p>
-                <button onClick={openBooking} className="text-primary text-sm font-sans font-semibold hover:text-accent transition-colors">
+                <p className="text-foreground text-sm font-medium mb-3">{s.price}</p>
+                <button onClick={openBooking} className="text-accent text-sm font-semibold hover:text-primary transition-colors">
                   {s.link}
                 </button>
               </div>
@@ -180,8 +189,8 @@ const Pricing = () => {
 
         {/* Bottom CTA */}
         <FadeIn>
-          <div className="glass-card p-8 md:p-12 text-center rounded-2xl">
-            <h3 className="font-display text-2xl md:text-3xl text-foreground mb-3">
+          <div className="glass-card p-8 md:p-12 text-center rounded-[20px]">
+            <h3 className="font-display text-2xl md:text-3xl text-foreground mb-3" style={{ fontWeight: 600 }}>
               Não tens a certeza qual o plano certo para ti?
             </h3>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-6">

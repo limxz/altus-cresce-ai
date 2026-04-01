@@ -46,9 +46,9 @@ const AdminLayout = () => {
 
   const sidebar = (
     <div className="flex flex-col h-full">
-      <div className="p-6 border-b border-[rgba(255,255,255,0.04)]">
+      <div className="p-6 mb-2" style={{ borderBottom: "1px solid rgba(42,32,64,0.5)" }}>
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#8B5CF6] to-[#7C3AED] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-[10px] flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))" }}>
             <span className="text-white font-bold text-xs">A</span>
           </div>
           <span className="font-display text-sm tracking-[0.15em] uppercase text-foreground font-bold">
@@ -57,30 +57,49 @@ const AdminLayout = () => {
         </div>
       </div>
 
-      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
         {navItems.map((item) => (
           <Link
             key={item.path}
             to={item.path}
             onClick={() => setSidebarOpen(false)}
-            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-[10px] text-sm transition-all duration-200 ${
+            className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-[10px] text-sm transition-all duration-150 ${
               isActive(item.path)
-                ? "bg-[rgba(139,92,246,0.12)] text-[#A78BFA] border-l-2 border-l-[#8B5CF6] font-semibold"
-                : "text-[#9CA3AF] hover:bg-[rgba(255,255,255,0.04)] hover:text-white font-medium"
+                ? "text-accent font-semibold"
+                : "text-muted-foreground hover:text-foreground font-medium"
             }`}
+            style={isActive(item.path) ? {
+              background: "rgba(139,92,246,0.12)",
+              borderLeft: "2px solid hsl(var(--primary))",
+              paddingLeft: "12px",
+            } : {
+              borderLeft: "2px solid transparent",
+            }}
+            onMouseEnter={(e) => {
+              if (!isActive(item.path)) {
+                e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isActive(item.path)) {
+                e.currentTarget.style.background = "transparent";
+              }
+            }}
           >
-            <item.icon size={18} className={isActive(item.path) ? "text-[#8B5CF6]" : ""} />
+            <item.icon size={16} className={isActive(item.path) ? "text-primary" : ""} />
             {item.label}
           </Link>
         ))}
       </nav>
 
-      <div className="p-4 border-t border-[rgba(255,255,255,0.04)]">
+      <div className="p-3" style={{ borderTop: "1px solid rgba(42,32,64,0.5)" }}>
         <button
           onClick={logout}
-          className="flex items-center gap-3 px-3.5 py-2.5 rounded-[10px] text-sm text-[#9CA3AF] hover:bg-[rgba(255,255,255,0.04)] hover:text-white transition-all duration-200 w-full font-medium"
+          className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-[10px] text-sm text-muted-foreground hover:text-foreground transition-all duration-150 w-full font-medium"
+          onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
         >
-          <LogOut size={18} />
+          <LogOut size={16} />
           Sair
         </button>
       </div>
@@ -90,7 +109,7 @@ const AdminLayout = () => {
   return (
     <div className="min-h-screen bg-background flex">
       {/* Desktop sidebar */}
-      <aside className="hidden lg:block w-[248px] fixed inset-y-0 left-0 border-r border-[rgba(255,255,255,0.04)]" style={{ background: "#09090F" }}>
+      <aside className="hidden lg:block w-[256px] fixed inset-y-0 left-0" style={{ background: "hsl(var(--sidebar-background))", borderRight: "1px solid rgba(42,32,64,0.8)" }}>
         {sidebar}
       </aside>
 
@@ -101,22 +120,22 @@ const AdminLayout = () => {
             className="absolute inset-0 bg-background/80 backdrop-blur-sm"
             onClick={() => setSidebarOpen(false)}
           />
-          <aside className="absolute left-0 top-0 bottom-0 w-[248px] border-r border-[rgba(255,255,255,0.04)]" style={{ background: "#09090F" }}>
+          <aside className="absolute left-0 top-0 bottom-0 w-[256px]" style={{ background: "hsl(var(--sidebar-background))", borderRight: "1px solid rgba(42,32,64,0.8)" }}>
             {sidebar}
           </aside>
         </div>
       )}
 
       {/* Main content */}
-      <div className="flex-1 lg:ml-[248px]">
-        <header className="h-[60px] border-b border-[rgba(255,255,255,0.04)] flex items-center px-6 sticky top-0 z-40 backdrop-blur-[10px]" style={{ background: "#09090F" }}>
+      <div className="flex-1 lg:ml-[256px]">
+        <header className="h-[60px] flex items-center px-6 sticky top-0 z-40" style={{ background: "hsl(var(--background))", borderBottom: "1px solid rgba(42,32,64,0.6)", backdropFilter: "blur(10px)" }}>
           <button
             onClick={() => setSidebarOpen(true)}
-            className="lg:hidden text-[#9CA3AF] hover:text-white mr-4 transition-colors duration-200"
+            className="lg:hidden text-muted-foreground hover:text-foreground mr-4 transition-colors duration-200"
           >
             <Menu size={20} />
           </button>
-          <h1 className="font-display text-lg text-foreground font-bold">
+          <h1 className="font-display text-base text-foreground" style={{ fontWeight: 600 }}>
             {navItems.find((i) => isActive(i.path))?.label || "Dashboard"}
           </h1>
         </header>

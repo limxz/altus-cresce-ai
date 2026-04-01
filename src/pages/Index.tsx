@@ -2,8 +2,6 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ROICalculator from "@/components/ROICalculator";
 import WhatsAppDemo from "@/components/WhatsAppDemo";
-import UrgencySection from "@/components/UrgencySection";
-import AuditWidget from "@/components/AuditWidget";
 
 import SocialProof from "@/components/SocialProof";
 import ResultsNew from "@/components/ResultsNew";
@@ -18,12 +16,9 @@ const Index = () => {
     <div className="min-h-screen bg-background noise-overlay">
       <Navbar />
       <Hero />
+      <SocialProof />
       <ROICalculator />
       <WhatsAppDemo />
-      <UrgencySection />
-      <AuditWidget />
-      
-      <SocialProof />
       <ResultsNew />
       <Services />
       <HowItWorks />

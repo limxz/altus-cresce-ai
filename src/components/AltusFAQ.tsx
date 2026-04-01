@@ -34,23 +34,24 @@ const AltusFAQ = () => {
     <section className="py-24 px-6">
       <div className="max-w-3xl mx-auto">
         <FadeIn className="text-center mb-16">
-          <h2 className="font-display text-4xl md:text-6xl text-foreground mb-4" style={{ fontWeight: 800 }}>
+          <h2 className="font-display text-foreground mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 700, letterSpacing: "-0.03em" }}>
             Perguntas <em className="text-gradient not-italic">frequentes</em>
           </h2>
         </FadeIn>
 
         <FadeIn>
-          <Accordion type="single" collapsible className="space-y-3">
+          <Accordion type="single" collapsible className="space-y-2">
             {faqs.map((faq, i) => (
               <AccordionItem
                 key={i}
                 value={`item-${i}`}
-                className="rounded-[20px] px-6 border border-[#2A2040] bg-[#1C1829] data-[state=open]:border-[rgba(139,92,246,0.3)]"
+                className="rounded-[14px] px-6 border overflow-hidden transition-colors duration-200 data-[state=open]:border-primary/30"
+                style={{ background: "rgba(28,24,41,0.4)", borderColor: "hsl(var(--border-subtle))" }}
               >
-                <AccordionTrigger className="text-foreground text-left font-medium hover:text-[#A78BFA] transition-colors duration-200 py-5 hover:no-underline">
+                <AccordionTrigger className="text-foreground text-left font-medium text-[0.9375rem] hover:text-accent transition-colors duration-200 py-5 hover:no-underline">
                   {faq.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-[#9CA3AF] leading-relaxed pb-5">
+                <AccordionContent className="text-muted-foreground leading-relaxed text-sm pb-5">
                   {faq.a}
                 </AccordionContent>
               </AccordionItem>

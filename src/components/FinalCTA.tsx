@@ -7,24 +7,35 @@ const FinalCTA = () => {
     <section id="contacto" className="py-24 px-6">
       <FadeIn>
         <div
-          className="max-w-4xl mx-auto relative overflow-hidden rounded-3xl p-12 md:p-20 text-center"
+          className="max-w-4xl mx-auto relative overflow-hidden rounded-[28px] p-16 md:p-20 text-center"
           style={{
-            background: "linear-gradient(135deg, #8B5CF6, #7C3AED, #A78BFA)",
+            background: "linear-gradient(135deg, hsl(var(--surface-card)) 0%, hsl(var(--surface-elevated)) 50%, #2D1A4A 100%)",
+            border: "1px solid rgba(139,92,246,0.3)",
+            boxShadow: "0 0 80px rgba(139,92,246,0.12), inset 0 1px 0 rgba(255,255,255,0.05)",
           }}
         >
-          {/* Glow effects */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[60%] bg-white/10 blur-[80px] rounded-full" />
+          {/* Glow */}
+          <div className="absolute top-[-40%] left-1/2 -translate-x-1/2 w-[70%] h-[70%] rounded-full pointer-events-none" style={{ background: "radial-gradient(ellipse, rgba(139,92,246,0.2) 0%, transparent 70%)" }} />
 
           <div className="relative z-10">
-            <h2 className="font-display text-4xl md:text-6xl text-white mb-4" style={{ fontWeight: 800 }}>
+            <h2 className="font-display text-foreground mb-4" style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, letterSpacing: "-0.03em" }}>
               Pronto para <em className="not-italic">crescer?</em>
             </h2>
-            <p className="text-white/80 text-lg mb-10 max-w-xl mx-auto">
+            <p className="text-foreground/70 text-lg mb-10 max-w-xl mx-auto">
               Marca uma chamada gratuita de 20 minutos e descobre como a IA pode transformar o teu negócio.
             </p>
             <button
               onClick={openBooking}
-              className="inline-block px-10 py-4 bg-white text-[#7C3AED] rounded-full font-bold text-lg hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-200 active:scale-[0.98]"
+              className="inline-block px-12 py-4 bg-white text-secondary rounded-full font-bold text-base transition-all duration-300 active:scale-[0.98]"
+              style={{ boxShadow: "0 0 30px rgba(255,255,255,0.2)" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow = "0 0 50px rgba(255,255,255,0.35)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(255,255,255,0.2)";
+              }}
             >
               Agendar Chamada Gratuita
             </button>

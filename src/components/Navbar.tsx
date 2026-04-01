@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, UserCircle, ChevronDown } from "lucide-react";
+import { Menu, X, UserCircle, ChevronDown, User, Settings } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useBooking } from "@/contexts/BookingContext";
 
@@ -35,19 +35,25 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 h-16 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-400 h-[72px] ${
         scrolled
-          ? "bg-[rgba(9,9,15,0.8)] backdrop-blur-[20px] saturate-150 border-b border-[rgba(139,92,246,0.12)]"
-          : "bg-transparent"
+          ? "border-b"
+          : "bg-transparent border-b border-transparent"
       }`}
+      style={scrolled ? {
+        background: "rgba(9,9,15,0.75)",
+        backdropFilter: "blur(20px) saturate(150%)",
+        WebkitBackdropFilter: "blur(20px) saturate(150%)",
+        borderColor: "rgba(42,32,64,0.8)",
+      } : undefined}
     >
       <div className="max-w-[1200px] mx-auto px-6 h-full flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#8B5CF6] to-[#7C3AED] flex items-center justify-center">
-            <span className="text-white font-bold text-xs">A</span>
+          <div className="w-9 h-9 rounded-[10px] flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))", boxShadow: "0 0 16px rgba(139,92,246,0.4)" }}>
+            <span className="text-white font-bold text-sm">A</span>
           </div>
-          <span className="font-display text-lg tracking-[0.15em] uppercase text-foreground font-bold">
+          <span className="font-display text-base tracking-[0.2em] uppercase text-foreground font-bold">
             Altus
           </span>
         </a>
@@ -58,7 +64,7 @@ const Navbar = () => {
             <a
               key={link.label}
               href={link.href}
-              className="text-sm font-medium text-[#9CA3AF] hover:text-white transition-colors duration-200"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
             >
               {link.label}
             </a>
@@ -68,7 +74,20 @@ const Navbar = () => {
           <div ref={dropdownRef} className="relative">
             <button
               onClick={() => setClientDropdown(!clientDropdown)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border border-[rgba(139,92,246,0.35)] text-[#A78BFA] hover:border-[rgba(139,92,246,0.6)] hover:bg-[rgba(139,92,246,0.06)] transition-all duration-200"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200"
+              style={{
+                border: "1px solid rgba(139,92,246,0.3)",
+                color: "hsl(var(--accent))",
+                background: "rgba(139,92,246,0.05)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "rgba(139,92,246,0.6)";
+                e.currentTarget.style.background = "rgba(139,92,246,0.1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "rgba(139,92,246,0.3)";
+                e.currentTarget.style.background = "rgba(139,92,246,0.05)";
+              }}
             >
               <UserCircle size={16} />
               Área de Cliente
@@ -82,10 +101,11 @@ const Navbar = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute right-0 mt-2 w-56 rounded-2xl overflow-hidden border border-[#2A2040]"
+                  className="absolute right-0 mt-2 w-56 rounded-2xl overflow-hidden"
                   style={{
                     background: "rgba(28,24,41,0.95)",
                     backdropFilter: "blur(24px)",
+                    border: "1px solid rgba(42,32,64,0.9)",
                     boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
                   }}
                 >
@@ -94,21 +114,26 @@ const Navbar = () => {
                     className="flex items-start gap-3 px-4 py-3 hover:bg-[rgba(255,255,255,0.04)] transition-colors duration-200"
                     onClick={() => setClientDropdown(false)}
                   >
-                    <span className="text-lg">👤</span>
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mt-0.5">
+                      <User size={14} className="text-primary" />
+                    </div>
                     <div>
                       <p className="text-sm font-medium text-foreground">Sou Cliente</p>
-                      <p className="text-xs text-[#6B7280]">Ver o meu portal</p>
+                      <p className="text-xs text-muted-foreground">Ver o meu portal</p>
                     </div>
                   </a>
                   <a
                     href="/admin"
-                    className="flex items-start gap-3 px-4 py-3 hover:bg-[rgba(255,255,255,0.04)] transition-colors duration-200 border-t border-[rgba(255,255,255,0.04)]"
+                    className="flex items-start gap-3 px-4 py-3 hover:bg-[rgba(255,255,255,0.04)] transition-colors duration-200"
+                    style={{ borderTop: "1px solid rgba(42,32,64,0.6)" }}
                     onClick={() => setClientDropdown(false)}
                   >
-                    <span className="text-lg">⚙️</span>
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mt-0.5">
+                      <Settings size={14} className="text-primary" />
+                    </div>
                     <div>
                       <p className="text-sm font-medium text-foreground">Acesso Admin</p>
-                      <p className="text-xs text-[#6B7280]">Painel de controlo</p>
+                      <p className="text-xs text-muted-foreground">Painel de controlo</p>
                     </div>
                   </a>
                 </motion.div>
@@ -137,10 +162,11 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden overflow-hidden border-b border-[rgba(139,92,246,0.12)]"
+            className="md:hidden overflow-hidden"
             style={{
               background: "rgba(9,9,15,0.95)",
               backdropFilter: "blur(20px)",
+              borderBottom: "1px solid rgba(42,32,64,0.6)",
             }}
           >
             <div className="px-6 py-6 flex flex-col gap-4">
@@ -149,25 +175,25 @@ const Navbar = () => {
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="text-base text-[#9CA3AF] hover:text-white transition-colors duration-200"
+                  className="text-base text-muted-foreground hover:text-foreground transition-colors duration-200"
                 >
                   {link.label}
                 </a>
               ))}
-              <div className="border-t border-[rgba(255,255,255,0.04)] pt-4 mt-2 space-y-3">
+              <div className="border-t pt-4 mt-2 space-y-3" style={{ borderColor: "rgba(42,32,64,0.4)" }}>
                 <a
                   href="/clientes"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 text-sm text-[#9CA3AF] hover:text-white transition-colors duration-200"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
                 >
-                  👤 Portal do Cliente
+                  <User size={14} /> Portal do Cliente
                 </a>
                 <a
                   href="/admin"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 text-sm text-[#9CA3AF] hover:text-white transition-colors duration-200"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
                 >
-                  ⚙️ Acesso Admin
+                  <Settings size={14} /> Acesso Admin
                 </a>
               </div>
               <button

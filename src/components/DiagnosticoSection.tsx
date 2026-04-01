@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, Star, Sparkles, ArrowRight } from "lucide-react";
+import { Loader2, Star, Sparkles, ArrowRight, Lightbulb, Target, ClipboardList } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useBooking } from "@/contexts/BookingContext";
 import { Progress } from "@/components/ui/progress";
@@ -59,9 +59,10 @@ const SectionCard = ({
       <Stars count={data.nota} />
     </div>
     <p className="text-sm text-muted-foreground leading-relaxed">{data.analise}</p>
-    <div className="bg-primary/10 border border-primary/20 rounded-lg p-3">
-      <p className="text-sm text-foreground">
-        <span className="font-semibold">💡 Como melhorar:</span> {data.melhoria}
+    <div className="rounded-lg p-3" style={{ background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.2)" }}>
+      <p className="text-sm text-foreground flex items-start gap-2">
+        <Lightbulb size={14} className="text-primary mt-0.5 shrink-0" />
+        <span><span className="font-semibold">Como melhorar:</span> {data.melhoria}</span>
       </p>
     </div>
   </motion.div>
@@ -102,7 +103,6 @@ const DiagnosticoSection = () => {
       const diagnostico = data.diagnostico as DiagnosticoResult;
       setResult(diagnostico);
 
-      // Animate score
       let current = 0;
       const target = diagnostico.score;
       const step = Math.max(1, Math.floor(target / 60));
@@ -115,7 +115,6 @@ const DiagnosticoSection = () => {
         setAnimatedScore(current);
       }, 20);
 
-      // Save to database
       await supabase.from("diagnosticos" as any).insert({
         nome: form.nome,
         email: form.email,
@@ -133,21 +132,20 @@ const DiagnosticoSection = () => {
   };
 
   const scoreColor =
-    animatedScore >= 70 ? "text-green-400" : animatedScore >= 40 ? "text-yellow-400" : "text-red-400";
+    animatedScore >= 70 ? "text-[hsl(var(--success))]" : animatedScore >= 40 ? "text-[hsl(var(--warning))]" : "text-destructive";
 
   return (
     <section id="diagnostico" className="py-24 relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[120px] pointer-events-none" style={{ background: "rgba(139,92,246,0.05)" }} />
 
       <div className="container mx-auto px-4 max-w-4xl relative z-10">
         <FadeIn>
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6">
-              <Sparkles size={16} />
+            <div className="badge-pill mb-6 mx-auto w-fit">
+              <Sparkles size={14} />
               Análise gratuita com IA
             </div>
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
+            <h2 className="font-display text-foreground mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 700, letterSpacing: "-0.03em" }}>
               Diagnóstico Gratuito do Teu Negócio com IA
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -172,7 +170,7 @@ const DiagnosticoSection = () => {
                       required
                       value={form.nome}
                       onChange={(e) => setForm({ ...form, nome: e.target.value })}
-                      className="w-full rounded-lg border border-border bg-input px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                      className="input-dark"
                       placeholder="O teu nome"
                     />
                   </div>
@@ -183,7 +181,7 @@ const DiagnosticoSection = () => {
                       type="email"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="w-full rounded-lg border border-border bg-input px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                      className="input-dark"
                       placeholder="email@exemplo.com"
                     />
                   </div>
@@ -196,7 +194,7 @@ const DiagnosticoSection = () => {
                     title="Introduz um link válido do Instagram (ex: https://instagram.com/o-teu-negocio)"
                     value={form.instagram_url}
                     onChange={(e) => setForm({ ...form, instagram_url: e.target.value })}
-                    className="w-full rounded-lg border border-border bg-input px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="input-dark"
                     placeholder="https://instagram.com/o-teu-negocio"
                   />
                 </div>
@@ -205,7 +203,7 @@ const DiagnosticoSection = () => {
                   <input
                     value={form.site_url}
                     onChange={(e) => setForm({ ...form, site_url: e.target.value })}
-                    className="w-full rounded-lg border border-border bg-input px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="input-dark"
                     placeholder="https://o-teu-site.pt"
                   />
                 </div>
@@ -215,11 +213,11 @@ const DiagnosticoSection = () => {
                     required
                     value={form.setor}
                     onChange={(e) => setForm({ ...form, setor: e.target.value })}
-                    className="w-full rounded-lg border border-border bg-input px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="input-dark"
                   >
-                    <option value="">Seleciona o setor</option>
+                    <option value="" style={{ background: "hsl(var(--surface))" }}>Seleciona o setor</option>
                     {SETORES.map((s) => (
-                      <option key={s} value={s}>{s}</option>
+                      <option key={s} value={s} style={{ background: "hsl(var(--surface))" }}>{s}</option>
                     ))}
                   </select>
                 </div>
@@ -281,7 +279,6 @@ const DiagnosticoSection = () => {
                 <Progress value={animatedScore} className="max-w-xs mx-auto h-2" />
               </motion.div>
 
-              {/* Section cards */}
               <SectionCard title="Presença Online" data={result.presenca_online} delay={0.1} />
               <SectionCard title="Comunicação e Conteúdo" data={result.comunicacao_conteudo} delay={0.2} />
               <SectionCard title="Atendimento ao Cliente" data={result.atendimento_cliente} delay={0.3} />
@@ -295,11 +292,13 @@ const DiagnosticoSection = () => {
                 transition={{ delay: 0.6 }}
                 className="glass-card p-6"
               >
-                <h4 className="font-display font-semibold text-foreground mb-4">🎯 Top 3 Prioridades</h4>
+                <h4 className="font-display font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Target size={18} className="text-primary" /> Top 3 Prioridades
+                </h4>
                 <div className="flex flex-col gap-3">
                   {result.top_3_prioridades.map((p, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <span className="flex-shrink-0 w-7 h-7 rounded-full bg-primary/20 text-primary flex items-center justify-center text-sm font-bold">
+                      <span className="flex-shrink-0 w-7 h-7 rounded-full bg-primary/20 text-primary flex items-center justify-center text-sm font-bold font-mono">
                         {i + 1}
                       </span>
                       <p className="text-sm text-muted-foreground pt-1">{p}</p>
@@ -313,10 +312,12 @@ const DiagnosticoSection = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
-                className="glass-card p-6 border-primary/30"
-                style={{ boxShadow: "0 0 30px rgba(124,58,237,0.15)" }}
+                className="glass-card p-6"
+                style={{ borderColor: "rgba(139,92,246,0.3)", boxShadow: "0 0 30px rgba(124,58,237,0.1)" }}
               >
-                <h4 className="font-display font-semibold text-foreground mb-3">📋 Conclusão e Próximos Passos</h4>
+                <h4 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <ClipboardList size={18} className="text-primary" /> Conclusão e Próximos Passos
+                </h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">{result.conclusao}</p>
               </motion.div>
 
@@ -336,7 +337,7 @@ const DiagnosticoSection = () => {
                 </button>
                 <p className="text-xs text-muted-foreground">
                   Diagnóstico gerado pela <span className="text-primary font-medium">Altus Media</span> — Quer implementar estas melhorias?{" "}
-                  <button onClick={openBooking} className="text-primary underline hover:text-secondary transition-colors">
+                  <button onClick={openBooking} className="text-accent underline hover:text-primary transition-colors">
                     Marque uma consulta gratuita
                   </button>
                 </p>
