@@ -23,7 +23,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -36,20 +35,20 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-300 h-16 ${
         scrolled
-          ? "bg-background/80 backdrop-blur-xl border-b border-primary/10"
+          ? "bg-[rgba(9,9,15,0.8)] backdrop-blur-[20px] saturate-150 border-b border-[rgba(139,92,246,0.12)]"
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div className="max-w-[1200px] mx-auto px-6 h-full flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">A</span>
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#8B5CF6] to-[#7C3AED] flex items-center justify-center">
+            <span className="text-white font-bold text-xs">A</span>
           </div>
-          <span className="font-display text-xl tracking-[0.2em] uppercase text-foreground">
-            Altus Media
+          <span className="font-display text-lg tracking-[0.15em] uppercase text-foreground font-bold">
+            Altus
           </span>
         </a>
 
@@ -59,7 +58,7 @@ const Navbar = () => {
             <a
               key={link.label}
               href={link.href}
-              className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors duration-300"
+              className="text-sm font-medium text-[#9CA3AF] hover:text-white transition-colors duration-200"
             >
               {link.label}
             </a>
@@ -69,11 +68,11 @@ const Navbar = () => {
           <div ref={dropdownRef} className="relative">
             <button
               onClick={() => setClientDropdown(!clientDropdown)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border border-primary/40 text-secondary hover:border-primary/60 transition-all"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border border-[rgba(139,92,246,0.35)] text-[#A78BFA] hover:border-[rgba(139,92,246,0.6)] hover:bg-[rgba(139,92,246,0.06)] transition-all duration-200"
             >
               <UserCircle size={16} />
               Área de Cliente
-              <ChevronDown size={14} className={`transition-transform ${clientDropdown ? "rotate-180" : ""}`} />
+              <ChevronDown size={14} className={`transition-transform duration-200 ${clientDropdown ? "rotate-180" : ""}`} />
             </button>
 
             <AnimatePresence>
@@ -83,28 +82,33 @@ const Navbar = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-xl shadow-2xl overflow-hidden"
+                  className="absolute right-0 mt-2 w-56 rounded-2xl overflow-hidden border border-[#2A2040]"
+                  style={{
+                    background: "rgba(28,24,41,0.95)",
+                    backdropFilter: "blur(24px)",
+                    boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
+                  }}
                 >
                   <a
                     href="/clientes"
-                    className="flex items-start gap-3 px-4 py-3 hover:bg-muted transition-colors"
+                    className="flex items-start gap-3 px-4 py-3 hover:bg-[rgba(255,255,255,0.04)] transition-colors duration-200"
                     onClick={() => setClientDropdown(false)}
                   >
                     <span className="text-lg">👤</span>
                     <div>
                       <p className="text-sm font-medium text-foreground">Sou Cliente</p>
-                      <p className="text-xs text-muted-foreground">Ver o meu portal</p>
+                      <p className="text-xs text-[#6B7280]">Ver o meu portal</p>
                     </div>
                   </a>
                   <a
                     href="/admin"
-                    className="flex items-start gap-3 px-4 py-3 hover:bg-muted transition-colors border-t border-border"
+                    className="flex items-start gap-3 px-4 py-3 hover:bg-[rgba(255,255,255,0.04)] transition-colors duration-200 border-t border-[rgba(255,255,255,0.04)]"
                     onClick={() => setClientDropdown(false)}
                   >
                     <span className="text-lg">⚙️</span>
                     <div>
                       <p className="text-sm font-medium text-foreground">Acesso Admin</p>
-                      <p className="text-xs text-muted-foreground">Painel de controlo</p>
+                      <p className="text-xs text-[#6B7280]">Painel de controlo</p>
                     </div>
                   </a>
                 </motion.div>
@@ -133,7 +137,11 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background/95 backdrop-blur-xl border-b border-primary/10 overflow-hidden"
+            className="md:hidden overflow-hidden border-b border-[rgba(139,92,246,0.12)]"
+            style={{
+              background: "rgba(9,9,15,0.95)",
+              backdropFilter: "blur(20px)",
+            }}
           >
             <div className="px-6 py-6 flex flex-col gap-4">
               {navLinks.map((link) => (
@@ -141,23 +149,23 @@ const Navbar = () => {
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="text-base text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-base text-[#9CA3AF] hover:text-white transition-colors duration-200"
                 >
                   {link.label}
                 </a>
               ))}
-              <div className="border-t border-border pt-4 mt-2 space-y-3">
+              <div className="border-t border-[rgba(255,255,255,0.04)] pt-4 mt-2 space-y-3">
                 <a
                   href="/clientes"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+                  className="flex items-center gap-2 text-sm text-[#9CA3AF] hover:text-white transition-colors duration-200"
                 >
                   👤 Portal do Cliente
                 </a>
                 <a
                   href="/admin"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+                  className="flex items-center gap-2 text-sm text-[#9CA3AF] hover:text-white transition-colors duration-200"
                 >
                   ⚙️ Acesso Admin
                 </a>
