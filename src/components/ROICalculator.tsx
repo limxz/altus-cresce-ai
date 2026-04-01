@@ -51,10 +51,10 @@ const ROICalculator = () => {
   };
 
   const resultCards = [
-    { icon: TrendingDown, label: "Perdes por mês", value: `€${monthlyLoss.toLocaleString()}`, colorClass: "text-destructive" },
-    { icon: Calendar, label: "Perdes por ano", value: `€${annualLoss.toLocaleString()}`, colorClass: "text-destructive" },
-    { icon: Clock, label: "Horas perdidas/mês", value: `${hoursWasted}h`, colorClass: "text-[hsl(var(--warning))]" },
-    { icon: Users, label: "Clientes perdidos/mês", value: String(clientsLost), colorClass: "text-accent" },
+    { icon: TrendingDown, label: "Perdes por mês", value: `€${monthlyLoss.toLocaleString()}`, color: "239,68,68" },
+    { icon: Calendar, label: "Perdes por ano", value: `€${annualLoss.toLocaleString()}`, color: "239,68,68" },
+    { icon: Clock, label: "Horas perdidas/mês", value: `${hoursWasted}h`, color: "234,179,8" },
+    { icon: Users, label: "Clientes perdidos/mês", value: String(clientsLost), color: "0,245,212" },
   ];
 
   return (
@@ -83,14 +83,14 @@ const ROICalculator = () => {
           className="mb-10 rounded-[24px] relative overflow-hidden"
           style={{
             background: "rgba(28, 24, 41, 0.55)",
-            backdropFilter: "blur(24px) saturate(180%)",
-            WebkitBackdropFilter: "blur(24px) saturate(180%)",
-            border: "1px solid rgba(139,92,246,0.2)",
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 40px rgba(0,0,0,0.35), 0 0 60px rgba(139,92,246,0.08)",
+            backdropFilter: "blur(32px) saturate(200%)",
+            WebkitBackdropFilter: "blur(32px) saturate(200%)",
+            border: "1px solid rgba(123,47,255,0.15)",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 40px rgba(0,0,0,0.35), 0 0 60px rgba(123,47,255,0.06)",
           }}
         >
           {/* Top edge highlight */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
           <div className="relative z-10 p-6 sm:p-10 space-y-8">
             {/* Messages slider */}
             <div>
@@ -98,14 +98,7 @@ const ROICalculator = () => {
                 <label className="text-sm text-muted-foreground">Mensagens que recebes por dia</label>
                 <span className="text-sm font-mono font-medium text-accent">{messages} mensagens/dia</span>
               </div>
-              <input
-                type="range"
-                min={1}
-                max={100}
-                value={messages}
-                onChange={(e) => setMessages(Number(e.target.value))}
-                className="w-full"
-              />
+              <input type="range" min={1} max={100} value={messages} onChange={(e) => setMessages(Number(e.target.value))} className="w-full" />
             </div>
 
             {/* Client value slider */}
@@ -114,38 +107,22 @@ const ROICalculator = () => {
                 <label className="text-sm text-muted-foreground">Valor médio de um cliente</label>
                 <span className="text-sm font-mono font-medium text-accent">€{clientValue} por cliente</span>
               </div>
-              <input
-                type="range"
-                min={20}
-                max={5000}
-                step={10}
-                value={clientValue}
-                onChange={(e) => setClientValue(Number(e.target.value))}
-                className="w-full"
-              />
+              <input type="range" min={20} max={5000} step={10} value={clientValue} onChange={(e) => setClientValue(Number(e.target.value))} className="w-full" />
             </div>
 
             {/* Response time select */}
             <div>
-              <label className="text-sm text-muted-foreground block mb-3">
-                Quanto demoras a responder?
-              </label>
-              <select
-                value={factor}
-                onChange={(e) => setFactor(Number(e.target.value))}
-                className="input-dark w-full"
-              >
+              <label className="text-sm text-muted-foreground block mb-3">Quanto demoras a responder?</label>
+              <select value={factor} onChange={(e) => setFactor(Number(e.target.value))} className="input-dark w-full">
                 {RESPONSE_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value} style={{ background: "hsl(var(--surface))" }}>
-                    {opt.label}
-                  </option>
+                  <option key={opt.value} value={opt.value} style={{ background: "hsl(var(--surface))" }}>{opt.label}</option>
                 ))}
               </select>
             </div>
           </div>
         </motion.div>
 
-        {/* Result cards — liquid glass */}
+        {/* Result cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           {resultCards.map((card, i) => (
             <motion.div
@@ -153,30 +130,30 @@ const ROICalculator = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
-              className="rounded-[20px] p-6 text-center transition-all duration-300 group"
+              className="rounded-[20px] p-6 text-center transition-all duration-300 group relative overflow-hidden"
               style={{
                 background: "rgba(28, 24, 41, 0.5)",
                 backdropFilter: "blur(20px) saturate(160%)",
                 WebkitBackdropFilter: "blur(20px) saturate(160%)",
-                border: "1px solid rgba(139,92,246,0.15)",
+                border: "1px solid rgba(123,47,255,0.12)",
                 boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.25)",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(139,92,246,0.35)";
-                e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.06), 0 0 32px rgba(139,92,246,0.1), 0 8px 32px rgba(0,0,0,0.3)";
+                e.currentTarget.style.borderColor = `rgba(${card.color},0.35)`;
+                e.currentTarget.style.boxShadow = `inset 0 1px 0 rgba(255,255,255,0.06), 0 0 32px rgba(${card.color},0.1), 0 8px 32px rgba(0,0,0,0.3)`;
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(139,92,246,0.15)";
+                e.currentTarget.style.borderColor = "rgba(123,47,255,0.12)";
                 e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             >
-              <div className="w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center" style={{ background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.15)" }}>
-                <card.icon size={18} className="text-accent" />
+              <div className="w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center" style={{ background: `rgba(${card.color},0.1)`, border: `1px solid rgba(${card.color},0.15)` }}>
+                <card.icon size={18} style={{ color: `rgb(${card.color})` }} />
               </div>
               <p className="font-mono text-[0.625rem] tracking-[0.12em] uppercase text-muted-foreground mb-2">{card.label}</p>
-              <p className={`font-mono text-xl sm:text-2xl font-medium ${card.colorClass}`} style={{ textShadow: "0 0 20px rgba(167,139,250,0.2)" }}>{card.value}</p>
+              <p className="font-mono text-xl sm:text-2xl font-medium" style={{ color: `rgb(${card.color})`, textShadow: `0 0 20px rgba(${card.color},0.3)` }}>{card.value}</p>
             </motion.div>
           ))}
         </div>
@@ -192,7 +169,7 @@ const ROICalculator = () => {
             <div
               className="absolute -inset-[1px] rounded-[24px] opacity-40 group-hover:opacity-70 transition-opacity duration-700"
               style={{
-                background: "linear-gradient(135deg, rgba(139,92,246,0.3), rgba(167,139,250,0.15), rgba(139,92,246,0.3))",
+                background: "linear-gradient(135deg, rgba(123,47,255,0.3), rgba(0,245,212,0.15), rgba(45,156,255,0.3))",
                 filter: "blur(1px)",
               }}
             />
@@ -205,52 +182,24 @@ const ROICalculator = () => {
                 boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2), 0 8px 40px rgba(0,0,0,0.35)",
               }}
             >
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-            <h3 className="font-display text-xl text-foreground mb-6 text-center" style={{ fontWeight: 700 }}>
-              Recupera este dinheiro — análise gratuita em 24h
-            </h3>
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Nome *"
-                required
-                value={formData.nome}
-                onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-                className="input-dark"
-              />
-              <input
-                type="tel"
-                placeholder="Telefone"
-                value={formData.telefone}
-                onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
-                className="input-dark"
-              />
-              <input
-                type="email"
-                placeholder="Email *"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="input-dark sm:col-span-2"
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                className="sm:col-span-2 btn-primary !rounded-xl disabled:opacity-50"
-              >
-                {loading ? "A enviar..." : "Quero a análise gratuita"}
-              </button>
-            </form>
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
+              <h3 className="font-display text-xl text-foreground mb-6 text-center" style={{ fontWeight: 700 }}>
+                Recupera este dinheiro — análise gratuita em 24h
+              </h3>
+              <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input type="text" placeholder="Nome *" required value={formData.nome} onChange={(e) => setFormData({ ...formData, nome: e.target.value })} className="input-dark" />
+                <input type="tel" placeholder="Telefone" value={formData.telefone} onChange={(e) => setFormData({ ...formData, telefone: e.target.value })} className="input-dark" />
+                <input type="email" placeholder="Email *" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="input-dark sm:col-span-2" />
+                <button type="submit" disabled={loading} className="sm:col-span-2 btn-primary !rounded-xl disabled:opacity-50">
+                  {loading ? "A enviar..." : "Quero a análise gratuita"}
+                </button>
+              </form>
             </div>
           </motion.div>
         ) : (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="glass-card p-8 text-center"
-          >
-            <div className="w-12 h-12 rounded-full bg-[hsl(var(--success))]/20 flex items-center justify-center mx-auto mb-4">
-              <span className="text-[hsl(var(--success))] font-bold text-lg">✓</span>
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="glass-card p-8 text-center">
+            <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: "rgba(0,245,212,0.1)", border: "1px solid rgba(0,245,212,0.2)" }}>
+              <span className="text-accent font-bold text-lg">✓</span>
             </div>
             <p className="text-foreground text-lg font-semibold">Recebemos o teu pedido!</p>
             <p className="text-muted-foreground">Entraremos em contacto em 24h.</p>

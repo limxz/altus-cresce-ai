@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Sparkles } from "lucide-react";
 import { useBooking } from "@/contexts/BookingContext";
 
 const Hero = () => {
@@ -8,11 +8,11 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[72px]">
-      {/* Floating orbs */}
+      {/* Floating orbs — updated to brand colors */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[55%] h-[55%] rounded-full" style={{ background: "radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%)", filter: "blur(60px)", animation: "floatA 12s ease-in-out infinite" }} />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] rounded-full" style={{ background: "radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%)", filter: "blur(80px)", animation: "floatB 16s ease-in-out infinite" }} />
-        <div className="absolute top-[40%] left-[40%] w-[35%] h-[35%] rounded-full" style={{ background: "radial-gradient(circle, rgba(167,139,250,0.08) 0%, transparent 70%)", filter: "blur(100px)", animation: "floatA 20s ease-in-out infinite reverse" }} />
+        <div className="absolute top-[-10%] left-[-10%] w-[55%] h-[55%] rounded-full" style={{ background: "radial-gradient(circle, rgba(123,47,255,0.2) 0%, transparent 70%)", filter: "blur(80px)", animation: "floatA 12s ease-in-out infinite" }} />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] rounded-full" style={{ background: "radial-gradient(circle, rgba(45,156,255,0.12) 0%, transparent 70%)", filter: "blur(100px)", animation: "floatB 16s ease-in-out infinite" }} />
+        <div className="absolute top-[40%] left-[40%] w-[35%] h-[35%] rounded-full" style={{ background: "radial-gradient(circle, rgba(0,245,212,0.06) 0%, transparent 70%)", filter: "blur(100px)", animation: "floatA 20s ease-in-out infinite reverse" }} />
       </div>
 
       <div className="relative z-10 text-center max-w-5xl px-6">
@@ -23,6 +23,7 @@ const Hero = () => {
           className="mb-8"
         >
           <span className="badge-pill">
+            <Sparkles size={12} className="text-accent" />
             Agência de Marketing com IA
           </span>
         </motion.div>
@@ -83,7 +84,7 @@ const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground hover:text-primary transition-colors duration-200"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground hover:text-accent transition-colors duration-200"
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}

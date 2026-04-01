@@ -36,10 +36,18 @@ const SocialProof = () => {
   return (
     <section id="social-proof" className="py-20 px-6">
       <FadeIn className="max-w-[1200px] mx-auto">
-        <div className="rounded-[24px] p-10 md:p-14" style={{
-          background: "linear-gradient(hsl(var(--surface-card)), hsl(var(--surface-card))) padding-box, linear-gradient(135deg, rgba(139,92,246,0.4), rgba(167,139,250,0.2)) border-box",
-          border: "1px solid transparent",
-        }}>
+        <div
+          className="rounded-[24px] p-10 md:p-14 relative overflow-hidden"
+          style={{
+            background: "linear-gradient(135deg, rgba(28,24,41,0.6), rgba(22,18,35,0.5))",
+            backdropFilter: "blur(24px) saturate(180%)",
+            border: "1px solid rgba(123,47,255,0.15)",
+            boxShadow: "0 0 60px rgba(123,47,255,0.06), 0 8px 40px rgba(0,0,0,0.3)",
+          }}
+        >
+          {/* Top edge highlight */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+
           <p className="text-center font-mono text-[0.625rem] tracking-[0.12em] uppercase text-muted-foreground mb-12">
             Já ajudámos negócios em Portugal a crescer
           </p>
@@ -58,7 +66,7 @@ const StatItem = ({ value, suffix, label }: { value: number; suffix: string; lab
   const { count, ref } = useCountUp(value);
   return (
     <div ref={ref} className="text-center">
-      <div className="font-display text-gradient font-bold" style={{ fontSize: "clamp(3rem, 5vw, 4rem)", letterSpacing: "-0.04em", textShadow: "0 0 20px rgba(167,139,250,0.3)" }}>
+      <div className="font-display text-gradient font-bold" style={{ fontSize: "clamp(3rem, 5vw, 4rem)", letterSpacing: "-0.04em", textShadow: "0 0 30px rgba(123,47,255,0.3)" }}>
         {count}
         {suffix}
       </div>
