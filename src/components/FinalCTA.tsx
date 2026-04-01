@@ -42,7 +42,7 @@ const FinalCTA = () => {
                 className="font-display text-foreground mb-5"
                 style={{
                   fontSize: "clamp(2.5rem, 5vw, 4rem)",
-                  fontWeight: 800,
+                  fontWeight: 700,
                   letterSpacing: "-0.03em",
                 }}
               >

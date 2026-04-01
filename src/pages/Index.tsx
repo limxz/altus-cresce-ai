@@ -19,7 +19,7 @@ const Index = () => {
       <SocialProof />
       <ROICalculator />
       <WhatsAppDemo />
-      <ResultsNew />
+      
       <Services />
       <HowItWorks />
       <AltusFAQ />

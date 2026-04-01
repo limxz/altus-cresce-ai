@@ -58,7 +58,7 @@ const StatItem = ({ value, suffix, label }: { value: number; suffix: string; lab
   const { count, ref } = useCountUp(value);
   return (
     <div ref={ref} className="text-center">
-      <div className="font-display text-gradient font-extrabold" style={{ fontSize: "clamp(3rem, 5vw, 4rem)", letterSpacing: "-0.04em", textShadow: "0 0 20px rgba(167,139,250,0.3)" }}>
+      <div className="font-display text-gradient font-bold" style={{ fontSize: "clamp(3rem, 5vw, 4rem)", letterSpacing: "-0.04em", textShadow: "0 0 20px rgba(167,139,250,0.3)" }}>
         {count}
         {suffix}
       </div>

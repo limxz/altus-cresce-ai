@@ -27,7 +27,7 @@ const Hero = () => {
           </span>
         </motion.div>
 
-        <h1 className="font-display text-foreground leading-[1.0] mb-10" style={{ fontSize: "clamp(3.5rem, 7vw, 6rem)", fontWeight: 800, letterSpacing: "-0.04em" }}>
+        <h1 className="font-display text-foreground leading-[1.0] mb-10" style={{ fontSize: "clamp(3.5rem, 7vw, 6rem)", fontWeight: 700, letterSpacing: "-0.04em" }}>
           {words.map((word, i) => (
             <motion.span
               key={i}
