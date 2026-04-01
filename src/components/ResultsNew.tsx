@@ -75,11 +75,10 @@ const ResultsNew = () => {
         {/* Guarantee — Liquid Glass */}
         <FadeIn>
           <div className="relative group">
-            {/* Animated border glow */}
             <div
               className="absolute -inset-[1px] rounded-[28px] opacity-60 group-hover:opacity-100 transition-opacity duration-700"
               style={{
-                background: "linear-gradient(135deg, rgba(52,211,153,0.3), rgba(139,92,246,0.15), rgba(52,211,153,0.3))",
+                background: "linear-gradient(135deg, rgba(0,245,212,0.3), rgba(123,47,255,0.15), rgba(0,245,212,0.3))",
                 filter: "blur(1px)",
               }}
             />
@@ -89,28 +88,26 @@ const ResultsNew = () => {
                 background: "linear-gradient(135deg, rgba(28,24,41,0.7), rgba(20,30,28,0.6))",
                 backdropFilter: "blur(32px) saturate(200%)",
                 WebkitBackdropFilter: "blur(32px) saturate(200%)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2), 0 12px 48px rgba(0,0,0,0.4), 0 0 80px rgba(52,211,153,0.06)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2), 0 12px 48px rgba(0,0,0,0.4), 0 0 80px rgba(0,245,212,0.04)",
               }}
             >
-              {/* Top edge highlight */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-[hsl(var(--success))]/50 to-transparent" />
-              {/* Corner accents */}
-              <div className="absolute top-0 left-0 w-24 h-24 opacity-20" style={{ background: "radial-gradient(circle at top left, rgba(52,211,153,0.4), transparent 70%)" }} />
-              <div className="absolute bottom-0 right-0 w-32 h-32 opacity-15" style={{ background: "radial-gradient(circle at bottom right, rgba(139,92,246,0.3), transparent 70%)" }} />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+              <div className="absolute top-0 left-0 w-24 h-24 opacity-20" style={{ background: "radial-gradient(circle at top left, rgba(0,245,212,0.4), transparent 70%)" }} />
+              <div className="absolute bottom-0 right-0 w-32 h-32 opacity-15" style={{ background: "radial-gradient(circle at bottom right, rgba(123,47,255,0.3), transparent 70%)" }} />
 
               <div className="relative z-10">
                 <div className="flex items-center justify-center gap-3 mb-6">
                   <div
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_24px_rgba(52,211,153,0.3)]"
+                    className="w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_24px_rgba(0,245,212,0.3)]"
                     style={{
-                      background: "linear-gradient(135deg, rgba(52,211,153,0.15), rgba(52,211,153,0.05))",
-                      border: "1px solid rgba(52,211,153,0.25)",
+                      background: "linear-gradient(135deg, rgba(0,245,212,0.15), rgba(0,245,212,0.05))",
+                      border: "1px solid rgba(0,245,212,0.25)",
                     }}
                   >
-                    <Shield size={22} className="text-[hsl(var(--success))]" />
+                    <Shield size={22} className="text-accent" />
                   </div>
                 </div>
-                <p className="text-[hsl(var(--success))] font-mono text-[0.6875rem] tracking-[0.16em] uppercase mb-4" style={{ fontWeight: 600 }}>
+                <p className="text-accent font-mono text-[0.6875rem] tracking-[0.16em] uppercase mb-4" style={{ fontWeight: 600 }}>
                   Garantia de Resultados
                 </p>
                 <h3 className="font-display text-xl md:text-2xl text-foreground mb-4" style={{ fontWeight: 700, letterSpacing: "-0.02em" }}>
@@ -134,20 +131,20 @@ const CaseCard = ({ type, category, before, after, metric, metricLabel, quote, d
   return (
     <FadeIn delay={delay}>
       <div ref={ref} className="glass-card p-7 h-full flex flex-col">
-        <span className="font-mono text-[0.625rem] tracking-[0.12em] uppercase px-3 py-1 rounded-full inline-block w-fit mb-5" style={{ color: "hsl(var(--accent))", background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.2)" }}>
+        <span className="font-mono text-[0.625rem] tracking-[0.12em] uppercase px-3 py-1 rounded-full inline-block w-fit mb-5" style={{ color: "hsl(var(--accent))", background: "rgba(0,245,212,0.06)", border: "1px solid rgba(0,245,212,0.2)" }}>
           {category}
         </span>
         <h3 className="font-display text-lg text-foreground mb-4" style={{ fontWeight: 600 }}>{type}</h3>
         <div className="flex items-center gap-3 mb-5">
           <div className="text-muted-foreground text-xs line-through">{before}</div>
-          <span className="text-primary">→</span>
+          <span className="text-accent">→</span>
           <div className="text-foreground text-sm font-medium">{after}</div>
         </div>
-        <div className="font-mono text-[2.5rem] mb-1 text-accent leading-none" style={{ textShadow: "0 0 20px rgba(167,139,250,0.3)" }}>
+        <div className="font-mono text-[2.5rem] mb-1 text-accent leading-none" style={{ textShadow: "0 0 24px rgba(0,245,212,0.3)" }}>
           +{count}
         </div>
         <p className="font-mono text-[0.625rem] tracking-[0.12em] uppercase text-muted-foreground mb-5">{metricLabel}</p>
-        <p className="text-muted-foreground text-[0.8125rem] italic mt-auto pl-3" style={{ borderLeft: "2px solid rgba(139,92,246,0.3)" }}>"{quote}"</p>
+        <p className="text-muted-foreground text-[0.8125rem] italic mt-auto pl-3" style={{ borderLeft: "2px solid rgba(0,245,212,0.3)" }}>"{quote}"</p>
       </div>
     </FadeIn>
   );
