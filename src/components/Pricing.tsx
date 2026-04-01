@@ -114,7 +114,7 @@ const Pricing = () => {
                 <p className="text-muted-foreground text-sm mb-6">{plan.subtitle}</p>
 
                 <div className="mb-8">
-                  <span className="font-display text-5xl text-foreground" style={{ fontWeight: 800 }}>{plan.price}</span>
+                  <span className="font-display text-5xl text-foreground" style={{ fontWeight: 700 }}>{plan.price}</span>
                   <span className="text-muted-foreground text-sm">/mês</span>
                 </div>
 

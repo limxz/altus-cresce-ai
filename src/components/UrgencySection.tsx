@@ -57,7 +57,7 @@ const UrgencySection = () => {
     <section className="py-20 px-6">
       <div className="max-w-[1200px] mx-auto">
         <FadeIn>
-          <h2 className="font-display text-3xl md:text-4xl text-center text-foreground mb-4" style={{ fontWeight: 800 }}>
+          <h2 className="font-display text-3xl md:text-4xl text-center text-foreground mb-4" style={{ fontWeight: 700 }}>
             Os teus concorrentes já respondem em segundos?
           </h2>
           <p className="text-[#9CA3AF] text-center mb-12 max-w-2xl mx-auto">
