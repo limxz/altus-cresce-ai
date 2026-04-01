@@ -56,6 +56,10 @@
   html {
     scroll-behavior: smooth;
   }
+  *, *::before, *::after {
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: 'Be Vietnam Pro', sans-serif;
