@@ -145,7 +145,7 @@ const ROICalculator = () => {
           </div>
         </motion.div>
 
-        {/* Result cards */}
+        {/* Result cards — liquid glass */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           {resultCards.map((card, i) => (
             <motion.div
@@ -153,13 +153,28 @@ const ROICalculator = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
-              className="rounded-2xl p-5 text-center transition-all duration-300 hover:border-primary/30"
+              className="rounded-[20px] p-6 text-center transition-all duration-300 group"
               style={{
-                background: "rgba(139,92,246,0.06)",
-                border: "1px solid rgba(139,92,246,0.18)",
+                background: "rgba(28, 24, 41, 0.5)",
+                backdropFilter: "blur(20px) saturate(160%)",
+                WebkitBackdropFilter: "blur(20px) saturate(160%)",
+                border: "1px solid rgba(139,92,246,0.15)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.25)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "rgba(139,92,246,0.35)";
+                e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.06), 0 0 32px rgba(139,92,246,0.1), 0 8px 32px rgba(0,0,0,0.3)";
+                e.currentTarget.style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "rgba(139,92,246,0.15)";
+                e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.25)";
+                e.currentTarget.style.transform = "translateY(0)";
               }}
             >
-              <card.icon size={20} className="mx-auto mb-3 text-muted-foreground" />
+              <div className="w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center" style={{ background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.15)" }}>
+                <card.icon size={18} className="text-accent" />
+              </div>
               <p className="font-mono text-[0.625rem] tracking-[0.12em] uppercase text-muted-foreground mb-2">{card.label}</p>
               <p className={`font-mono text-xl sm:text-2xl font-medium ${card.colorClass}`} style={{ textShadow: "0 0 20px rgba(167,139,250,0.2)" }}>{card.value}</p>
             </motion.div>
