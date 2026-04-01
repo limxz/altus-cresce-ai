@@ -187,8 +187,25 @@ const ROICalculator = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.8 }}
-            className="glass-card p-6 sm:p-8"
+            className="relative group"
           >
+            <div
+              className="absolute -inset-[1px] rounded-[24px] opacity-40 group-hover:opacity-70 transition-opacity duration-700"
+              style={{
+                background: "linear-gradient(135deg, rgba(139,92,246,0.3), rgba(167,139,250,0.15), rgba(139,92,246,0.3))",
+                filter: "blur(1px)",
+              }}
+            />
+            <div
+              className="relative rounded-[24px] p-6 sm:p-8 overflow-hidden"
+              style={{
+                background: "linear-gradient(135deg, rgba(28,24,41,0.7), rgba(22,18,35,0.6))",
+                backdropFilter: "blur(32px) saturate(200%)",
+                WebkitBackdropFilter: "blur(32px) saturate(200%)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2), 0 8px 40px rgba(0,0,0,0.35)",
+              }}
+            >
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
             <h3 className="font-display text-xl text-foreground mb-6 text-center" style={{ fontWeight: 700 }}>
               Recupera este dinheiro — análise gratuita em 24h
             </h3>

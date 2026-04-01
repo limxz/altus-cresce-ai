@@ -74,29 +74,53 @@ const ResultsNew = () => {
 
         {/* Guarantee — Liquid Glass */}
         <FadeIn>
-          <div
-            className="rounded-[24px] p-10 text-center relative overflow-hidden"
-            style={{
-              background: "rgba(28, 24, 41, 0.55)",
-              backdropFilter: "blur(24px) saturate(180%)",
-              WebkitBackdropFilter: "blur(24px) saturate(180%)",
-              border: "1px solid rgba(52,211,153,0.2)",
-              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 40px rgba(0,0,0,0.35), 0 0 60px rgba(52,211,153,0.06)",
-            }}
-          >
-            {/* Subtle top glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-[hsl(var(--success))]/40 to-transparent" />
-            <div className="relative z-10">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(52,211,153,0.12)", border: "1px solid rgba(52,211,153,0.2)" }}>
-                  <Shield size={18} className="text-[hsl(var(--success))]" />
+          <div className="relative group">
+            {/* Animated border glow */}
+            <div
+              className="absolute -inset-[1px] rounded-[28px] opacity-60 group-hover:opacity-100 transition-opacity duration-700"
+              style={{
+                background: "linear-gradient(135deg, rgba(52,211,153,0.3), rgba(139,92,246,0.15), rgba(52,211,153,0.3))",
+                filter: "blur(1px)",
+              }}
+            />
+            <div
+              className="relative rounded-[28px] p-12 md:p-16 text-center overflow-hidden"
+              style={{
+                background: "linear-gradient(135deg, rgba(28,24,41,0.7), rgba(20,30,28,0.6))",
+                backdropFilter: "blur(32px) saturate(200%)",
+                WebkitBackdropFilter: "blur(32px) saturate(200%)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2), 0 12px 48px rgba(0,0,0,0.4), 0 0 80px rgba(52,211,153,0.06)",
+              }}
+            >
+              {/* Top edge highlight */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-[hsl(var(--success))]/50 to-transparent" />
+              {/* Corner accents */}
+              <div className="absolute top-0 left-0 w-24 h-24 opacity-20" style={{ background: "radial-gradient(circle at top left, rgba(52,211,153,0.4), transparent 70%)" }} />
+              <div className="absolute bottom-0 right-0 w-32 h-32 opacity-15" style={{ background: "radial-gradient(circle at bottom right, rgba(139,92,246,0.3), transparent 70%)" }} />
+
+              <div className="relative z-10">
+                <div className="flex items-center justify-center gap-3 mb-6">
+                  <div
+                    className="w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_24px_rgba(52,211,153,0.3)]"
+                    style={{
+                      background: "linear-gradient(135deg, rgba(52,211,153,0.15), rgba(52,211,153,0.05))",
+                      border: "1px solid rgba(52,211,153,0.25)",
+                    }}
+                  >
+                    <Shield size={22} className="text-[hsl(var(--success))]" />
+                  </div>
                 </div>
-                <p className="text-[hsl(var(--success))] font-mono text-[0.6875rem] tracking-[0.12em] uppercase" style={{ fontWeight: 500 }}>Garantia de Resultados</p>
+                <p className="text-[hsl(var(--success))] font-mono text-[0.6875rem] tracking-[0.16em] uppercase mb-4" style={{ fontWeight: 600 }}>
+                  Garantia de Resultados
+                </p>
+                <h3 className="font-display text-xl md:text-2xl text-foreground mb-4" style={{ fontWeight: 700, letterSpacing: "-0.02em" }}>
+                  Sem risco. Sem letras pequenas.
+                </h3>
+                <p className="text-muted-foreground text-sm md:text-base max-w-lg mx-auto leading-relaxed">
+                  Se não trouxermos pelo menos 3 clientes novos no primeiro mês,
+                  devolvemos o dinheiro. Sem perguntas.
+                </p>
               </div>
-              <p className="text-muted-foreground text-sm max-w-lg mx-auto leading-relaxed">
-                Se não trouxermos pelo menos 3 clientes novos no primeiro mês,
-                devolvemos o dinheiro. Sem perguntas. Sem letras pequenas.
-              </p>
             </div>
           </div>
         </FadeIn>
