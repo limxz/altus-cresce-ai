@@ -75,14 +75,23 @@ const ROICalculator = () => {
           </p>
         </motion.div>
 
-        {/* Animated border wrapper for calculator */}
+        {/* Liquid glass calculator */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="animated-border-wrapper mb-10"
+          className="mb-10 rounded-[24px] relative overflow-hidden"
+          style={{
+            background: "rgba(28, 24, 41, 0.55)",
+            backdropFilter: "blur(24px) saturate(180%)",
+            WebkitBackdropFilter: "blur(24px) saturate(180%)",
+            border: "1px solid rgba(139,92,246,0.2)",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 40px rgba(0,0,0,0.35), 0 0 60px rgba(139,92,246,0.08)",
+          }}
         >
-          <div className="animated-border-inner p-6 sm:p-10 space-y-8">
+          {/* Top edge highlight */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+          <div className="relative z-10 p-6 sm:p-10 space-y-8">
             {/* Messages slider */}
             <div>
               <div className="flex justify-between mb-3">
