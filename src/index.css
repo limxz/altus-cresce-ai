@@ -219,10 +219,12 @@
   /* ── Mesh gradient background ── */
   .mesh-gradient-bg {
     background:
-      radial-gradient(ellipse 90% 60% at 50% -5%, rgba(139,92,246,0.28) 0%, transparent 65%),
-      radial-gradient(ellipse 50% 40% at 85% 40%, rgba(124,58,237,0.12) 0%, transparent 55%),
-      radial-gradient(ellipse 40% 35% at 15% 70%, rgba(167,139,250,0.1) 0%, transparent 55%),
+      radial-gradient(circle 1px at center, rgba(160,174,192,0.08) 1px, transparent 1px),
+      radial-gradient(ellipse 90% 60% at 50% -5%, rgba(123,47,255,0.28) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 40% at 85% 40%, rgba(45,156,255,0.10) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 35% at 15% 70%, rgba(0,245,212,0.06) 0%, transparent 55%),
       hsl(var(--background));
+    background-size: 32px 32px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
     background-attachment: fixed;
   }
 
