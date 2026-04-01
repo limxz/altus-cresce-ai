@@ -7,7 +7,7 @@ const Hero = () => {
   const words = "O teu negócio merece crescer.".split(" ");
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[72px] mesh-gradient-bg">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[72px]">
       {/* Floating orbs */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[55%] h-[55%] rounded-full" style={{ background: "radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%)", filter: "blur(60px)", animation: "floatA 12s ease-in-out infinite" }} />
