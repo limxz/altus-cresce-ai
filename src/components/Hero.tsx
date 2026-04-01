@@ -71,7 +71,7 @@ const Hero = () => {
           <button onClick={openBooking} className="btn-primary glow-pulse">
             Fala Connosco
           </button>
-          <a href="#servicos" className="btn-outline">
+          <a href="#servicos" className="btn-glass">
             Ver Serviços
           </a>
         </motion.div>

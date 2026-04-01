@@ -132,6 +132,40 @@
     transform: translateY(-1px);
   }
 
+  .btn-glass {
+    @apply inline-flex items-center justify-center px-8 py-3.5 rounded-full font-semibold text-[0.9375rem] transition-all duration-300 active:scale-[0.98] cursor-pointer;
+    background: rgba(139,92,246,0.05);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    color: hsl(var(--accent));
+    position: relative;
+    isolation: isolate;
+  }
+  .btn-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(139,92,246,0.5), rgba(167,139,250,0.3), rgba(124,58,237,0.5));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .btn-glass:hover {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+    color: #ffffff;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 0 24px rgba(139,92,246,0.4);
+  }
+  .btn-glass:hover::before {
+    opacity: 0;
+  }
+
   /* ── Cards ── */
   .glass-card {
     background: rgba(28,24,41,0.6);
