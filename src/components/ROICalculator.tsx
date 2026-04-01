@@ -75,14 +75,23 @@ const ROICalculator = () => {
           </p>
         </motion.div>
 
-        {/* Animated border wrapper for calculator */}
+        {/* Liquid glass calculator */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="animated-border-wrapper mb-10"
+          className="mb-10 rounded-[24px] relative overflow-hidden"
+          style={{
+            background: "rgba(28, 24, 41, 0.55)",
+            backdropFilter: "blur(24px) saturate(180%)",
+            WebkitBackdropFilter: "blur(24px) saturate(180%)",
+            border: "1px solid rgba(139,92,246,0.2)",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 40px rgba(0,0,0,0.35), 0 0 60px rgba(139,92,246,0.08)",
+          }}
         >
-          <div className="animated-border-inner p-6 sm:p-10 space-y-8">
+          {/* Top edge highlight */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+          <div className="relative z-10 p-6 sm:p-10 space-y-8">
             {/* Messages slider */}
             <div>
               <div className="flex justify-between mb-3">
@@ -136,7 +145,7 @@ const ROICalculator = () => {
           </div>
         </motion.div>
 
-        {/* Result cards */}
+        {/* Result cards — liquid glass */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           {resultCards.map((card, i) => (
             <motion.div
@@ -144,13 +153,28 @@ const ROICalculator = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
-              className="rounded-2xl p-5 text-center transition-all duration-300 hover:border-primary/30"
+              className="rounded-[20px] p-6 text-center transition-all duration-300 group"
               style={{
-                background: "rgba(139,92,246,0.06)",
-                border: "1px solid rgba(139,92,246,0.18)",
+                background: "rgba(28, 24, 41, 0.5)",
+                backdropFilter: "blur(20px) saturate(160%)",
+                WebkitBackdropFilter: "blur(20px) saturate(160%)",
+                border: "1px solid rgba(139,92,246,0.15)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.25)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "rgba(139,92,246,0.35)";
+                e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.06), 0 0 32px rgba(139,92,246,0.1), 0 8px 32px rgba(0,0,0,0.3)";
+                e.currentTarget.style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "rgba(139,92,246,0.15)";
+                e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.25)";
+                e.currentTarget.style.transform = "translateY(0)";
               }}
             >
-              <card.icon size={20} className="mx-auto mb-3 text-muted-foreground" />
+              <div className="w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center" style={{ background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.15)" }}>
+                <card.icon size={18} className="text-accent" />
+              </div>
               <p className="font-mono text-[0.625rem] tracking-[0.12em] uppercase text-muted-foreground mb-2">{card.label}</p>
               <p className={`font-mono text-xl sm:text-2xl font-medium ${card.colorClass}`} style={{ textShadow: "0 0 20px rgba(167,139,250,0.2)" }}>{card.value}</p>
             </motion.div>

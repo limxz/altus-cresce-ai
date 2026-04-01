@@ -72,17 +72,32 @@ const ResultsNew = () => {
           ))}
         </div>
 
-        {/* Guarantee */}
+        {/* Guarantee — Liquid Glass */}
         <FadeIn>
-          <div className="rounded-[20px] p-8 text-center" style={{ background: "rgba(52,211,153,0.04)", border: "1px solid rgba(52,211,153,0.2)" }}>
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <Shield size={18} className="text-[hsl(var(--success))]" />
-              <p className="text-[hsl(var(--success))] font-display text-lg" style={{ fontWeight: 700 }}>GARANTIA DE RESULTADOS</p>
+          <div
+            className="rounded-[24px] p-10 text-center relative overflow-hidden"
+            style={{
+              background: "rgba(28, 24, 41, 0.55)",
+              backdropFilter: "blur(24px) saturate(180%)",
+              WebkitBackdropFilter: "blur(24px) saturate(180%)",
+              border: "1px solid rgba(52,211,153,0.2)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 40px rgba(0,0,0,0.35), 0 0 60px rgba(52,211,153,0.06)",
+            }}
+          >
+            {/* Subtle top glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-[hsl(var(--success))]/40 to-transparent" />
+            <div className="relative z-10">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(52,211,153,0.12)", border: "1px solid rgba(52,211,153,0.2)" }}>
+                  <Shield size={18} className="text-[hsl(var(--success))]" />
+                </div>
+                <p className="text-[hsl(var(--success))] font-mono text-[0.6875rem] tracking-[0.12em] uppercase" style={{ fontWeight: 500 }}>Garantia de Resultados</p>
+              </div>
+              <p className="text-muted-foreground text-sm max-w-lg mx-auto leading-relaxed">
+                Se não trouxermos pelo menos 3 clientes novos no primeiro mês,
+                devolvemos o dinheiro. Sem perguntas. Sem letras pequenas.
+              </p>
             </div>
-            <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Se não trouxermos pelo menos 3 clientes novos no primeiro mês,
-              devolvemos o dinheiro. Sem perguntas. Sem letras pequenas.
-            </p>
           </div>
         </FadeIn>
       </div>
