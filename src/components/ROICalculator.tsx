@@ -241,6 +241,7 @@ const ROICalculator = () => {
                 {loading ? "A enviar..." : "Quero a análise gratuita"}
               </button>
             </form>
+            </div>
           </motion.div>
         ) : (
           <motion.div
