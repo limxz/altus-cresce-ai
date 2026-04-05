@@ -57,8 +57,8 @@ const Login = () => {
             />
           </div>
           {error && <p className="text-destructive text-sm">{error}</p>}
-          <button type="submit" className="btn-primary w-full !py-3 !text-sm">
-            Entrar
+          <button type="submit" disabled={loading} className="btn-primary w-full !py-3 !text-sm disabled:opacity-50">
+            {loading ? "A entrar..." : "Entrar"}
           </button>
         </form>
       </div>
