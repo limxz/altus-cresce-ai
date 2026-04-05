@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useClientAuth } from "@/contexts/ClientAuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { MessageCircle, Search, X, Eye, Phone, Clock, Tag } from "lucide-react";
 
 const LEAD_STATUS_MAP: Record<string, { label: string; color: string }> = {
@@ -44,7 +45,9 @@ interface Message {
 
 const WhatsAppLeadsTab = () => {
   const { client } = useClientAuth();
+  const { toast } = useToast();
   const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [hotNewIds, setHotNewIds] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<Conversation | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [search, setSearch] = useState("");
@@ -58,7 +61,45 @@ const WhatsAppLeadsTab = () => {
     // Realtime subscription
     const channel = supabase
       .channel("wa-convos-" + client.id)
-      .on("postgres_changes", { event: "*", schema: "public", table: "whatsapp_conversations", filter: `client_id=eq.${client.id}` }, () => fetchConversations())
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "whatsapp_conversations", filter: `client_id=eq.${client.id}` }, (payload) => {
+        const convo = payload.new as Conversation;
+        fetchConversations();
+        // Notificação de hot lead
+        if (convo.lead_status === "interessado" || convo.urgency === "urgente") {
+          const name = convo.contact_name || convo.contact_phone;
+          const need = convo.primary_need ? ` — ${convo.primary_need}` : "";
+          toast({
+            title: "🔥 Novo lead quente!",
+            description: `${name}${need}`,
+            duration: 8000,
+            variant: "destructive",
+          });
+          const audio = new Audio("/notification.mp3");
+          audio.volume = 0.4;
+          audio.play().catch(() => {});
+          setHotNewIds((prev) => new Set([...prev, convo.id]));
+        }
+      })
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "whatsapp_conversations", filter: `client_id=eq.${client.id}` }, (payload) => {
+        const convo = payload.new as Conversation;
+        fetchConversations();
+        // Notificação se passou a hot lead por UPDATE
+        if (convo.lead_status === "interessado" || convo.urgency === "urgente") {
+          const name = convo.contact_name || convo.contact_phone;
+          const need = convo.primary_need ? ` — ${convo.primary_need}` : "";
+          toast({
+            title: "🔥 Novo lead quente!",
+            description: `${name}${need}`,
+            duration: 8000,
+            variant: "destructive",
+          });
+          const audio = new Audio("/notification.mp3");
+          audio.volume = 0.4;
+          audio.play().catch(() => {});
+          setHotNewIds((prev) => new Set([...prev, convo.id]));
+        }
+      })
+      .on("postgres_changes", { event: "DELETE", schema: "public", table: "whatsapp_conversations", filter: `client_id=eq.${client.id}` }, () => fetchConversations())
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "whatsapp_messages", filter: `client_id=eq.${client.id}` }, (payload) => {
         if (selected && (payload.new as any).conversation_id === selected.id) {
           setMessages((p) => [...p, payload.new as Message]);
@@ -196,10 +237,12 @@ const WhatsAppLeadsTab = () => {
           filtered.map((c) => {
             const ls = LEAD_STATUS_MAP[c.lead_status] || LEAD_STATUS_MAP.novo;
             const urg = URGENCY_MAP[c.urgency] || URGENCY_MAP.normal;
+            const isHotNew = hotNewIds.has(c.id);
             return (
-              <button key={c.id} onClick={() => openConvo(c)} className="w-full glass-card p-4 text-left hover:border-primary/30 transition-all">
+              <button key={c.id} onClick={() => { openConvo(c); setHotNewIds((prev) => { const next = new Set(prev); next.delete(c.id); return next; }); }} className={`w-full glass-card p-4 text-left hover:border-primary/30 transition-all ${isHotNew ? "border-red-500/60 ring-1 ring-red-500/30" : ""}`}>
                 <div className="flex items-start gap-3">
-                  {!c.is_read && <span className="w-2.5 h-2.5 rounded-full bg-primary shrink-0 mt-1.5" />}
+                  {isHotNew && <span className="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0 mt-1.5 animate-pulse" />}
+                  {!isHotNew && !c.is_read && <span className="w-2.5 h-2.5 rounded-full bg-primary shrink-0 mt-1.5" />}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       <span className="text-foreground text-sm font-medium">{c.contact_name || c.contact_phone}</span>
