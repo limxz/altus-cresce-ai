@@ -18,6 +18,11 @@ const ROITab = () => {
   const [monthlyData, setMonthlyData] = useState<{ month: string; value: number }[]>([]);
   const [period, setPeriod] = useState("month");
 
+  // Parâmetros da fórmula de ROI (de roi_settings do cliente ou defaults)
+  const roiSettings = (client as any)?.roi_settings || {};
+  const avgTicket: number = roiSettings.avg_ticket ?? 150;
+  const conversionRate: number = roiSettings.conversion_rate ?? 0.15;
+
   // Admin override state
   const [showOverride, setShowOverride] = useState(false);
   const [override, setOverride] = useState({
@@ -55,10 +60,14 @@ const ROITab = () => {
       setFollowers(metrics[metrics.length - 1].instagram_followers || 0);
       setBaseline(client.instagram_baseline || 0);
 
-      const chartData = metrics.map(m => ({
-        month: new Date(m.date).toLocaleDateString("pt-PT", { month: "short" }),
-        value: ((m.instagram_followers || 0) - (client.instagram_baseline || 0)) * 2 + (count || 0) * 150,
-      }));
+      const chartData = metrics.map(m => {
+        const followerGrowth = (m.instagram_followers || 0) - (client.instagram_baseline || 0);
+        const leadsValue = (count || 0) * avgTicket * conversionRate;
+        return {
+          month: new Date(m.date).toLocaleDateString("pt-PT", { month: "short" }),
+          value: Math.round(leadsValue + followerGrowth * 0.5),
+        };
+      });
       setMonthlyData(chartData);
     }
 
@@ -114,9 +123,9 @@ const ROITab = () => {
   const avgValue = showOverride ? override.avg_value : 150;
   const hourRate = showOverride ? override.hour_rate : 15;
 
-  const botROI = displayConvos * avgValue;
+  const botROI = Math.round(displayConvos * avgValue * conversionRate);
   const followersGained = Math.max(0, displayFollowers - displayBaseline);
-  const igROI = Math.round(followersGained * 2);
+  const igROI = Math.round(followersGained * 0.5);
   const hoursSaved = showOverride ? override.hours_saved : Math.round(displayConvos * 0.5 + 20);
   const timeROI = hoursSaved * hourRate;
   const totalROI = botROI + igROI + timeROI;
@@ -249,6 +258,24 @@ const ROITab = () => {
                 <Area type="monotone" dataKey="value" stroke="hsl(262 83% 58%)" fill="url(#roiGrad)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
+          </div>
+          {/* Fórmula transparente */}
+          <div className="mt-4 p-3 bg-muted/40 rounded-lg border border-border/50">
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              <span className="text-muted-foreground/70 uppercase tracking-wider text-[10px] block mb-1">Como calculamos</span>
+              <strong className="text-foreground/80">{displayConvos} leads</strong>
+              {" × "}
+              <strong className="text-foreground/80">€{avgValue}</strong>
+              {" × "}
+              <strong className="text-foreground/80">{Math.round(conversionRate * 100)}%</strong>
+              {" = "}
+              <strong className="text-primary">€{Math.round(displayConvos * avgValue * conversionRate)}</strong>
+              {" de leads · mais "}
+              <strong className="text-foreground/80">+{Math.max(0, displayFollowers - displayBaseline)} seguidores</strong>
+              {" × €0,50 = "}
+              <strong className="text-pink-400">€{Math.round(Math.max(0, displayFollowers - displayBaseline) * 0.5)}</strong>
+              {" em alcance orgânico"}
+            </p>
           </div>
         </div>
       )}
