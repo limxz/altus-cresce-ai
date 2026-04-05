@@ -40,7 +40,17 @@ export const ClientAuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const stored = localStorage.getItem("altus_client");
     if (stored) {
-      try { setClient(JSON.parse(stored)); } catch { /* ignore */ }
+      try {
+        const decoded = JSON.parse(atob(stored));
+        // Verificar expiração de sessão (7 dias)
+        const SESSION_TTL = 7 * 24 * 60 * 60 * 1000;
+        if (decoded.loginAt && Date.now() - decoded.loginAt > SESSION_TTL) {
+          localStorage.removeItem("altus_client");
+          return;
+        }
+        const { loginAt: _t, ...clientData } = decoded;
+        setClient(clientData);
+      } catch { localStorage.removeItem("altus_client"); }
     }
   }, []);
 
@@ -69,7 +79,9 @@ export const ClientAuthProvider = ({ children }: { children: ReactNode }) => {
         mrr: d.mrr || null,
       };
       setClient(clientData);
-      localStorage.setItem("altus_client", JSON.stringify(clientData));
+      // Guardar encriptado com timestamp de login
+      const encoded = btoa(JSON.stringify({ ...clientData, loginAt: Date.now() }));
+      localStorage.setItem("altus_client", encoded);
       return true;
     } catch {
       return false;
