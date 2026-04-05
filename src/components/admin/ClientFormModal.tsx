@@ -134,6 +134,23 @@ const ClientFormModal = ({ client, onClose, onSaved }: Props) => {
     } else {
       const { data } = await supabase.from("clients" as any).insert(payload as any).select("id").single();
       if (data) clientId = (data as any).id;
+
+      // Enviar email de boas-vindas ao novo cliente
+      try {
+        await supabase.functions.invoke("on-client-created", {
+          body: {
+            business_name: form.business_name,
+            contact_name: form.contact_name,
+            contact_email: form.contact_email,
+            login_email: form.login_email,
+            login_password: form.login_password,
+            plan: form.plan,
+          },
+        });
+        toast({ title: `Cliente criado. Email enviado para ${form.contact_email} ✅` });
+      } catch {
+        toast({ title: "Cliente criado com sucesso!", description: `Aviso: não foi possível enviar o email para ${form.contact_email}.`, variant: "destructive" });
+      }
     }
 
     // Save metrics
@@ -150,7 +167,7 @@ const ClientFormModal = ({ client, onClose, onSaved }: Props) => {
       }
     }
 
-    toast({ title: isEdit ? "Cliente atualizado com sucesso!" : "Cliente criado com sucesso!" });
+    if (isEdit) toast({ title: "Cliente atualizado com sucesso!" });
     setSaving(false);
     onSaved();
   };
