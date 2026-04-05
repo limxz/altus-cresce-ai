@@ -136,20 +136,29 @@ const ClientFormModal = ({ client, onClose, onSaved }: Props) => {
       if (data) clientId = (data as any).id;
 
       // Enviar email de boas-vindas ao novo cliente
-      try {
-        await supabase.functions.invoke("on-client-created", {
-          body: {
-            business_name: form.business_name,
-            contact_name: form.contact_name,
-            contact_email: form.contact_email,
-            login_email: form.login_email,
-            login_password: form.login_password,
-            plan: form.plan,
-          },
+      const { data: emailData, error: emailError } = await supabase.functions.invoke("on-client-created", {
+        body: {
+          business_name: form.business_name,
+          contact_name: form.contact_name,
+          contact_email: form.contact_email,
+          login_email: form.login_email,
+          login_password: form.login_password,
+          plan: form.plan,
+        },
+      });
+
+      if (emailError) {
+        console.error("Erro Edge Function:", emailError);
+        toast({
+          title: "Cliente criado mas email falhou",
+          description: "Erro: " + emailError.message,
+          variant: "destructive",
         });
-        toast({ title: `Cliente criado. Email enviado para ${form.contact_email} ✅` });
-      } catch {
-        toast({ title: "Cliente criado com sucesso!", description: `Aviso: não foi possível enviar o email para ${form.contact_email}.`, variant: "destructive" });
+      } else {
+        toast({
+          title: "Cliente criado com sucesso! ✅",
+          description: "Email enviado para " + form.contact_email,
+        });
       }
     }
 
