@@ -9,9 +9,15 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (login(email, password)) {
+    setError("");
+    setLoading(true);
+    const success = await login(email, password);
+    setLoading(false);
+    if (success) {
       navigate("/admin");
     } else {
       setError("Credenciais inválidas.");
@@ -51,8 +57,8 @@ const Login = () => {
             />
           </div>
           {error && <p className="text-destructive text-sm">{error}</p>}
-          <button type="submit" className="btn-primary w-full !py-3 !text-sm">
-            Entrar
+          <button type="submit" disabled={loading} className="btn-primary w-full !py-3 !text-sm disabled:opacity-50">
+            {loading ? "A entrar..." : "Entrar"}
           </button>
         </form>
       </div>
