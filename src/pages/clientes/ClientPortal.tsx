@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useClientAuth } from "@/contexts/ClientAuthContext";
 import { LogOut } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import ClientDashboardTab from "@/components/clientes/DashboardTab";
 import WhatsAppLeadsTab from "@/components/clientes/WhatsAppLeadsTab";
 import ClientContentTab from "@/components/clientes/ContentTab";
@@ -29,11 +29,37 @@ const PLAN_COLORS: Record<string, string> = {
 const ClientPortal = () => {
   const { client, logout } = useClientAuth();
   const [tab, setTab] = useState("dashboard");
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  useEffect(() => {
+    const key = `altus_welcomed_${client?.id}`;
+    if (client && !sessionStorage.getItem(key)) {
+      setShowWelcome(true);
+      sessionStorage.setItem(key, "1");
+      const t = setTimeout(() => setShowWelcome(false), 5000);
+      return () => clearTimeout(t);
+    }
+  }, [client]);
 
   if (!client) return null;
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Banner de boas-vindas */}
+      <AnimatePresence>
+        {showWelcome && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-xl text-sm font-medium text-white shadow-lg"
+            style={{ background: "linear-gradient(135deg, #7C3AED, #2DD4C0)", boxShadow: "0 8px 32px rgba(124,58,237,0.4)" }}
+          >
+            Bem-vindo, {client.contact_name}! O teu portal está pronto. 🚀
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
@@ -67,13 +93,18 @@ const ClientPortal = () => {
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
-              className={`px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-all ${
-                tab === t.key
-                  ? "border-primary text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+              className={`relative px-4 py-3 text-sm font-medium whitespace-nowrap transition-all ${
+                tab === t.key ? "text-foreground" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {t.label}
+              {tab === t.key && (
+                <motion.span
+                  layoutId="tab-pill"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-primary"
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
             </button>
           ))}
         </div>

@@ -192,10 +192,21 @@ const ROITab = () => {
       )}
 
       {/* Hero ROI */}
-      <div className="glass-card p-8 text-center bg-gradient-to-br from-primary/10 to-accent/5">
+      <div className={`glass-card p-8 text-center relative overflow-hidden ${ratioNum > 3 ? "bg-gradient-to-br from-yellow-500/10 via-primary/10 to-accent/5" : "bg-gradient-to-br from-primary/10 to-accent/5"}`}>
+        {ratioNum > 3 && (
+          <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
+            style={{ background: "linear-gradient(135deg, rgba(234,179,8,0.2), rgba(234,179,8,0.08))", border: "1px solid rgba(234,179,8,0.4)", color: "#eab308" }}>
+            🏆 ROI Excepcional
+          </div>
+        )}
         <p className="text-muted-foreground text-sm mb-2">A Altus Media gerou para o teu negócio:</p>
-        <div className="font-display text-5xl md:text-6xl text-primary mb-1">€{totalROI}</div>
+        <div className={`font-display text-5xl md:text-6xl mb-1 ${ratioNum > 3 ? "text-yellow-400" : "text-primary"}`}>€{totalROI}</div>
         <p className="text-muted-foreground text-sm">este mês</p>
+        {/* Fórmula visível abaixo do valor */}
+        <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs text-muted-foreground"
+          style={{ background: "rgba(123,47,255,0.06)", border: "1px solid rgba(123,47,255,0.12)" }}>
+          <span><strong className="text-foreground">{displayConvos} leads</strong> × €{avgValue} × {Math.round(conversionRate * 100)}% = <strong className="text-primary">€{botROI}</strong></span>
+        </div>
       </div>
 
       {/* Breakdown */}

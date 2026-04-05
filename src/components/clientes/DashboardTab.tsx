@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useClientAuth } from "@/contexts/ClientAuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { motion } from "framer-motion";
 import { Users, MessageCircle, Instagram, Activity, Clock } from "lucide-react";
 
 const DashboardTab = () => {
@@ -45,31 +46,47 @@ const DashboardTab = () => {
     {
       label: "Leads Este Mês",
       value: leadsCount,
+      prevValue: prevLeads,
       sub: leadsGrowth !== 0 ? `${leadsGrowth > 0 ? "+" : ""}${leadsGrowth}% vs mês passado` : "Sem dados anteriores",
       icon: Users,
+      iconColor: "text-primary",
+      iconBg: "bg-primary/10",
       subColor: leadsGrowth >= 0 ? "text-green-400" : "text-red-400",
+      trend: leadsGrowth > 0 ? "up" : leadsGrowth < 0 ? "down" : "neutral",
     },
     {
       label: "Conversas do Bot",
       value: botConvos,
+      prevValue: null,
       sub: "Tempo de resposta: instantâneo 24/7",
       icon: MessageCircle,
+      iconColor: "text-accent",
+      iconBg: "bg-accent/10",
       subColor: "text-muted-foreground",
+      trend: "neutral" as const,
     },
     {
       label: "Seguidores Instagram",
       value: igFollowers,
+      prevValue: prevMetrics?.instagram_followers,
       sub: igGrowth !== 0 ? `${igGrowth > 0 ? "+" : ""}${igGrowth} este mês` : "Sem alterações",
       icon: Instagram,
+      iconColor: "text-pink-400",
+      iconBg: "bg-pink-500/10",
       subColor: igGrowth >= 0 ? "text-green-400" : "text-red-400",
+      trend: igGrowth > 0 ? "up" : igGrowth < 0 ? "down" : "neutral",
     },
     {
       label: "Saúde do Negócio",
       value: `${healthScore}`,
+      prevValue: null,
       sub: healthLabel,
       icon: Activity,
+      iconColor: healthColor,
+      iconBg: healthScore >= 80 ? "bg-green-500/10" : healthScore >= 60 ? "bg-yellow-500/10" : "bg-red-500/10",
       subColor: healthColor,
       isHealth: true,
+      trend: "neutral" as const,
     },
   ];
 
@@ -81,22 +98,40 @@ const DashboardTab = () => {
           <div key={i} className="glass-card p-5 relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-muted-foreground text-xs uppercase tracking-widest">{kpi.label}</span>
-                <kpi.icon size={16} className="text-accent" />
+              {/* Ícone grande colorido */}
+              <div className="flex items-start justify-between mb-4">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${kpi.iconBg}`}>
+                  <kpi.icon size={22} className={kpi.iconColor} />
+                </div>
+                {kpi.trend !== "neutral" && (
+                  <motion.span
+                    key={String(kpi.value)}
+                    initial={{ scale: 1.4, opacity: 0.6 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.4 }}
+                    className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${kpi.trend === "up" ? "bg-green-500/15 text-green-400" : "bg-red-500/15 text-red-400"}`}
+                  >
+                    {kpi.trend === "up" ? "↑" : "↓"}
+                  </motion.span>
+                )}
               </div>
+              <span className="text-muted-foreground text-xs uppercase tracking-widest block mb-2">{kpi.label}</span>
               {kpi.isHealth ? (
                 <div className="flex items-center gap-3">
-                  <div className="relative w-16 h-16">
-                    <svg className="w-16 h-16 -rotate-90" viewBox="0 0 64 64">
-                      <circle cx="32" cy="32" r="28" fill="none" stroke="hsl(var(--muted))" strokeWidth="4" />
-                      <circle
+                  <div className="relative w-14 h-14">
+                    <svg className="w-14 h-14 -rotate-90" viewBox="0 0 64 64">
+                      <circle cx="32" cy="32" r="28" fill="none" stroke="hsl(var(--muted))" strokeWidth="5" />
+                      <motion.circle
                         cx="32" cy="32" r="28" fill="none"
                         stroke="currentColor"
-                        strokeWidth="4"
-                        strokeDasharray={`${(healthScore / 100) * 175.9} 175.9`}
+                        strokeWidth="5"
+                        strokeDasharray="175.9"
+                        strokeDashoffset={175.9 - (healthScore / 100) * 175.9}
                         className={healthColor}
                         strokeLinecap="round"
+                        initial={{ strokeDashoffset: 175.9 }}
+                        animate={{ strokeDashoffset: 175.9 - (healthScore / 100) * 175.9 }}
+                        transition={{ duration: 1.2, ease: "easeOut" }}
                       />
                     </svg>
                     <span className={`absolute inset-0 flex items-center justify-center text-sm font-bold ${healthColor}`}>
@@ -107,7 +142,15 @@ const DashboardTab = () => {
                 </div>
               ) : (
                 <>
-                  <div className="font-display text-3xl text-foreground">{kpi.value}</div>
+                  <motion.div
+                    key={String(kpi.value)}
+                    initial={{ y: -4, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="font-display text-3xl text-foreground"
+                  >
+                    {kpi.value}
+                  </motion.div>
                   <p className={`text-xs mt-1 ${kpi.subColor}`}>{kpi.sub}</p>
                 </>
               )}
