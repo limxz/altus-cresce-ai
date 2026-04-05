@@ -1,10 +1,30 @@
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Sparkles } from "lucide-react";
 import { useBooking } from "@/contexts/BookingContext";
+
+const useCountUp = (end: number, duration = 2000) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  useEffect(() => {
+    if (!isInView) return;
+    let start = 0;
+    const increment = end / (duration / 16);
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= end) { setCount(end); clearInterval(timer); }
+      else setCount(Math.floor(start));
+    }, 16);
+    return () => clearInterval(timer);
+  }, [isInView, end, duration]);
+  return { count, ref };
+};
 
 const Hero = () => {
   const { openBooking } = useBooking();
   const words = "O teu negócio merece crescer.".split(" ");
+  const { count: msgCount, ref: msgRef } = useCountUp(2400, 2000);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[72px]">
@@ -75,6 +95,22 @@ const Hero = () => {
           <a href="#servicos" className="btn-glass">
             Ver Serviços
           </a>
+        </motion.div>
+
+        {/* Contador animado */}
+        <motion.div
+          ref={msgRef}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.3, duration: 0.6 }}
+          className="mt-8 flex items-center justify-center gap-2"
+        >
+          <span className="w-2 h-2 rounded-full bg-accent animate-pulse" style={{ boxShadow: "0 0 8px rgba(0,245,212,0.6)" }} />
+          <span className="text-sm text-muted-foreground">
+            Já respondemos a{" "}
+            <span className="text-foreground font-semibold tabular-nums">+{msgCount.toLocaleString("pt-PT")}</span>
+            {" "}mensagens para negócios em Portugal
+          </span>
         </motion.div>
       </div>
 

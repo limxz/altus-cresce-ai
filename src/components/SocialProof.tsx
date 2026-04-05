@@ -56,6 +56,31 @@ const SocialProof = () => {
               <StatItem key={i} value={stat.value} suffix={stat.suffix} label={stat.label} />
             ))}
           </div>
+
+          {/* Nichos que servimos */}
+          <div className="mt-12 pt-10 border-t border-white/5">
+            <p className="text-center text-[0.6rem] font-mono tracking-[0.15em] uppercase text-muted-foreground/50 mb-6">
+              Sectores que transformamos
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6">
+              {[
+                { emoji: "🍽️", label: "Restaurantes" },
+                { emoji: "🦷", label: "Clínicas" },
+                { emoji: "🏋️", label: "Ginásios" },
+                { emoji: "🏠", label: "Imobiliárias" },
+                { emoji: "💆", label: "Estética" },
+              ].map((n) => (
+                <div
+                  key={n.label}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full text-sm text-muted-foreground"
+                  style={{ background: "rgba(123,47,255,0.06)", border: "1px solid rgba(123,47,255,0.12)" }}
+                >
+                  <span>{n.emoji}</span>
+                  <span>{n.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </FadeIn>
     </section>

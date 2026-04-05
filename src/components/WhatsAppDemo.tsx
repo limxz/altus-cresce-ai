@@ -17,6 +17,39 @@ const BUSINESS_TYPES = [
   { key: "outro", label: "Outro" },
 ];
 
+const SCENARIO_SUGGESTIONS: Record<string, string[]> = {
+  restaurante: [
+    "Têm mesa para 2 hoje às 20h?",
+    "Qual o horário de funcionamento?",
+    "Fazem entregas ao domicílio?",
+  ],
+  clinica: [
+    "Qual o preço de uma consulta?",
+    "Têm disponibilidade esta semana?",
+    "Aceitam seguro de saúde?",
+  ],
+  ginasio: [
+    "Como faço para me inscrever?",
+    "Qual o valor da mensalidade?",
+    "Têm aulas de grupo?",
+  ],
+  imobiliaria: [
+    "Procuro apartamento T2 em Braga, têm?",
+    "Qual a comissão de venda?",
+    "Fazem avaliação do meu imóvel?",
+  ],
+  cabeleireiro: [
+    "Têm disponibilidade para amanhã?",
+    "Quanto custa corte e coloração?",
+    "Fazem tratamentos capilares?",
+  ],
+  outro: [
+    "Olá, gostava de saber mais informações.",
+    "Quais os vossos serviços?",
+    "Como posso marcar?",
+  ],
+};
+
 const BUSINESS_NAMES: Record<string, string> = {
   restaurante: "Sabores de Braga",
   clinica: "Clínica Bella Estética",
@@ -166,6 +199,22 @@ const WhatsAppDemo = () => {
           {responseTime && (
             <div className="px-5 pb-1" style={{ background: "hsl(var(--background))" }}>
               <p className="text-xs text-accent/70 font-mono">Respondido em {responseTime}s</p>
+            </div>
+          )}
+
+          {/* Sugestões de mensagens */}
+          {messages.length === 0 && (
+            <div className="px-4 pt-2 pb-1 flex flex-wrap gap-1.5" style={{ background: "hsl(var(--surface))", borderTop: "1px solid rgba(123,47,255,0.08)" }}>
+              {(SCENARIO_SUGGESTIONS[businessType] || []).map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setInput(s)}
+                  className="px-3 py-1 rounded-full text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  style={{ background: "rgba(123,47,255,0.08)", border: "1px solid rgba(123,47,255,0.15)" }}
+                >
+                  {s}
+                </button>
+              ))}
             </div>
           )}
 
