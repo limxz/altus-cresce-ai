@@ -45,34 +45,35 @@ export const ClientAuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    const { data, error } = await supabase
-      .from("clients" as any)
-      .select("*")
-      .eq("login_email", email)
-      .eq("login_password", password)
-      .single();
+    try {
+      const { data, error } = await supabase.functions.invoke("client-login", {
+        body: { email, password },
+      });
 
-    if (error || !data) return false;
-    const d = data as any;
-    const clientData: ClientData = {
-      id: d.id,
-      business_name: d.business_name,
-      contact_name: d.contact_name,
-      plan: d.plan,
-      status: d.status,
-      logo_url: d.logo_url,
-      brand_color: d.brand_color,
-      services: d.services,
-      start_date: d.start_date,
-      instagram_baseline: d.instagram_baseline || 0,
-      facebook_baseline: d.facebook_baseline || 0,
-      leads_baseline: d.leads_baseline || 0,
-      niche: d.niche,
-      mrr: d.mrr || null,
-    };
-    setClient(clientData);
-    localStorage.setItem("altus_client", JSON.stringify(clientData));
-    return true;
+      if (error || !data?.client) return false;
+      const d = data.client;
+      const clientData: ClientData = {
+        id: d.id,
+        business_name: d.business_name,
+        contact_name: d.contact_name,
+        plan: d.plan,
+        status: d.status,
+        logo_url: d.logo_url,
+        brand_color: d.brand_color,
+        services: d.services,
+        start_date: d.start_date,
+        instagram_baseline: d.instagram_baseline || 0,
+        facebook_baseline: d.facebook_baseline || 0,
+        leads_baseline: d.leads_baseline || 0,
+        niche: d.niche,
+        mrr: d.mrr || null,
+      };
+      setClient(clientData);
+      localStorage.setItem("altus_client", JSON.stringify(clientData));
+      return true;
+    } catch {
+      return false;
+    }
   };
 
   const logout = () => {
