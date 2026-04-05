@@ -9,9 +9,15 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (login(email, password)) {
+    setError("");
+    setLoading(true);
+    const success = await login(email, password);
+    setLoading(false);
+    if (success) {
       navigate("/admin");
     } else {
       setError("Credenciais inválidas.");
