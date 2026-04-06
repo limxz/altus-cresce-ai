@@ -1,7 +1,5 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
 import { TrendingDown, Calendar, Clock, Users } from "lucide-react";
 
 const RESPONSE_OPTIONS = [
@@ -16,10 +14,6 @@ const ROICalculator = () => {
   const [messages, setMessages] = useState(15);
   const [clientValue, setClientValue] = useState(150);
   const [factor, setFactor] = useState(0.15);
-  const [formData, setFormData] = useState({ nome: "", email: "", telefone: "" });
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
@@ -27,28 +21,6 @@ const ROICalculator = () => {
   const annualLoss = monthlyLoss * 12;
   const hoursWasted = Math.round(messages * 0.08 * 30);
   const clientsLost = Math.round(messages * factor * 30);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.nome || !formData.email) return;
-    setLoading(true);
-    try {
-      const { error } = await supabase.from("leads" as any).insert({
-        nome: formData.nome,
-        email: formData.email,
-        telefone: formData.telefone || null,
-        monthly_loss: monthlyLoss,
-        source: "calculadora",
-      } as any);
-      if (error) throw error;
-      setSubmitted(true);
-      toast({ title: "Recebido!", description: "Entraremos em contacto em 24h." });
-    } catch {
-      toast({ title: "Erro", description: "Tenta novamente.", variant: "destructive" });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const resultCards = [
     { icon: TrendingDown, label: "Perdes por mês", value: `€${monthlyLoss.toLocaleString()}`, color: "239,68,68" },
@@ -158,53 +130,6 @@ const ROICalculator = () => {
           ))}
         </div>
 
-        {/* Lead capture form */}
-        {!submitted ? (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.8 }}
-            className="relative group"
-          >
-            <div
-              className="absolute -inset-[1px] rounded-[24px] opacity-40 group-hover:opacity-70 transition-opacity duration-700"
-              style={{
-                background: "linear-gradient(135deg, rgba(123,47,255,0.3), rgba(0,245,212,0.15), rgba(45,156,255,0.3))",
-                filter: "blur(1px)",
-              }}
-            />
-            <div
-              className="relative rounded-[24px] p-6 sm:p-8 overflow-hidden"
-              style={{
-                background: "linear-gradient(135deg, rgba(28,24,41,0.7), rgba(22,18,35,0.6))",
-                backdropFilter: "blur(32px) saturate(200%)",
-                WebkitBackdropFilter: "blur(32px) saturate(200%)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2), 0 8px 40px rgba(0,0,0,0.35)",
-              }}
-            >
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
-              <h3 className="font-display text-xl text-foreground mb-6 text-center" style={{ fontWeight: 700 }}>
-                Recupera este dinheiro — análise gratuita em 24h
-              </h3>
-              <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input type="text" placeholder="Nome *" required value={formData.nome} onChange={(e) => setFormData({ ...formData, nome: e.target.value })} className="input-dark" />
-                <input type="tel" placeholder="Telefone" value={formData.telefone} onChange={(e) => setFormData({ ...formData, telefone: e.target.value })} className="input-dark" />
-                <input type="email" placeholder="Email *" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="input-dark sm:col-span-2" />
-                <button type="submit" disabled={loading} className="sm:col-span-2 btn-primary !rounded-xl disabled:opacity-50">
-                  {loading ? "A enviar..." : "Quero a análise gratuita"}
-                </button>
-              </form>
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="glass-card p-8 text-center">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: "rgba(0,245,212,0.1)", border: "1px solid rgba(0,245,212,0.2)" }}>
-              <span className="text-accent font-bold text-lg">✓</span>
-            </div>
-            <p className="text-foreground text-lg font-semibold">Recebemos o teu pedido!</p>
-            <p className="text-muted-foreground">Entraremos em contacto em 24h.</p>
-          </motion.div>
-        )}
       </div>
     </section>
   );

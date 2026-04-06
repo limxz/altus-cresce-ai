@@ -64,9 +64,9 @@ const SocialProof = () => {
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6">
               {[
-                { emoji: "🍽️", label: "Restaurantes" },
+                { emoji: "❄️", label: "AVAC / Climatização" },
                 { emoji: "🦷", label: "Clínicas" },
-                { emoji: "🏋️", label: "Ginásios" },
+                { emoji: "⚡", label: "Electricistas" },
                 { emoji: "🏠", label: "Imobiliárias" },
                 { emoji: "💆", label: "Estética" },
               ].map((n) => (
