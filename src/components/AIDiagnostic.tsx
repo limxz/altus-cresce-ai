@@ -355,7 +355,7 @@ function LoadingState({ msgIdx }: { msgIdx: number }) {
 
 // ─── Result State ─────────────────────────────────────────────────────────────
 
-function ResultState({ analise, onReset }: { analise: Analise; onReset: () => void }) {
+function ResultState({ analise, onReset, openBooking }: { analise: Analise; onReset: () => void; openBooking: () => void }) {
   return (
     <div className="space-y-6">
       {/* Header: score + title */}
