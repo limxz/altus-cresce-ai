@@ -451,8 +451,6 @@ function ResultState({ analise, onReset }: { analise: Analise; onReset: () => vo
       <div className="flex flex-col sm:flex-row gap-3">
         <a
           href="https://cal.com/altusmedia"
-          target="_blank"
-          rel="noopener noreferrer"
           className="btn-primary flex-1 flex items-center justify-center gap-2 text-center !rounded-xl"
           style={{ padding: "14px 24px" }}
         >
