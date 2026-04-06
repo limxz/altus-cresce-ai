@@ -81,3 +81,11 @@ Deploy:
 ```sh
 supabase functions deploy on-client-created
 ```
+
+## Variáveis necessárias
+
+Copia `.env.example` para `.env.local` e preenche as variáveis:
+
+| Variável | Descrição | Obter em |
+|---|---|---|
+| `VITE_ANTHROPIC_API_KEY` | Chave da API Anthropic para o diagnóstico de IA | [console.anthropic.com](https://console.anthropic.com) |

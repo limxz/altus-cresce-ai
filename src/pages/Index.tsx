@@ -8,6 +8,7 @@ import ResultsNew from "@/components/ResultsNew";
 import Services from "@/components/Services";
 import HowItWorks from "@/components/HowItWorks";
 import AltusFAQ from "@/components/AltusFAQ";
+import AIDiagnostic from "@/components/AIDiagnostic";
 import FinalCTA from "@/components/FinalCTA";
 import AltusFooter from "@/components/AltusFooter";
 
@@ -22,6 +23,7 @@ const Index = () => {
       <div className="section-glow-right"><Services /></div>
       <div className="section-glow-left"><HowItWorks /></div>
       <div className="section-glow-center"><AltusFAQ /></div>
+      <div className="section-glow-purple"><AIDiagnostic /></div>
       <div className="section-glow-purple"><FinalCTA /></div>
       <AltusFooter />
     </div>
