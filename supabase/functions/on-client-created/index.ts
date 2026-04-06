@@ -120,7 +120,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Altus Media <onboarding@resend.dev>",
+        from: "Altus Media <suporte@altusmedia.pt>",
         to: [contact_email],
         subject: "Bem-vindo ao portal Altus Media 🚀",
         html,
