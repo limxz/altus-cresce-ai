@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Globe, Instagram, MessageCircle, BarChart2, ArrowRight, ArrowUpRight } from "lucide-react";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -103,32 +103,6 @@ function buildFallback(form: FormData): Analise {
   };
 }
 
-// ─── useCountUp ───────────────────────────────────────────────────────────────
-
-function useCountUp(end: number, duration = 1500) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true });
-
-  useEffect(() => {
-    if (!isInView || end === 0) return;
-    let start = 0;
-    const increment = end / (duration / 16);
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= end) {
-        setCount(end);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, 16);
-    return () => clearInterval(timer);
-  }, [isInView, end, duration]);
-
-  return { count, ref };
-}
-
 // ─── ScoreCircle ─────────────────────────────────────────────────────────────
 
 function ScoreCircle({ score }: { score: number }) {
@@ -177,8 +151,6 @@ const AIDiagnostic = () => {
     website: "",
     tipoNegocio: "",
   });
-
-  const { count: euroCount, ref: euroRef } = useCountUp(analise?.euros_perdidos_mes ?? 0);
 
   // Rotate loading messages
   useEffect(() => {
@@ -230,7 +202,7 @@ const AIDiagnostic = () => {
           )}
           {estado === "result" && analise && (
             <motion.div key="result" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-              <ResultState analise={analise} euroCount={euroCount} euroRef={euroRef} onReset={reset} />
+              <ResultState analise={analise} onReset={reset} />
             </motion.div>
           )}
         </AnimatePresence>
@@ -381,17 +353,7 @@ function LoadingState({ msgIdx }: { msgIdx: number }) {
 
 // ─── Result State ─────────────────────────────────────────────────────────────
 
-function ResultState({
-  analise,
-  euroCount,
-  euroRef,
-  onReset,
-}: {
-  analise: Analise;
-  euroCount: number;
-  euroRef: React.RefObject<HTMLDivElement>;
-  onReset: () => void;
-}) {
+function ResultState({ analise, onReset }: { analise: Analise; onReset: () => void }) {
   return (
     <div className="space-y-6">
       {/* Header: score + title */}
@@ -474,21 +436,6 @@ function ResultState({
         </div>
       </div>
 
-      {/* Euros perdidos highlight */}
-      <div ref={euroRef} className="rounded-[24px] p-8 sm:p-10 text-center"
-        style={{
-          background: "linear-gradient(135deg, rgba(123,47,255,0.85), rgba(88,28,220,0.9))",
-          boxShadow: "0 0 60px rgba(123,47,255,0.35), 0 8px 40px rgba(0,0,0,0.3)",
-        }}
-      >
-        <p className="text-white/70 text-sm font-mono tracking-wider mb-2">Estimativa de perda mensal</p>
-        <p className="font-display text-white" style={{ fontSize: "clamp(3rem, 8vw, 5rem)", fontWeight: 800, letterSpacing: "-0.04em", lineHeight: 1 }}>
-          €{euroCount.toLocaleString("pt-PT")}
-          <span className="text-white/60 text-2xl font-normal">/mês</span>
-        </p>
-        <p className="text-white/70 mt-3 text-sm">por não teres estas ferramentas implementadas</p>
-      </div>
-
       {/* Recomendação principal */}
       <div className="rounded-[20px] p-6"
         style={{
@@ -503,7 +450,9 @@ function ResultState({
       {/* CTAs */}
       <div className="flex flex-col sm:flex-row gap-3">
         <a
-          href="mailto:admin@altusmedia.pt"
+          href="https://cal.com/altusmedia"
+          target="_blank"
+          rel="noopener noreferrer"
           className="btn-primary flex-1 flex items-center justify-center gap-2 text-center !rounded-xl"
           style={{ padding: "14px 24px" }}
         >
