@@ -450,13 +450,13 @@ function ResultState({ analise, onReset }: { analise: Analise; onReset: () => vo
 
       {/* CTAs */}
       <div className="flex flex-col sm:flex-row gap-3">
-        <a
-          href="https://cal.com/altusmedia"
+        <button
+          onClick={openBooking}
           className="btn-primary flex-1 flex items-center justify-center gap-2 text-center !rounded-xl"
           style={{ padding: "14px 24px" }}
         >
           Quero resolver isto — falar com a equipa <ArrowRight size={16} />
-        </a>
+        </button>
         <button
           onClick={onReset}
           className="flex-1 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
