@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useBooking } from "@/contexts/BookingContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe, Instagram, MessageCircle, BarChart2, ArrowRight, ArrowUpRight } from "lucide-react";
 
@@ -142,6 +143,7 @@ function ScoreCircle({ score }: { score: number }) {
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 const AIDiagnostic = () => {
+  const { openBooking } = useBooking();
   const [estado, setEstado] = useState<Estado>("form");
   const [msgIdx, setMsgIdx] = useState(0);
   const [analise, setAnalise] = useState<Analise | null>(null);
@@ -202,7 +204,7 @@ const AIDiagnostic = () => {
           )}
           {estado === "result" && analise && (
             <motion.div key="result" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-              <ResultState analise={analise} onReset={reset} />
+              <ResultState analise={analise} onReset={reset} openBooking={openBooking} />
             </motion.div>
           )}
         </AnimatePresence>
@@ -353,7 +355,7 @@ function LoadingState({ msgIdx }: { msgIdx: number }) {
 
 // ─── Result State ─────────────────────────────────────────────────────────────
 
-function ResultState({ analise, onReset }: { analise: Analise; onReset: () => void }) {
+function ResultState({ analise, onReset, openBooking }: { analise: Analise; onReset: () => void; openBooking: () => void }) {
   return (
     <div className="space-y-6">
       {/* Header: score + title */}
@@ -449,13 +451,13 @@ function ResultState({ analise, onReset }: { analise: Analise; onReset: () => vo
 
       {/* CTAs */}
       <div className="flex flex-col sm:flex-row gap-3">
-        <a
-          href="https://cal.com/altusmedia"
+        <button
+          onClick={openBooking}
           className="btn-primary flex-1 flex items-center justify-center gap-2 text-center !rounded-xl"
           style={{ padding: "14px 24px" }}
         >
           Quero resolver isto — falar com a equipa <ArrowRight size={16} />
-        </a>
+        </button>
         <button
           onClick={onReset}
           className="flex-1 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
