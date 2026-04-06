@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useBooking } from "@/contexts/BookingContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe, Instagram, MessageCircle, BarChart2, ArrowRight, ArrowUpRight } from "lucide-react";
 
