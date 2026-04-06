@@ -204,7 +204,7 @@ const AIDiagnostic = () => {
           )}
           {estado === "result" && analise && (
             <motion.div key="result" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-              <ResultState analise={analise} onReset={reset} />
+              <ResultState analise={analise} onReset={reset} openBooking={openBooking} />
             </motion.div>
           )}
         </AnimatePresence>
