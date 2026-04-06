@@ -143,6 +143,7 @@ function ScoreCircle({ score }: { score: number }) {
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 const AIDiagnostic = () => {
+  const { openBooking } = useBooking();
   const [estado, setEstado] = useState<Estado>("form");
   const [msgIdx, setMsgIdx] = useState(0);
   const [analise, setAnalise] = useState<Analise | null>(null);
