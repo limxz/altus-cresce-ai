@@ -47,8 +47,13 @@ serve(async (req) => {
       );
     }
 
-    // Server-side password comparison
-    if (data.login_password !== password) {
+    // Server-side password comparison using pgcrypto crypt()
+    const { data: match, error: cryptError } = await supabase.rpc('verify_client_password', {
+      _stored_hash: data.login_password,
+      _plain_password: password,
+    });
+
+    if (cryptError || !match) {
       return new Response(
         JSON.stringify({ error: "Invalid credentials" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
