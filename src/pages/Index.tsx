@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ROICalculator from "@/components/ROICalculator";
@@ -15,6 +16,15 @@ import AltusFooter from "@/components/AltusFooter";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background noise-overlay mesh-gradient-bg">
+      <Helmet>
+        <title>Altus Media — Agência de Marketing com IA em Portugal</title>
+        <meta name="description" content="Mais clientes para o teu negócio com inteligência artificial. Gestão de redes sociais, Meta & Google Ads e automações com IA em Portugal." />
+        <link rel="canonical" href="https://altusmedia.pt/" />
+        <meta property="og:title" content="Altus Media — Agência de Marketing com IA em Portugal" />
+        <meta property="og:description" content="Mais clientes para o teu negócio com inteligência artificial. Gestão de redes sociais, Meta & Google Ads e automações com IA em Portugal." />
+        <meta property="og:url" content="https://altusmedia.pt/" />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Navbar />
       <Hero />
       <div className="section-glow-purple"><SocialProof /></div>
