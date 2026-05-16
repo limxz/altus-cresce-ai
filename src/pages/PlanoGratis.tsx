@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Download, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
