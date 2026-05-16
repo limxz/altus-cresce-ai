@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Download, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -112,6 +113,15 @@ const PlanoGratis = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <Helmet>
+        <title>Plano de Marketing Grátis com IA — Altus Media</title>
+        <meta name="description" content="Gera o teu plano de marketing personalizado com IA em 5 passos rápidos. Estratégia adaptada ao teu negócio, grátis e sem compromisso." />
+        <link rel="canonical" href="https://altusmedia.pt/plano-gratis" />
+        <meta property="og:title" content="Gera o teu Plano de Marketing Personalizado com IA" />
+        <meta property="og:description" content="5 passos rápidos para receberes uma estratégia de marketing feita à medida do teu negócio, com IA." />
+        <meta property="og:url" content="https://altusmedia.pt/plano-gratis" />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <div className="max-w-lg w-full space-y-8">
         <div className="text-center">
           <a href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6">
