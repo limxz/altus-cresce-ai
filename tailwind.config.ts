@@ -12,8 +12,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Be Vietnam Pro", "sans-serif"],
-        sans: ["Be Vietnam Pro", "sans-serif"],
+        display: ["Space Grotesk", "Inter", "sans-serif"],
+        sans: ["Inter", "sans-serif"],
         mono: ["DM Mono", "monospace"],
       },
       colors: {
