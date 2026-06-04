@@ -41,8 +41,8 @@ const SocialProof = () => {
           style={{
             background: "linear-gradient(135deg, rgba(28,24,41,0.6), rgba(22,18,35,0.5))",
             backdropFilter: "blur(24px) saturate(180%)",
-            border: "1px solid rgba(123,47,255,0.15)",
-            boxShadow: "0 0 60px rgba(123,47,255,0.06), 0 8px 40px rgba(0,0,0,0.3)",
+            border: "1px solid rgba(30, 64, 175,0.15)",
+            boxShadow: "0 0 60px rgba(30, 64, 175,0.06), 0 8px 40px rgba(0,0,0,0.3)",
           }}
         >
           {/* Top edge highlight */}
@@ -73,7 +73,7 @@ const SocialProof = () => {
                 <div
                   key={n.label}
                   className="flex items-center gap-2 px-4 py-2 rounded-full text-sm text-muted-foreground"
-                  style={{ background: "rgba(123,47,255,0.06)", border: "1px solid rgba(123,47,255,0.12)" }}
+                  style={{ background: "rgba(30, 64, 175,0.06)", border: "1px solid rgba(30, 64, 175,0.12)" }}
                 >
                   <span>{n.emoji}</span>
                   <span>{n.label}</span>
@@ -91,7 +91,7 @@ const StatItem = ({ value, suffix, label }: { value: number; suffix: string; lab
   const { count, ref } = useCountUp(value);
   return (
     <div ref={ref} className="text-center">
-      <div className="font-display text-gradient font-bold" style={{ fontSize: "clamp(3rem, 5vw, 4rem)", letterSpacing: "-0.04em", textShadow: "0 0 30px rgba(123,47,255,0.3)" }}>
+      <div className="font-display text-gradient font-bold" style={{ fontSize: "clamp(3rem, 5vw, 4rem)", letterSpacing: "-0.04em", textShadow: "0 0 30px rgba(30, 64, 175,0.3)" }}>
         {count}
         {suffix}
       </div>

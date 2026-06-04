@@ -128,8 +128,8 @@ const WhatsAppDemo = () => {
                 businessType === bt.key ? "text-accent" : "text-muted-foreground hover:text-foreground"
               }`}
               style={{
-                background: businessType === bt.key ? "rgba(0,245,212,0.08)" : "transparent",
-                border: `1px solid ${businessType === bt.key ? "rgba(0,245,212,0.4)" : "hsl(var(--border-subtle))"}`,
+                background: businessType === bt.key ? "rgba(59, 130, 246,0.08)" : "transparent",
+                border: `1px solid ${businessType === bt.key ? "rgba(59, 130, 246,0.4)" : "hsl(var(--border-subtle))"}`,
               }}
             >
               {bt.label}
@@ -144,19 +144,19 @@ const WhatsAppDemo = () => {
           transition={{ delay: 0.3 }}
           className="rounded-[20px] overflow-hidden"
           style={{
-            border: "1px solid rgba(123,47,255,0.15)",
-            boxShadow: "0 0 60px rgba(123,47,255,0.06), 0 24px 48px rgba(0,0,0,0.4)",
+            border: "1px solid rgba(30, 64, 175,0.15)",
+            boxShadow: "0 0 60px rgba(30, 64, 175,0.06), 0 24px 48px rgba(0,0,0,0.4)",
           }}
         >
           {/* Chat header */}
-          <div className="px-5 py-4 flex items-center gap-3" style={{ background: "linear-gradient(135deg, rgba(28,24,41,0.8), rgba(22,18,35,0.7))", borderBottom: "1px solid rgba(123,47,255,0.1)" }}>
-            <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))", boxShadow: "0 0 16px rgba(123,47,255,0.4)" }}>
+          <div className="px-5 py-4 flex items-center gap-3" style={{ background: "linear-gradient(135deg, rgba(28,24,41,0.8), rgba(22,18,35,0.7))", borderBottom: "1px solid rgba(30, 64, 175,0.1)" }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))", boxShadow: "0 0 16px rgba(30, 64, 175,0.4)" }}>
               <Bot size={18} className="text-white" />
             </div>
             <div>
               <p className="text-foreground font-semibold text-sm">{BUSINESS_NAMES[businessType]}</p>
               <p className="text-muted-foreground text-xs flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-accent inline-block" style={{ boxShadow: "0 0 6px rgba(0,245,212,0.6)" }} />
+                <span className="w-2 h-2 rounded-full bg-accent inline-block" style={{ boxShadow: "0 0 6px rgba(59, 130, 246,0.6)" }} />
                 Online agora
               </p>
             </div>
@@ -204,13 +204,13 @@ const WhatsAppDemo = () => {
 
           {/* Sugestões de mensagens */}
           {messages.length === 0 && (
-            <div className="px-4 pt-2 pb-1 flex flex-wrap gap-1.5" style={{ background: "hsl(var(--surface))", borderTop: "1px solid rgba(123,47,255,0.08)" }}>
+            <div className="px-4 pt-2 pb-1 flex flex-wrap gap-1.5" style={{ background: "hsl(var(--surface))", borderTop: "1px solid rgba(30, 64, 175,0.08)" }}>
               {(SCENARIO_SUGGESTIONS[businessType] || []).map((s) => (
                 <button
                   key={s}
                   onClick={() => setInput(s)}
                   className="px-3 py-1 rounded-full text-xs text-muted-foreground hover:text-foreground transition-colors"
-                  style={{ background: "rgba(123,47,255,0.08)", border: "1px solid rgba(123,47,255,0.15)" }}
+                  style={{ background: "rgba(30, 64, 175,0.08)", border: "1px solid rgba(30, 64, 175,0.15)" }}
                 >
                   {s}
                 </button>
@@ -219,7 +219,7 @@ const WhatsAppDemo = () => {
           )}
 
           {/* Input bar */}
-          <div className="px-4 py-3 flex gap-2" style={{ background: "hsl(var(--surface))", borderTop: "1px solid rgba(123,47,255,0.1)" }}>
+          <div className="px-4 py-3 flex gap-2" style={{ background: "hsl(var(--surface))", borderTop: "1px solid rgba(30, 64, 175,0.1)" }}>
             <input
               type="text"
               value={input}
@@ -232,7 +232,7 @@ const WhatsAppDemo = () => {
               onClick={sendMessage}
               disabled={isTyping || !input.trim()}
               className="w-10 h-10 rounded-full flex items-center justify-center text-white disabled:opacity-40 transition-all duration-200"
-              style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))", boxShadow: "0 0 16px rgba(123,47,255,0.3)" }}
+              style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))", boxShadow: "0 0 16px rgba(30, 64, 175,0.3)" }}
             >
               <Send size={16} />
             </button>
