@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════
    REDESIGN — Minimal Brutalist (all decorations neutralized)
-   Palette: White · Black · Orange #FF6B35 · Gray #F5F5F5
+   Palette: White · Black · Orange #FF6B35 · Gray #FFF4EC
    ══════════════════════════════════════════════════════════ */
 
 .glass-ultra,
@@ -14,7 +14,7 @@
   transition: background 0.2s ease;
 }
 .glass-ultra:hover {
-  background: #F5F5F5;
+  background: #FFF4EC;
   border-color: #000;
   box-shadow: none;
   transform: none;
@@ -63,7 +63,7 @@
 .group:hover .icon-box-purple,
 .group:hover .icon-box-cyan,
 .group:hover .icon-box-blue {
-  background: #F5F5F5;
+  background: #FFF4EC;
   box-shadow: none;
   border-color: #000;
 }
@@ -127,5 +127,5 @@
 .metric-value-xl { font-size: clamp(3rem, 6vw, 4.5rem); }
 
 .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: #F5F5F5; }
+.custom-scrollbar::-webkit-scrollbar-track { background: #FFF4EC; }
 .custom-scrollbar::-webkit-scrollbar-thumb { background: #000; border-radius: 0; }

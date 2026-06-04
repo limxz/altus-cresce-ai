@@ -6,7 +6,7 @@
 
 /* ══════════════════════════════════════════════════════════
    MINIMAL BRUTALIST — Altus Media
-   Palette: White #FFFFFF · Black #000000 · Orange #FF6B35 · Gray #F5F5F5
+   Palette: White #FFFFFF · Black #000000 · Orange #FF6B35 · Gray #FFF4EC
    Typography: Inter (system fallback to Helvetica Neue / Arial)
    ══════════════════════════════════════════════════════════ */
 
@@ -26,7 +26,7 @@
     --accent: 16 100% 60%;              /* #FF6B35 */
     --accent-foreground: 0 0% 100%;
 
-    --muted: 0 0% 96%;                  /* #F5F5F5 */
+    --muted: 24 100% 96%;               /* #FFF4EC warm cream */
     --muted-foreground: 0 0% 35%;
     --destructive: 0 70% 45%;
     --destructive-foreground: 0 0% 100%;
@@ -39,14 +39,14 @@
     --sidebar-foreground: 0 0% 0%;
     --sidebar-primary: 0 0% 0%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent: 24 100% 96%;
     --sidebar-accent-foreground: 0 0% 0%;
     --sidebar-border: 0 0% 0%;
     --sidebar-ring: 16 100% 60%;
 
     --surface: 0 0% 100%;
     --surface-card: 0 0% 100%;
-    --surface-elevated: 0 0% 96%;
+    --surface-elevated: 24 100% 96%;
     --border-subtle: 0 0% 85%;
     --border-accent: 0 0% 0%;
     --border-bright: 0 0% 0%;
@@ -94,7 +94,7 @@
   }
 
   ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-track { background: #F5F5F5; }
+  ::-webkit-scrollbar-track { background: #FFF4EC; }
   ::-webkit-scrollbar-thumb { background: #000; border-radius: 0; }
 
   *:focus-visible {
@@ -142,7 +142,7 @@
   }
   .btn-outline:hover,
   .btn-glass:hover {
-    background: #F5F5F5;
+    background: #FFF4EC;
     color: #000;
     border-color: #000;
   }
@@ -157,7 +157,7 @@
     transition: background 0.2s ease;
   }
   .glass-card:hover {
-    background: #F5F5F5;
+    background: #FFF4EC;
     border-color: #000;
     box-shadow: none;
     transform: none;
