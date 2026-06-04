@@ -89,7 +89,7 @@ const Hero = () => {
           transition={{ delay: 1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
-          <button onClick={openBooking} className="btn-primary glow-pulse">
+          <button onClick={openBooking} className="btn-primary">
             Fala Connosco
           </button>
           <a href="#servicos" className="btn-glass">
