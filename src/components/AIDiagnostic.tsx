@@ -223,15 +223,15 @@ function FormState({ form, setForm, onSubmit }: { form: FormData; setForm: (f: F
       style={{
         background: "rgba(28,24,41,0.6)",
         backdropFilter: "blur(32px) saturate(180%)",
-        border: "1px solid rgba(123,47,255,0.18)",
-        boxShadow: "0 0 80px rgba(123,47,255,0.08), 0 8px 40px rgba(0,0,0,0.35)",
+        border: "1px solid rgba(30, 64, 175,0.18)",
+        boxShadow: "0 0 80px rgba(30, 64, 175,0.08), 0 8px 40px rgba(0,0,0,0.35)",
       }}
     >
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
       <div className="p-8 sm:p-12">
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase mb-5"
-            style={{ background: "rgba(123,47,255,0.12)", border: "1px solid rgba(123,47,255,0.2)", color: "rgba(167,139,250,0.9)" }}>
+            style={{ background: "rgba(30, 64, 175,0.12)", border: "1px solid rgba(30, 64, 175,0.2)", color: "rgba(167,139,250,0.9)" }}>
             ✦ IA em tempo real
           </div>
           <h2 className="font-display text-foreground mb-3"
@@ -306,13 +306,13 @@ function LoadingState({ msgIdx }: { msgIdx: number }) {
       <div className="relative w-20 h-20">
         <motion.div
           className="absolute inset-0 rounded-full"
-          style={{ border: "2px solid rgba(123,47,255,0.15)" }}
+          style={{ border: "2px solid rgba(30, 64, 175,0.15)" }}
         />
         <motion.div
           className="absolute inset-0 rounded-full"
           style={{
             border: "2px solid transparent",
-            borderTopColor: "rgba(123,47,255,0.9)",
+            borderTopColor: "rgba(30, 64, 175,0.9)",
             borderRightColor: "rgba(45,212,191,0.5)",
           }}
           animate={{ rotate: 360 }}
@@ -343,7 +343,7 @@ function LoadingState({ msgIdx }: { msgIdx: number }) {
           <motion.div
             key={i}
             className="w-2 h-2 rounded-full"
-            style={{ background: i <= msgIdx ? "rgba(123,47,255,0.9)" : "rgba(255,255,255,0.1)" }}
+            style={{ background: i <= msgIdx ? "rgba(30, 64, 175,0.9)" : "rgba(255,255,255,0.1)" }}
             animate={{ scale: i === msgIdx ? 1.3 : 1 }}
             transition={{ duration: 0.3 }}
           />
@@ -363,8 +363,8 @@ function ResultState({ analise, onReset, openBooking }: { analise: Analise; onRe
         style={{
           background: "rgba(28,24,41,0.6)",
           backdropFilter: "blur(32px)",
-          border: "1px solid rgba(123,47,255,0.15)",
-          boxShadow: "0 0 60px rgba(123,47,255,0.07)",
+          border: "1px solid rgba(30, 64, 175,0.15)",
+          boxShadow: "0 0 60px rgba(30, 64, 175,0.07)",
         }}
       >
         <ScoreCircle score={analise.score} />
@@ -391,7 +391,7 @@ function ResultState({ analise, onReset, openBooking }: { analise: Analise; onRe
               style={{
                 background: "rgba(28,24,41,0.5)",
                 backdropFilter: "blur(20px)",
-                border: "1px solid rgba(123,47,255,0.1)",
+                border: "1px solid rgba(30, 64, 175,0.1)",
               }}
             >
               <div className="flex items-start justify-between gap-3 mb-3">
@@ -418,7 +418,7 @@ function ResultState({ analise, onReset, openBooking }: { analise: Analise; onRe
         style={{
           background: "rgba(28,24,41,0.5)",
           backdropFilter: "blur(20px)",
-          border: "1px solid rgba(123,47,255,0.1)",
+          border: "1px solid rgba(30, 64, 175,0.1)",
         }}
       >
         <p className="text-xs font-mono tracking-widest uppercase text-muted-foreground mb-5">Oportunidades identificadas</p>
@@ -441,11 +441,11 @@ function ResultState({ analise, onReset, openBooking }: { analise: Analise; onRe
       {/* Recomendação principal */}
       <div className="rounded-[20px] p-6"
         style={{
-          background: "rgba(0,245,212,0.04)",
-          border: "1px solid rgba(0,245,212,0.15)",
+          background: "rgba(59, 130, 246,0.04)",
+          border: "1px solid rgba(59, 130, 246,0.15)",
         }}
       >
-        <p className="text-xs font-mono tracking-widest uppercase mb-3" style={{ color: "rgba(0,245,212,0.7)" }}>Recomendação principal</p>
+        <p className="text-xs font-mono tracking-widest uppercase mb-3" style={{ color: "rgba(59, 130, 246,0.7)" }}>Recomendação principal</p>
         <p className="text-foreground font-medium leading-relaxed">{analise.recomendacao_principal}</p>
       </div>
 

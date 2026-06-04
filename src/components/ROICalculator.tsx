@@ -57,8 +57,8 @@ const ROICalculator = () => {
             background: "rgba(28, 24, 41, 0.55)",
             backdropFilter: "blur(32px) saturate(200%)",
             WebkitBackdropFilter: "blur(32px) saturate(200%)",
-            border: "1px solid rgba(123,47,255,0.15)",
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 40px rgba(0,0,0,0.35), 0 0 60px rgba(123,47,255,0.06)",
+            border: "1px solid rgba(30, 64, 175,0.15)",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 40px rgba(0,0,0,0.35), 0 0 60px rgba(30, 64, 175,0.06)",
           }}
         >
           {/* Top edge highlight */}
@@ -107,7 +107,7 @@ const ROICalculator = () => {
                 background: "rgba(28, 24, 41, 0.5)",
                 backdropFilter: "blur(20px) saturate(160%)",
                 WebkitBackdropFilter: "blur(20px) saturate(160%)",
-                border: "1px solid rgba(123,47,255,0.12)",
+                border: "1px solid rgba(30, 64, 175,0.12)",
                 boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.25)",
               }}
               onMouseEnter={(e) => {
@@ -116,7 +116,7 @@ const ROICalculator = () => {
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(123,47,255,0.12)";
+                e.currentTarget.style.borderColor = "rgba(30, 64, 175,0.12)";
                 e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}

@@ -18,7 +18,7 @@ const HowItWorks = () => {
 
         <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Connecting line */}
-          <div className="hidden md:block absolute top-[30px] left-[16%] right-[16%] h-px" style={{ background: "linear-gradient(to right, transparent, rgba(123,47,255,0.3), rgba(45,156,255,0.3), transparent)" }} />
+          <div className="hidden md:block absolute top-[30px] left-[16%] right-[16%] h-px" style={{ background: "linear-gradient(to right, transparent, rgba(30, 64, 175,0.3), rgba(59, 130, 246,0.3), transparent)" }} />
 
           {steps.map((step, i) => (
             <FadeIn key={i} delay={i * 0.2} className="text-center relative">
@@ -26,7 +26,7 @@ const HowItWorks = () => {
                 className="w-[60px] h-[60px] mx-auto rounded-full flex items-center justify-center mb-6 relative"
                 style={{
                   background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))",
-                  boxShadow: "0 0 32px rgba(123,47,255,0.35), 0 0 12px rgba(45,156,255,0.2)",
+                  boxShadow: "0 0 32px rgba(30, 64, 175,0.35), 0 0 12px rgba(59, 130, 246,0.2)",
                 }}
               >
                 <span className="text-white font-mono font-medium text-base">{step.num}</span>
