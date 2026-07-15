@@ -24,6 +24,7 @@ import Setup from "./pages/admin/Setup";
 import Diagnosticos from "./pages/admin/Diagnosticos";
 import Analytics from "./pages/admin/Analytics";
 import Pipeline from "./pages/admin/Pipeline";
+import Proofs from "./pages/admin/Proofs";
 
 import ClientLogin from "./pages/clientes/ClientLogin";
 import ClientPortal from "./pages/clientes/ClientPortal";
@@ -62,6 +63,7 @@ const App = () => (
                 <Route path="whatsapp" element={<WhatsAppAgents />} />
                 <Route path="analytics" element={<Analytics />} />
                 <Route path="pipeline" element={<Pipeline />} />
+                <Route path="proofs" element={<Proofs />} />
                 <Route path="setup" element={<Setup />} />
               </Route>
               <Route path="/clientes" element={<ClientLogin />} />
