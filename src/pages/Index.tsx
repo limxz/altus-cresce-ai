@@ -9,7 +9,7 @@ import HowItWorks from "@/components/HowItWorks";
 import WhyAltus from "@/components/WhyAltus";
 import Tools from "@/components/Tools";
 import Testimonials from "@/components/Testimonials";
-import ProofsGrid from "@/components/ProofsGrid";
+
 import AltusFAQ from "@/components/AltusFAQ";
 import FinalCTA from "@/components/FinalCTA";
 import AltusFooter from "@/components/AltusFooter";
@@ -36,7 +36,7 @@ const Index = () => {
       <div className="section-glow-right"><WhyAltus /></div>
       <Tools />
       <div className="section-glow-center"><Testimonials /></div>
-      <div className="section-glow-purple"><ProofsGrid /></div>
+      
       <div className="section-glow-center"><AltusFAQ /></div>
       <div className="section-glow-purple"><FinalCTA /></div>
       <AltusFooter />
