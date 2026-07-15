@@ -442,44 +442,44 @@ export type Database = {
         }
         Relationships: []
       }
-      proofs: {
+      testimonials: {
         Row: {
           active: boolean
-          client_name: string | null
+          avatar_url: string | null
+          company: string | null
           created_at: string
-          description: string | null
           display_order: number
-          featured: boolean
           id: string
-          media_url: string | null
-          title: string
-          type: string
+          name: string
+          quote: string
+          rating: number
+          role: string | null
           updated_at: string
         }
         Insert: {
           active?: boolean
-          client_name?: string | null
+          avatar_url?: string | null
+          company?: string | null
           created_at?: string
-          description?: string | null
           display_order?: number
-          featured?: boolean
           id?: string
-          media_url?: string | null
-          title: string
-          type: string
+          name: string
+          quote: string
+          rating?: number
+          role?: string | null
           updated_at?: string
         }
         Update: {
           active?: boolean
-          client_name?: string | null
+          avatar_url?: string | null
+          company?: string | null
           created_at?: string
-          description?: string | null
           display_order?: number
-          featured?: boolean
           id?: string
-          media_url?: string | null
-          title?: string
-          type?: string
+          name?: string
+          quote?: string
+          rating?: number
+          role?: string | null
           updated_at?: string
         }
         Relationships: []
