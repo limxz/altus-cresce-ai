@@ -46,17 +46,16 @@ const FinalCTA = () => {
                   letterSpacing: "-0.03em",
                 }}
               >
-                Pronto para <em className="not-italic text-gradient">crescer?</em>
+                Pronto para gerar mais <em className="not-italic text-gradient">clientes?</em>
               </h2>
-              <p className="text-muted-foreground text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-                Marca uma chamada gratuita de 20 minutos e descobre como a IA pode
-                transformar o teu negócio.
+              <p className="text-muted-foreground text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
+                Agenda uma reunião gratuita e descobre como podemos implementar um sistema completo de aquisição de clientes para o teu negócio.
               </p>
               <button
                 onClick={openBooking}
                 className="btn-primary !px-12 !py-4 !text-base group-hover:shadow-[0_0_40px_rgba(123,47,255,0.4)] transition-shadow duration-500"
               >
-                Agendar Chamada Gratuita
+                Falar Connosco
               </button>
             </div>
           </div>

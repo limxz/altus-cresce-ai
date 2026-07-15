@@ -8,24 +8,33 @@ import {
 
 const faqs = [
   {
+    q: "Tenho contrato de fidelização?",
+    a: "Não. Trabalhamos mês a mês. Ficas connosco porque estás a ter resultados, não porque assinaste um papel.",
+  },
+  {
     q: "Quanto tempo demora a ver resultados?",
-    a: "Normalmente, os primeiros resultados aparecem nas primeiras 2 a 4 semanas. Resultados consistentes e significativos surgem após 2 a 3 meses de trabalho contínuo.",
+    a: "Os primeiros leads costumam aparecer nas primeiras 2 a 4 semanas. Resultados consistentes estabilizam entre o 2.º e o 3.º mês.",
   },
   {
-    q: "Preciso de saber de marketing?",
-    a: "Não! Nós tratamos de tudo. Só precisamos que nos dês informações básicas sobre o teu negócio e nós cuidamos de toda a estratégia e execução.",
+    q: "Quanto custa trabalhar com a Altus?",
+    a: "Depende dos serviços e do volume de investimento em ads. Numa auditoria gratuita mostramos-te uma proposta transparente adaptada ao teu negócio.",
   },
   {
-    q: "Qual é o investimento mínimo?",
-    a: "Os nossos pacotes começam nos €297/mês. Cada pacote é personalizado às necessidades do teu negócio para garantir o melhor retorno possível.",
+    q: "Que tipo de negócios aceitam?",
+    a: "PME e negócios locais em Portugal — clínicas, ginásios, escolas, imobiliárias, estética, AVAC, restauração, serviços. Se tens clientes, podemos gerar mais.",
   },
   {
-    q: "Trabalham com que tipo de negócios?",
-    a: "Trabalhamos com qualquer negócio local — restaurantes, clínicas, ginásios, imobiliárias, lojas e muito mais. Se tens clientes, podemos ajudar-te a ter mais.",
+    q: "Trabalham em todo o país?",
+    o: "sim",
+    a: "Sim. Trabalhamos 100% remoto e servimos negócios em todo o território nacional, do Minho ao Algarve, ilhas incluídas.",
   },
   {
-    q: "Como é feito o pagamento?",
-    a: "O pagamento é mensal, por transferência bancária, MB Way ou Stripe. Sem contratos de fidelização — ficas connosco porque queres, não porque és obrigado.",
+    q: "Como funciona o pagamento?",
+    a: "Mensalidade fixa por transferência bancária, MB Way ou Stripe. O investimento em anúncios é pago directamente à Meta / Google pela tua conta.",
+  },
+  {
+    q: "Preciso de perceber de marketing?",
+    a: "Não. Tratamos de tudo — estratégia, criativos, campanhas, automações e relatórios. Tu só precisas de fechar os clientes que te chegam.",
   },
 ];
 
