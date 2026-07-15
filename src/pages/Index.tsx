@@ -19,10 +19,10 @@ const Index = () => {
     <div className="min-h-screen bg-background noise-overlay mesh-gradient-bg">
       <Helmet>
         <title>Altus Media — Geramos clientes para negócios locais em Portugal</title>
-        <meta name="description" content="Meta Ads, Google Ads, websites de alta conversão e agentes de IA que respondem, qualificam e agendam clientes automaticamente. Auditoria gratuita." />
+        <meta name="description" content="Meta Ads, websites de alta conversão e agentes de IA que respondem, qualificam e agendam clientes automaticamente. Auditoria gratuita." />
         <link rel="canonical" href="https://altusmedia.pt/" />
         <meta property="og:title" content="Altus Media — Geramos clientes para negócios locais" />
-        <meta property="og:description" content="Meta Ads, Google Ads, websites de alta conversão e IA que responde aos teus clientes 24/7." />
+        <meta property="og:description" content="Meta Ads, websites de alta conversão e IA que responde aos teus clientes 24/7." />
         <meta property="og:url" content="https://altusmedia.pt/" />
         <meta property="og:type" content="website" />
       </Helmet>

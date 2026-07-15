@@ -52,7 +52,7 @@ const Hero = () => {
           transition={{ delay: 0.75, duration: 0.6 }}
           className="text-lg md:text-xl text-muted-foreground max-w-[640px] mx-auto mb-4 leading-relaxed"
         >
-          Meta Ads, Google Ads e Inteligência Artificial ao serviço do teu negócio.
+          Meta Ads e Inteligência Artificial ao serviço do teu negócio.
         </motion.p>
         <motion.p
           initial={{ opacity: 0, y: 20 }}

@@ -4,9 +4,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useBooking } from "@/contexts/BookingContext";
 
 const navLinks = [
-  { label: "Serviços", href: "#servicos" },
+  { label: "Sistema", href: "#sistema" },
   { label: "Resultados", href: "#resultados" },
-  { label: "Plano Grátis", href: "/plano-gratis" },
+  { label: "Cases", href: "#cases" },
   { label: "Contacto", href: "#contacto" },
 ];
 

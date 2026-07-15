@@ -1,8 +1,7 @@
 # Altus Media
 
-> Agência de marketing com inteligência artificial em Portugal. Usamos IA para trazer mais clientes a negócios locais através de redes sociais, Meta & Google Ads e automações.
+> Agência de marketing com IA em Portugal. Meta Ads, websites de alta conversão e agentes de IA que geram, qualificam e agendam clientes automaticamente para negócios locais.
 
-## Pages
+## Páginas
 
-- [Home](/): Visão geral dos serviços de marketing com IA, resultados, FAQ e contacto.
-- [Plano Grátis](/plano-gratis): Gerador interativo de plano de marketing personalizado com IA em 5 passos.
+- [Homepage](/): Serviços, sistema de aquisição, case studies, provas reais, testemunhos, FAQ e contacto.

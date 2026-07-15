@@ -8,7 +8,7 @@ import { BookingProvider } from "@/contexts/BookingContext";
 import { ClientAuthProvider, ProtectedClientRoute } from "@/contexts/ClientAuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import PlanoGratis from "./pages/PlanoGratis";
+
 
 import Login from "./pages/admin/Login";
 import AdminLayout from "./components/admin/AdminLayout";
@@ -41,7 +41,7 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/plano-gratis" element={<PlanoGratis />} />
+              
               <Route path="/admin/login" element={<Login />} />
               <Route
                 path="/admin"
