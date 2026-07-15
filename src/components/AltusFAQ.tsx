@@ -25,7 +25,6 @@ const faqs = [
   },
   {
     q: "Trabalham em todo o país?",
-    o: "sim",
     a: "Sim. Trabalhamos 100% remoto e servimos negócios em todo o território nacional, do Minho ao Algarve, ilhas incluídas.",
   },
   {
