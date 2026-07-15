@@ -28,7 +28,7 @@ const navItems = [
   { label: "WhatsApp Agents", path: "/admin/whatsapp", icon: Bot },
   { label: "Analytics", path: "/admin/analytics", icon: BarChart3 },
   { label: "Pipeline", path: "/admin/pipeline", icon: Kanban },
-  { label: "Provas Reais", path: "/admin/proofs", icon: Sparkles },
+  { label: "Testemunhos", path: "/admin/testimonials", icon: Sparkles },
   { label: "Preços", path: "/admin/pricing", icon: DollarSign },
   { label: "Diagnósticos", path: "/admin/diagnosticos", icon: Stethoscope },
   { label: "Apresentações", path: "/admin/presentations", icon: Presentation },
