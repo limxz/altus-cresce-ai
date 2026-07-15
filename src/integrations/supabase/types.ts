@@ -442,6 +442,48 @@ export type Database = {
         }
         Relationships: []
       }
+      proofs: {
+        Row: {
+          active: boolean
+          client_name: string | null
+          created_at: string
+          description: string | null
+          display_order: number
+          featured: boolean
+          id: string
+          media_url: string | null
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          client_name?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          featured?: boolean
+          id?: string
+          media_url?: string | null
+          title: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          client_name?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          featured?: boolean
+          id?: string
+          media_url?: string | null
+          title?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
