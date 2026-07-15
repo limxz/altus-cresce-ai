@@ -204,7 +204,7 @@ const ROITab = () => {
         <p className="text-muted-foreground text-sm">este mês</p>
         {/* Fórmula visível abaixo do valor */}
         <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs text-muted-foreground"
-          style={{ background: "rgba(30, 64, 175,0.06)", border: "1px solid rgba(30, 64, 175,0.12)" }}>
+          style={{ background: "rgba(123,47,255,0.06)", border: "1px solid rgba(123,47,255,0.12)" }}>
           <span><strong className="text-foreground">{displayConvos} leads</strong> × €{avgValue} × {Math.round(conversionRate * 100)}% = <strong className="text-primary">€{botROI}</strong></span>
         </div>
       </div>

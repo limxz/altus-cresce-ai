@@ -2,7 +2,7 @@ import { Instagram } from "lucide-react";
 
 const AltusFooter = () => {
   return (
-    <footer className="py-16 px-6" style={{ borderTop: "1px solid rgba(30, 64, 175,0.1)" }}>
+    <footer className="py-16 px-6" style={{ borderTop: "1px solid rgba(123,47,255,0.1)" }}>
       <div className="max-w-[1200px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Brand */}
@@ -50,7 +50,7 @@ const AltusFooter = () => {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors duration-200 text-sm"
               >
-                <div className="w-10 h-10 rounded-[10px] flex items-center justify-center transition-all duration-200 hover:border-accent/30" style={{ background: "rgba(28,24,41,0.6)", border: "1px solid rgba(30, 64, 175,0.12)" }}>
+                <div className="w-10 h-10 rounded-[10px] flex items-center justify-center transition-all duration-200 hover:border-accent/30" style={{ background: "rgba(28,24,41,0.6)", border: "1px solid rgba(123,47,255,0.12)" }}>
                   <Instagram size={18} className="text-primary" />
                 </div>
                 @altusmedia.agency
@@ -59,7 +59,7 @@ const AltusFooter = () => {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4" style={{ borderTop: "1px solid rgba(30, 64, 175,0.08)" }}>
+        <div className="mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4" style={{ borderTop: "1px solid rgba(123,47,255,0.08)" }}>
           <p className="text-muted-foreground text-xs font-mono">
             © 2025 Altus Media · Portugal
           </p>
