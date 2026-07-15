@@ -1,34 +1,42 @@
+import { useEffect, useState } from "react";
 import { FadeIn } from "./FadeIn";
 import { Star } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-const testimonials = [
-  {
-    initials: "MR",
-    name: "Marco Ribeiro",
-    role: "Proprietário",
-    company: "Gracie Barra",
-    text: "Em menos de dois meses tínhamos leads todos os dias no WhatsApp. O agente de IA responde melhor do que muita gente que já contratei.",
-    rating: 5,
-  },
-  {
-    initials: "AC",
-    name: "Ana Costa",
-    role: "Directora",
-    company: "Clínica Local",
-    text: "Finalmente uma agência que fala de resultados, não de likes. Sabemos exactamente onde está cada euro investido.",
-    rating: 5,
-  },
-  {
-    initials: "PF",
-    name: "Pedro Ferreira",
-    role: "CEO",
-    company: "PME de serviços",
-    text: "Passámos de responder mensagens à noite para receber reuniões agendadas no calendário. Mudou completamente o negócio.",
-    rating: 5,
-  },
+interface Testimonial {
+  id: string;
+  name: string;
+  role: string | null;
+  company: string | null;
+  quote: string;
+  rating: number;
+  avatar_url: string | null;
+}
+
+const fallback: Testimonial[] = [
+  { id: "f1", name: "Marco Ribeiro", role: "Proprietário", company: "Gracie Barra", quote: "Em menos de dois meses tínhamos leads todos os dias no WhatsApp. O agente de IA responde melhor do que muita gente que já contratei.", rating: 5, avatar_url: null },
+  { id: "f2", name: "Ana Costa", role: "Directora", company: "Clínica Local", quote: "Finalmente uma agência que fala de resultados, não de likes. Sabemos exactamente onde está cada euro investido.", rating: 5, avatar_url: null },
+  { id: "f3", name: "Pedro Ferreira", role: "CEO", company: "PME de serviços", quote: "Passámos de responder mensagens à noite para receber reuniões agendadas no calendário. Mudou completamente o negócio.", rating: 5, avatar_url: null },
 ];
 
+const initialsOf = (n: string) =>
+  n.split(" ").filter(Boolean).slice(0, 2).map((s) => s[0]?.toUpperCase()).join("");
+
 const Testimonials = () => {
+  const [items, setItems] = useState<Testimonial[]>(fallback);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await (supabase as any)
+        .from("testimonials")
+        .select("id, name, role, company, quote, rating, avatar_url")
+        .eq("active", true)
+        .order("display_order", { ascending: true })
+        .order("created_at", { ascending: false });
+      if (data && data.length > 0) setItems(data as Testimonial[]);
+    })();
+  }, []);
+
   return (
     <section className="py-24 px-6">
       <div className="max-w-[1200px] mx-auto">
@@ -40,8 +48,8 @@ const Testimonials = () => {
         </FadeIn>
 
         <div className="grid md:grid-cols-3 gap-5">
-          {testimonials.map((t, i) => (
-            <FadeIn key={t.name} delay={i * 0.1}>
+          {items.map((t, i) => (
+            <FadeIn key={t.id} delay={i * 0.1}>
               <div className="glass-card p-7 h-full flex flex-col">
                 <div className="flex gap-0.5 mb-4">
                   {Array.from({ length: t.rating }).map((_, k) => (
@@ -49,15 +57,21 @@ const Testimonials = () => {
                   ))}
                 </div>
                 <p className="text-foreground/90 text-[0.9375rem] leading-relaxed flex-1 mb-6">
-                  "{t.text}"
+                  "{t.quote}"
                 </p>
                 <div className="flex items-center gap-3 pt-4 border-t border-white/5">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center font-display font-semibold text-accent text-sm" style={{ background: "rgba(123,47,255,0.12)", border: "1px solid rgba(123,47,255,0.2)" }}>
-                    {t.initials}
-                  </div>
+                  {t.avatar_url ? (
+                    <img src={t.avatar_url} alt={t.name} className="w-10 h-10 rounded-full object-cover" />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center font-display font-semibold text-accent text-sm" style={{ background: "rgba(123,47,255,0.12)", border: "1px solid rgba(123,47,255,0.2)" }}>
+                      {initialsOf(t.name)}
+                    </div>
+                  )}
                   <div>
                     <div className="text-foreground text-sm font-medium">{t.name}</div>
-                    <div className="text-muted-foreground text-xs">{t.role} · {t.company}</div>
+                    <div className="text-muted-foreground text-xs">
+                      {[t.role, t.company].filter(Boolean).join(" · ")}
+                    </div>
                   </div>
                 </div>
               </div>
