@@ -111,12 +111,8 @@ const WhatsAppDemo = () => {
   return (
     <section ref={sectionRef} className="py-24 px-6">
       <div className="max-w-2xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} className="text-center mb-10">
-          <h2 className="font-display text-foreground mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 700, letterSpacing: "-0.03em" }}>
-            Experimenta o teu <span className="text-gradient">agente IA</span> agora
-          </h2>
-          <p className="text-muted-foreground text-lg">Escreve como se fosses um cliente do teu negócio</p>
-        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} className="text-center mb-10" />
+
 
         {/* Business type selector */}
         <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.2 }} className="flex flex-wrap justify-center gap-2 mb-8">

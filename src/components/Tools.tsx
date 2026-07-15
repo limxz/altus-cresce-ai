@@ -1,8 +1,8 @@
 import { FadeIn } from "./FadeIn";
 
 const tools = [
-  "Meta", "Google Ads", "Google Analytics", "OpenAI", "WhatsApp",
-  "n8n", "Cloudflare", "Stripe", "Google Tag Manager",
+  "Meta", "Instagram", "Facebook", "WhatsApp", "OpenAI",
+  "n8n", "Cloudflare", "Stripe", "Supabase",
 ];
 
 const Tools = () => {

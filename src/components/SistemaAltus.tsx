@@ -2,7 +2,7 @@ import { FadeIn } from "./FadeIn";
 import { Megaphone, LayoutTemplate, Sparkles, MessageCircle, Repeat, UserCheck, ArrowRight } from "lucide-react";
 
 const steps = [
-  { icon: Megaphone, title: "Anúncios", desc: "Meta Ads e Google Ads segmentados para o teu público certo." },
+  { icon: Megaphone, title: "Anúncios", desc: "Campanhas Meta (Instagram e Facebook) segmentadas para o teu público certo." },
   { icon: LayoutTemplate, title: "Landing Page", desc: "Página desenhada para converter visitas em contactos qualificados." },
   { icon: Sparkles, title: "IA", desc: "Um agente inteligente qualifica e prioriza cada lead em tempo real." },
   { icon: MessageCircle, title: "WhatsApp", desc: "Resposta imediata 24/7 pelo canal que os teus clientes já usam." },

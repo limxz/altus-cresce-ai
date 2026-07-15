@@ -29,7 +29,7 @@ const faqs = [
   },
   {
     q: "Como funciona o pagamento?",
-    a: "Mensalidade fixa por transferência bancária, MB Way ou Stripe. O investimento em anúncios é pago directamente à Meta / Google pela tua conta.",
+    a: "Mensalidade fixa por transferência bancária, MB Way ou Stripe. O investimento em anúncios é pago directamente à Meta pela tua conta.",
   },
   {
     q: "Preciso de perceber de marketing?",

@@ -3,7 +3,7 @@ import { FadeIn } from "./FadeIn";
 const steps = [
   { num: "01", title: "Analisamos o teu negócio", desc: "Auditoria completa ao teu funil, concorrência e oportunidades." },
   { num: "02", title: "Criamos o sistema", desc: "Landing page, campanhas, agente de IA e automações à medida." },
-  { num: "03", title: "Lançamos campanhas", desc: "Meta Ads e Google Ads no ar em poucos dias, prontos a gerar leads." },
+  { num: "03", title: "Lançamos campanhas", desc: "Campanhas Meta no ar em poucos dias, prontas a gerar leads." },
   { num: "04", title: "Otimizamos continuamente", desc: "Testamos, ajustamos e escalamos o que funciona todas as semanas." },
 ];
 
