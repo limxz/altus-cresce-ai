@@ -109,11 +109,8 @@ const WhatsAppDemo = () => {
   };
 
   return (
-    <section ref={sectionRef} className="py-24 px-6">
+    <section ref={sectionRef} className="py-10 px-6">
       <div className="max-w-2xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} className="text-center mb-10" />
-
-
         {/* Business type selector */}
         <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.2 }} className="flex flex-wrap justify-center gap-2 mb-8">
           {BUSINESS_TYPES.map((bt) => (
