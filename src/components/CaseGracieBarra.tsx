@@ -1,13 +1,13 @@
 import { FadeIn } from "./FadeIn";
 import { useBooking } from "@/contexts/BookingContext";
-import { Check, ArrowRight, Target, TrendingUp, MessageCircle } from "lucide-react";
+import { Check, ArrowRight, Users, UserPlus, Wallet } from "lucide-react";
 
-const services = ["Meta Ads", "Landing Page", "WhatsApp Bot", "IA + Automações"];
+const services = ["Instagram Orgânico", "Meta Ads", "Landing Page", "WhatsApp + IA"];
 
 const metrics = [
-  { icon: Target, label: "Leads qualificados", value: "+73" },
-  { icon: TrendingUp, label: "ROAS", value: "+189%" },
-  { icon: MessageCircle, label: "Tempo de resposta", value: "< 1min" },
+  { icon: Users, label: "Seguidores em 16 dias (de 0)", value: "+407" },
+  { icon: UserPlus, label: "Pré-inscrições em 9 dias", value: "32" },
+  { icon: Wallet, label: "Custo por inscrição (média mercado: 60€)", value: "2,50€" },
 ];
 
 const CaseGracieBarra = () => {
