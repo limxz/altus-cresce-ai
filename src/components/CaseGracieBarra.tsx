@@ -38,8 +38,8 @@ const CaseGracieBarra = () => {
                   GB
                 </div>
                 <div>
-                  <h3 className="font-display text-foreground text-xl" style={{ fontWeight: 600 }}>Gracie Barra</h3>
-                  <p className="text-muted-foreground text-sm">Escola de Jiu-Jitsu · Portugal</p>
+                  <h3 className="font-display text-foreground text-xl" style={{ fontWeight: 600 }}>Gracie Barra Viana do Castelo</h3>
+                  <p className="text-muted-foreground text-sm">Escola de Jiu-Jitsu · Abertura de nova unidade</p>
                 </div>
               </div>
 
@@ -47,13 +47,13 @@ const CaseGracieBarra = () => {
                 <div>
                   <p className="text-[0.625rem] font-mono tracking-[0.15em] uppercase text-muted-foreground/70 mb-1">Desafio</p>
                   <p className="text-muted-foreground text-[0.9375rem] leading-relaxed">
-                    Aumentar o número de potenciais alunos e automatizar totalmente o atendimento inicial.
+                    Lançar do zero uma nova academia em Viana do Castelo: criar presença digital, gerar pré-inscrições antes da abertura e automatizar o atendimento.
                   </p>
                 </div>
                 <div>
                   <p className="text-[0.625rem] font-mono tracking-[0.15em] uppercase text-muted-foreground/70 mb-1">Solução</p>
                   <p className="text-muted-foreground text-[0.9375rem] leading-relaxed">
-                    Campanhas de Meta Ads, landing page de alta conversão, agente de IA no WhatsApp e follow-ups automáticos.
+                    Criação do Instagram a 1 de julho, estratégia de conteúdo orgânico, campanhas Meta Ads a partir de 7 de julho, landing page de pré-inscrição e agente de IA no WhatsApp a qualificar cada lead.
                   </p>
                 </div>
               </div>
