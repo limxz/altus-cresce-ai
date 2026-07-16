@@ -3,7 +3,7 @@ import { useBooking } from "@/contexts/BookingContext";
 import { ArrowRight, Users, UserPlus, Wallet, TrendingUp } from "lucide-react";
 import gracieLogo from "@/assets/gracie-barra-viana.png.asset.json";
 
-const services = ["Instagram Orgânico", "Meta Ads", "Landing Page", "WhatsApp + IA"];
+const services = ["Instagram Orgânico", "Meta Ads", "Landing Page"];
 
 const bigStats = [
   { icon: Users, value: "+407", label: "Novos seguidores no Instagram", sub: "Em apenas 16 dias · começámos do zero (1 julho)" },
@@ -89,7 +89,7 @@ const CaseGracieBarra = () => {
               <div>
                 <p className="text-[0.625rem] font-mono tracking-[0.15em] uppercase text-muted-foreground/70 mb-2">Solução</p>
                 <p className="text-muted-foreground text-[0.9375rem] leading-relaxed">
-                  Instagram criado a 1 de julho, estratégia de conteúdo orgânico, campanhas Meta Ads a partir de 7 de julho, landing page de pré-inscrição e agente de IA no WhatsApp a qualificar cada lead.
+                  Instagram criado a 1 de julho, estratégia de conteúdo orgânico, campanhas Meta Ads a partir de 7 de julho e landing page de pré-inscrição otimizada para conversão.
                 </p>
               </div>
             </div>
