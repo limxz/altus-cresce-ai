@@ -28,6 +28,7 @@ import TestimonialsAdmin from "./pages/admin/Testimonials";
 
 import ClientLogin from "./pages/clientes/ClientLogin";
 import ClientPortal from "./pages/clientes/ClientPortal";
+import OAuthConsent from "./pages/OAuthConsent";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,8 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
+
               
               <Route path="/admin/login" element={<Login />} />
               <Route
