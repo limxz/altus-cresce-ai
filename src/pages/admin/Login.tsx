@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Login = () => {
@@ -8,6 +8,9 @@ const Login = () => {
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const nextParam = params.get("next");
+  const safeNext = nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//") ? nextParam : null;
 
   const [loading, setLoading] = useState(false);
 
@@ -18,7 +21,7 @@ const Login = () => {
     const success = await login(email, password);
     setLoading(false);
     if (success) {
-      navigate("/admin");
+      navigate(safeNext ?? "/admin");
     } else {
       setError("Credenciais inválidas.");
     }
