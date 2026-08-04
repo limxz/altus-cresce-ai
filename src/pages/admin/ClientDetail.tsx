@@ -4,7 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Loader2, Sparkles } from "lucide-react";
+import { ArrowLeft, Loader2, Plus, Sparkles } from "lucide-react";
+import AddMetricsModal from "@/components/admin/AddMetricsModal";
 import {
   LineChart,
   Line,
@@ -78,6 +79,7 @@ const ClientDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
+  const [metricsOpen, setMetricsOpen] = useState(false);
   const [clientName, setClientName] = useState("");
   const [igMetrics, setIgMetrics] = useState<InstagramMetric[]>([]);
   const [postMetrics, setPostMetrics] = useState<PostMetric[]>([]);
@@ -203,15 +205,30 @@ const ClientDetail = () => {
             <p className="text-sm text-muted-foreground">Desempenho dos últimos 30 dias</p>
           </div>
         </div>
-        <Button onClick={handleGenerate} disabled={generating}>
-          {generating ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Sparkles className="mr-2 h-4 w-4" />
-          )}
-          Gerar recomendações IA
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" onClick={() => setMetricsOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Adicionar métricas
+          </Button>
+          <Button onClick={handleGenerate} disabled={generating}>
+            {generating ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Sparkles className="mr-2 h-4 w-4" />
+            )}
+            Gerar recomendações IA
+          </Button>
+        </div>
       </div>
+
+      {id && (
+        <AddMetricsModal
+          clientId={id}
+          open={metricsOpen}
+          onOpenChange={setMetricsOpen}
+          onSaved={load}
+        />
+      )}
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
