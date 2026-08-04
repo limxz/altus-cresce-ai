@@ -224,10 +224,10 @@ const ClientsManagement = () => {
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => navigate(`/admin/client/${c.id}`)}
-                          className="p-1.5 text-muted-foreground hover:text-primary transition-colors"
-                          title="Estatísticas"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
                         >
                           <BarChart3 size={14} />
+                          Ver estatísticas
                         </button>
                         <button
                           onClick={() => window.open(`/clientes/dashboard?admin=true&cid=${c.id}`, "_blank")}
