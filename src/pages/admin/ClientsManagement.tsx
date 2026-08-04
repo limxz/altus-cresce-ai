@@ -190,7 +190,13 @@ const ClientsManagement = () => {
                           {c.business_name.substring(0, 2).toUpperCase()}
                         </div>
                         <div>
-                          <div className="text-foreground font-medium">{c.business_name}</div>
+                          <button
+                            onClick={() => navigate(`/admin/client/${c.id}`)}
+                            className="text-foreground font-medium hover:text-primary transition-colors text-left"
+                            title="Ver estatísticas"
+                          >
+                            {c.business_name}
+                          </button>
                           <div className="text-muted-foreground text-xs">{c.contact_name}</div>
                         </div>
                       </div>
