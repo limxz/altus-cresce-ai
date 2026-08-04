@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Plus, Search, Edit2, MoreHorizontal, Pause, Trash2, ExternalLink } from "lucide-react";
+import { Plus, Search, Edit2, MoreHorizontal, Pause, Trash2, ExternalLink, BarChart3 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 import ClientFormModal from "@/components/admin/ClientFormModal";
 import {
   DropdownMenu,
