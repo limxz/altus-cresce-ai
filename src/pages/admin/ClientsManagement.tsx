@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Plus, Search, Edit2, MoreHorizontal, Pause, Trash2, ExternalLink } from "lucide-react";
+import { Plus, Search, Edit2, MoreHorizontal, Pause, Trash2, ExternalLink, BarChart3 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 import ClientFormModal from "@/components/admin/ClientFormModal";
 import {
   DropdownMenu,
@@ -73,6 +74,7 @@ const ClientsManagement = () => {
   const [editing, setEditing] = useState<ClientRow | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const fetchClients = async () => {
     const { data, error } = await supabase.from("clients" as any).select("*").order("created_at", { ascending: false });
@@ -188,7 +190,13 @@ const ClientsManagement = () => {
                           {c.business_name.substring(0, 2).toUpperCase()}
                         </div>
                         <div>
-                          <div className="text-foreground font-medium">{c.business_name}</div>
+                          <button
+                            onClick={() => navigate(`/admin/client/${c.id}`)}
+                            className="text-foreground font-medium hover:text-primary transition-colors text-left"
+                            title="Ver estatísticas"
+                          >
+                            {c.business_name}
+                          </button>
                           <div className="text-muted-foreground text-xs">{c.contact_name}</div>
                         </div>
                       </div>
@@ -214,6 +222,13 @@ const ClientsManagement = () => {
                     </td>
                     <td className="px-5 py-3 text-right">
                       <div className="flex items-center justify-end gap-1">
+                        <button
+                          onClick={() => navigate(`/admin/client/${c.id}`)}
+                          className="p-1.5 text-muted-foreground hover:text-primary transition-colors"
+                          title="Estatísticas"
+                        >
+                          <BarChart3 size={14} />
+                        </button>
                         <button
                           onClick={() => window.open(`/clientes/dashboard?admin=true&cid=${c.id}`, "_blank")}
                           className="p-1.5 text-muted-foreground hover:text-accent transition-colors"
