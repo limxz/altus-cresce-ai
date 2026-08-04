@@ -25,6 +25,7 @@ import Diagnosticos from "./pages/admin/Diagnosticos";
 import Analytics from "./pages/admin/Analytics";
 import Pipeline from "./pages/admin/Pipeline";
 import TestimonialsAdmin from "./pages/admin/Testimonials";
+import ClientDetail from "./pages/admin/ClientDetail";
 
 import ClientLogin from "./pages/clientes/ClientLogin";
 import ClientPortal from "./pages/clientes/ClientPortal";
