@@ -223,6 +223,13 @@ const ClientsManagement = () => {
                     <td className="px-5 py-3 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <button
+                          onClick={() => navigate(`/admin/client/${c.id}`)}
+                          className="p-1.5 text-muted-foreground hover:text-primary transition-colors"
+                          title="Estatísticas"
+                        >
+                          <BarChart3 size={14} />
+                        </button>
+                        <button
                           onClick={() => window.open(`/clientes/dashboard?admin=true&cid=${c.id}`, "_blank")}
                           className="p-1.5 text-muted-foreground hover:text-accent transition-colors"
                           title="Portal"
