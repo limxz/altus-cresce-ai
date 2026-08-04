@@ -25,6 +25,7 @@ import Diagnosticos from "./pages/admin/Diagnosticos";
 import Analytics from "./pages/admin/Analytics";
 import Pipeline from "./pages/admin/Pipeline";
 import TestimonialsAdmin from "./pages/admin/Testimonials";
+import ClientDetail from "./pages/admin/ClientDetail";
 
 import ClientLogin from "./pages/clientes/ClientLogin";
 import ClientPortal from "./pages/clientes/ClientPortal";
@@ -59,6 +60,7 @@ const App = () => (
                 <Route path="leads" element={<LeadsPage />} />
                 <Route path="conversations" element={<Conversations />} />
                 <Route path="clients" element={<ClientsManagement />} />
+                <Route path="client/:id" element={<ClientDetail />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path="pricing" element={<AdminPricing />} />
                 <Route path="diagnosticos" element={<Diagnosticos />} />
