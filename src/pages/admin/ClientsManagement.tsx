@@ -74,6 +74,7 @@ const ClientsManagement = () => {
   const [editing, setEditing] = useState<ClientRow | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const fetchClients = async () => {
     const { data, error } = await supabase.from("clients" as any).select("*").order("created_at", { ascending: false });
