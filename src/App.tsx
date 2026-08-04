@@ -60,6 +60,7 @@ const App = () => (
                 <Route path="leads" element={<LeadsPage />} />
                 <Route path="conversations" element={<Conversations />} />
                 <Route path="clients" element={<ClientsManagement />} />
+                <Route path="client/:id" element={<ClientDetail />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path="pricing" element={<AdminPricing />} />
                 <Route path="diagnosticos" element={<Diagnosticos />} />
