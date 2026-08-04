@@ -4,7 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Loader2, Sparkles } from "lucide-react";
+import { ArrowLeft, Loader2, Plus, Sparkles } from "lucide-react";
+import AddMetricsModal from "@/components/admin/AddMetricsModal";
 import {
   LineChart,
   Line,
