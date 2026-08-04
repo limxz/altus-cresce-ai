@@ -14,6 +14,103 @@ export type Database = {
   }
   public: {
     Tables: {
+      ad_metrics: {
+        Row: {
+          clicks: number | null
+          client_id: string
+          conversions: number | null
+          cost_per_conversion: number | null
+          cost_per_message: number | null
+          created_at: string
+          date: string
+          id: string
+          impressions: number | null
+          messages_started: number | null
+          spend: number | null
+          updated_at: string
+        }
+        Insert: {
+          clicks?: number | null
+          client_id: string
+          conversions?: number | null
+          cost_per_conversion?: number | null
+          cost_per_message?: number | null
+          created_at?: string
+          date: string
+          id?: string
+          impressions?: number | null
+          messages_started?: number | null
+          spend?: number | null
+          updated_at?: string
+        }
+        Update: {
+          clicks?: number | null
+          client_id?: string
+          conversions?: number | null
+          cost_per_conversion?: number | null
+          cost_per_message?: number | null
+          created_at?: string
+          date?: string
+          id?: string
+          impressions?: number | null
+          messages_started?: number | null
+          spend?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ad_metrics_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_recommendations: {
+        Row: {
+          client_id: string
+          created_at: string
+          generated_at: string
+          id: string
+          period_end: string | null
+          period_start: string | null
+          recommendations: Json | null
+          summary: string | null
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          generated_at?: string
+          id?: string
+          period_end?: string | null
+          period_start?: string | null
+          recommendations?: Json | null
+          summary?: string | null
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          generated_at?: string
+          id?: string
+          period_end?: string | null
+          period_start?: string | null
+          recommendations?: Json | null
+          summary?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_recommendations_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audits: {
         Row: {
           audit_json: Json | null
@@ -133,12 +230,15 @@ export type Database = {
           created_at: string | null
           facebook_baseline: number | null
           id: string
+          industry: string | null
           instagram_baseline: number | null
+          instagram_handle: string | null
           internal_notes: string | null
           leads_baseline: number | null
           login_email: string
           login_password: string
           logo_url: string | null
+          meta_ad_account_id: string | null
           mrr: number | null
           niche: string
           plan: string
@@ -155,12 +255,15 @@ export type Database = {
           created_at?: string | null
           facebook_baseline?: number | null
           id?: string
+          industry?: string | null
           instagram_baseline?: number | null
+          instagram_handle?: string | null
           internal_notes?: string | null
           leads_baseline?: number | null
           login_email: string
           login_password: string
           logo_url?: string | null
+          meta_ad_account_id?: string | null
           mrr?: number | null
           niche?: string
           plan?: string
@@ -177,12 +280,15 @@ export type Database = {
           created_at?: string | null
           facebook_baseline?: number | null
           id?: string
+          industry?: string | null
           instagram_baseline?: number | null
+          instagram_handle?: string | null
           internal_notes?: string | null
           leads_baseline?: number | null
           login_email?: string
           login_password?: string
           logo_url?: string | null
+          meta_ad_account_id?: string | null
           mrr?: number | null
           niche?: string
           plan?: string
@@ -280,6 +386,56 @@ export type Database = {
           site_url?: string | null
         }
         Relationships: []
+      }
+      instagram_metrics: {
+        Row: {
+          client_id: string
+          created_at: string
+          date: string
+          engagement_rate: number | null
+          followers_count: number | null
+          followers_gained: number | null
+          id: string
+          profile_visits: number | null
+          reach: number | null
+          updated_at: string
+          website_clicks: number | null
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          date: string
+          engagement_rate?: number | null
+          followers_count?: number | null
+          followers_gained?: number | null
+          id?: string
+          profile_visits?: number | null
+          reach?: number | null
+          updated_at?: string
+          website_clicks?: number | null
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          date?: string
+          engagement_rate?: number | null
+          followers_count?: number | null
+          followers_gained?: number | null
+          id?: string
+          profile_visits?: number | null
+          reach?: number | null
+          updated_at?: string
+          website_clicks?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "instagram_metrics_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       leads: {
         Row: {
@@ -441,6 +597,59 @@ export type Database = {
           telefone?: string | null
         }
         Relationships: []
+      }
+      post_metrics: {
+        Row: {
+          client_id: string
+          comments: number | null
+          created_at: string
+          id: string
+          likes: number | null
+          post_type: string | null
+          posted_at: string | null
+          reach: number | null
+          saves: number | null
+          script_structure: string | null
+          shares: number | null
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          comments?: number | null
+          created_at?: string
+          id?: string
+          likes?: number | null
+          post_type?: string | null
+          posted_at?: string | null
+          reach?: number | null
+          saves?: number | null
+          script_structure?: string | null
+          shares?: number | null
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          comments?: number | null
+          created_at?: string
+          id?: string
+          likes?: number | null
+          post_type?: string | null
+          posted_at?: string | null
+          reach?: number | null
+          saves?: number | null
+          script_structure?: string | null
+          shares?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_metrics_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       testimonials: {
         Row: {
