@@ -211,7 +211,7 @@ Deno.serve(async (req) => {
       if (error) throw new Error(error.message);
 
       if (Object.keys(secrets).length) {
-        await admin.schema("private").from("integration_credentials")
+        await admin.from("integration_credentials")
           .upsert({ integration_id: up.id, secrets, updated_at: new Date().toISOString() });
       }
       return json({ integration: up });
@@ -220,7 +220,7 @@ Deno.serve(async (req) => {
     /* disconnect */
     if (action === "disconnect") {
       if (!integration) return json({ error: "Integração não encontrada." }, 404);
-      await admin.schema("private").from("integration_credentials").delete().eq("integration_id", integration.id);
+      await admin.from("integration_credentials").delete().eq("integration_id", integration.id);
       await admin.from("client_integrations")
         .update({ status: "disconnected", last_error: null }).eq("id", integration.id);
       return json({ ok: true });
@@ -232,7 +232,7 @@ Deno.serve(async (req) => {
       const syncer = SYNCERS[integration.provider];
       if (!syncer) return json({ error: `A sincronização para ${integration.provider} ainda não está disponível.` }, 400);
 
-      const { data: cred } = await admin.schema("private").from("integration_credentials")
+      const { data: cred } = await admin.from("integration_credentials")
         .select("secrets").eq("integration_id", integration.id).maybeSingle();
 
       const started = Date.now();
