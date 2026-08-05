@@ -6,7 +6,7 @@ import { admin, corsHeaders, json, notify } from "../_shared/os.ts";
  * report plus prioritised recommendations.
  */
 
-const MODEL = "google/gemini-3-flash";
+const MODEL = "google/gemini-3-flash-preview";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
