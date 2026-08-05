@@ -870,6 +870,60 @@ export type Database = {
           },
         ]
       }
+      client_webhook_tokens: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          label: string
+          last_used_at: string | null
+          organization_id: string
+          revoked_at: string | null
+          token_hash: string
+          token_prefix: string
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          label?: string
+          last_used_at?: string | null
+          organization_id: string
+          revoked_at?: string | null
+          token_hash: string
+          token_prefix: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          label?: string
+          last_used_at?: string | null
+          organization_id?: string
+          revoked_at?: string | null
+          token_hash?: string
+          token_prefix?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_webhook_tokens_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_webhook_tokens_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clients: {
         Row: {
           brand_color: string | null
@@ -1047,6 +1101,63 @@ export type Database = {
           site_url?: string | null
         }
         Relationships: []
+      }
+      external_signups: {
+        Row: {
+          client_id: string
+          created_at: string
+          dedupe_key: string | null
+          email: string | null
+          id: string
+          metadata: Json
+          name: string | null
+          occurred_at: string
+          organization_id: string
+          phone: string | null
+          source: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          dedupe_key?: string | null
+          email?: string | null
+          id?: string
+          metadata?: Json
+          name?: string | null
+          occurred_at?: string
+          organization_id: string
+          phone?: string | null
+          source?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          dedupe_key?: string | null
+          email?: string | null
+          id?: string
+          metadata?: Json
+          name?: string | null
+          occurred_at?: string
+          organization_id?: string
+          phone?: string | null
+          source?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "external_signups_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "external_signups_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       instagram_metrics: {
         Row: {
