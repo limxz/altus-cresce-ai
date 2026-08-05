@@ -35,6 +35,7 @@ async function snapshot(clientId: string) {
     syncRows,
     automationRows,
     memory,
+    signups,
   ] = await Promise.all([
     admin.from("instagram_metrics").select("*").eq("client_id", clientId).gte("date", dateAgo(60)).order("date"),
     admin.from("ad_metrics").select("*").eq("client_id", clientId).gte("date", dateAgo(60)).order("date"),
