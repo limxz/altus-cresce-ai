@@ -1,4 +1,4 @@
-import { admin, corsHeaders, json } from "../_shared/os.ts";
+import { admin, corsHeaders, json, verifyClientSession } from "../_shared/os.ts";
 
 const daysAgo = (n: number) => new Date(Date.now() - n * 864e5).toISOString();
 const dateAgo = (n: number) => new Date(Date.now() - n * 864e5).toISOString().slice(0, 10);
@@ -327,8 +327,41 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
-    const { client_id, action = "snapshot", messages = [], document_id } = await req.json();
+    const { client_id, action = "snapshot", messages = [], document_id, session, notification_id } =
+      await req.json();
     if (!client_id || typeof client_id !== "string") return json({ error: "client_id obrigatório" }, 400);
+
+    /* Authorisation: a signed client-portal session for THIS client, or an
+       org member / admin using their Supabase session. */
+    const sessionClientId = await verifyClientSession(session);
+    let allowed = sessionClientId === client_id;
+    if (!allowed) {
+      const jwt = req.headers.get("Authorization")?.replace("Bearer ", "");
+      const { data: userData } = jwt ? await admin.auth.getUser(jwt) : { data: null as any };
+      const user = userData?.user;
+      if (user) {
+        const { data: client } = await admin.from("clients").select("organization_id").eq("id", client_id).maybeSingle();
+        const [{ data: member }, { data: role }] = await Promise.all([
+          admin.from("organization_members").select("id")
+            .eq("organization_id", client?.organization_id ?? "").eq("user_id", user.id).maybeSingle(),
+          admin.from("user_roles").select("id").eq("user_id", user.id).eq("role", "admin").maybeSingle(),
+        ]);
+        allowed = !!(member || role);
+      }
+    }
+    if (!allowed) return json({ error: "Sessão inválida ou expirada." }, 401);
+
+    if (action === "mark_read") {
+      await admin.from("notifications").update({ read_at: new Date().toISOString() })
+        .eq("client_id", client_id).is("read_at", null)
+        .in("id", notification_id ? [notification_id] : []);
+      return json({ ok: true });
+    }
+    if (action === "mark_all_read") {
+      await admin.from("notifications").update({ read_at: new Date().toISOString() })
+        .eq("client_id", client_id).is("read_at", null);
+      return json({ ok: true });
+    }
 
     const snap = await snapshot(client_id);
     if (!snap) return json({ error: "Cliente não encontrado" }, 404);
