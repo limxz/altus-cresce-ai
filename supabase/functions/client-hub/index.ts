@@ -285,6 +285,10 @@ async function chat(snap: any, messages: any[]) {
 
   const context = {
     negocio: snap.client.business_name,
+    documentos: (snap.documents ?? []).slice(0, 15).map((d: any) => ({ id: d.id, titulo: d.title, categoria: d.category })),
+    relatorios: (snap.reports ?? []).slice(0, 5).map((r: any) => ({ periodo: `${r.period_start} a ${r.period_end}`, resumo: r.summary })),
+    recomendacoes: (snap.recommendations ?? []).slice(0, 6),
+    alertas: (snap.notifications ?? []).slice(0, 10).map((n: any) => ({ titulo: n.title, detalhe: n.detail, severidade: n.severity })),
     kpis: snap.kpis,
     ads: { ...snap.ads, series: snap.ads.series.slice(-14) },
     instagram: { ...snap.instagram, series: snap.instagram.series.slice(-14), posts: undefined },
@@ -307,7 +311,13 @@ async function chat(snap: any, messages: any[]) {
           content:
             "És o assistente Altus do cliente " + snap.client.business_name +
             ". Português de Portugal, tom profissional e próximo. Responde apenas com base nos DADOS abaixo. " +
-            "Se não tiveres o dado, diz que ainda não está ligado e sugere falar com a equipa. Nunca inventes números.\n\nDADOS:\n" +
+            "Se não tiveres o dado, diz que ainda não está ligado e sugere falar com a equipa. Nunca inventes números.\n\n" +
+            "CITAÇÕES: sempre que usares um número ou facto, liga-o à fonte dentro do portal com um link markdown. " +
+            "Usa exatamente estes destinos: [Resultados](hub:resultados), [Leads](hub:leads), [Website](hub:website), " +
+            "[Documentos](hub:documentos), [Reuniões](hub:reunioes), [Alertas](hub:alertas), [Início](hub:inicio). " +
+            "Para um documento específico usa [nome do documento](hub:documentos?doc=ID). " +
+            "Termina sempre com uma linha \"**Fontes:** \" seguida dos links usados. Não inventes links nem uses URLs externos.\n\n" +
+            "DADOS:\n" +
             JSON.stringify(context),
         },
         ...messages.slice(-10),
