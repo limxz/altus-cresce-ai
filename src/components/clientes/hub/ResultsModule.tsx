@@ -3,7 +3,7 @@ import { KpiCard, Panel, SectionTitle, Empty, money, fmtDate } from "./HubUI";
 import {
   Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from "recharts";
-import { Euro, MousePointerClick, Target, Instagram } from "lucide-react";
+import { Euro, MousePointerClick, Target, Instagram, ClipboardCheck } from "lucide-react";
 
 const axis = { stroke: "#5b616e", fontSize: 11 };
 const tooltipStyle = {
