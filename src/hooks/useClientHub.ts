@@ -12,6 +12,13 @@ export interface HubSnapshot {
   website: any;
   integrations: any[];
   leads: any[];
+  signups: {
+    total: number;
+    last7: number;
+    delta: number | null;
+    recent: any[];
+    series: { date: string; count: number }[];
+  } | null;
   recommendations: any[];
   reports: any[];
   documents: any[];
