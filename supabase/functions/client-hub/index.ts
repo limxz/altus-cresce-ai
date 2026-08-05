@@ -230,6 +230,8 @@ async function briefing(snap: any) {
     negocio: snap.client.business_name,
     nicho: snap.client.niche,
     leads_7d: snap.kpis.leads.value,
+    inscricoes_7d: snap.signups?.last7 ?? null,
+    inscricoes_variacao_pct: snap.signups?.delta ?? null,
     leads_variacao_pct: snap.kpis.leads.delta,
     conversoes_7d: snap.kpis.conversions.value,
     investimento_7d: snap.ads.spend,
