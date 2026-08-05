@@ -1,6 +1,6 @@
 import { HubSnapshot, Briefing } from "@/hooks/useClientHub";
 import { KpiCard, Panel, SectionTitle, Empty, Pill, fmtDateTime, money } from "./HubUI";
-import { Users, Target, CalendarDays, Zap, Sparkles, Gauge, Activity, CheckCircle2, AlertTriangle, Clock } from "lucide-react";
+import { Users, Target, CalendarDays, Zap, Sparkles, Gauge, Activity, CheckCircle2, AlertTriangle, Clock, ClipboardCheck } from "lucide-react";
 
 const toneOf = (t: string) => (t === "positivo" ? "good" : t === "atencao" ? "warn" : "neutral") as any;
 
@@ -8,10 +8,15 @@ const OverviewModule = ({
   data, briefing, onNavigate,
 }: { data: HubSnapshot; briefing: Briefing | null; onNavigate: (m: string) => void }) => {
   const k = data.kpis;
+  const hasSignups = (data.signups?.total ?? 0) > 0;
 
   return (
     <div className="space-y-8">
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <section className={`grid grid-cols-2 gap-3 ${hasSignups ? "lg:grid-cols-5" : "lg:grid-cols-4"}`}>
+        {hasSignups && (
+          <KpiCard label="Inscrições (7 dias)" value={data.signups!.last7} delta={data.signups!.delta} icon={ClipboardCheck}
+            hint={`${data.signups!.total} inscrições nos últimos 60 dias`} />
+        )}
         <KpiCard label="Leads (7 dias)" value={k.leads.value} delta={k.leads.delta} icon={Users}
           hint="Conversas iniciadas por potenciais clientes" />
         <KpiCard label="Conversões (7 dias)" value={k.conversions.value} delta={k.conversions.delta} icon={Target}
@@ -21,6 +26,7 @@ const OverviewModule = ({
         <KpiCard label="Sistemas ligados" value={k.campaigns.value} icon={Zap}
           hint="Integrações a alimentar o teu painel" />
       </section>
+
 
       <section>
         <SectionTitle title="O teu briefing de hoje" hint="Gerado pela IA da Altus com base nos dados reais das últimas semanas" />
