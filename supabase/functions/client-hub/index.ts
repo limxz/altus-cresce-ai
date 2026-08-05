@@ -290,6 +290,7 @@ async function chat(snap: any, messages: any[]) {
     instagram: { ...snap.instagram, series: snap.instagram.series.slice(-14), posts: undefined },
     website: snap.website,
     leads_recentes: snap.leads.slice(0, 10),
+    inscricoes: snap.signups ? { total: snap.signups.total, ultimos_7_dias: snap.signups.last7 } : null,
     trabalho_recente: snap.timeline.slice(0, 20),
     reunioes: snap.meetings.slice(0, 5),
     memoria: snap.memory,
