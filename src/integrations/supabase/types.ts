@@ -188,6 +188,69 @@ export type Database = {
           },
         ]
       }
+      client_integrations: {
+        Row: {
+          auto_sync: boolean
+          client_id: string
+          config: Json
+          created_at: string
+          display_name: string | null
+          external_account_id: string | null
+          id: string
+          last_error: string | null
+          last_sync_at: string | null
+          organization_id: string
+          provider: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          auto_sync?: boolean
+          client_id: string
+          config?: Json
+          created_at?: string
+          display_name?: string | null
+          external_account_id?: string | null
+          id?: string
+          last_error?: string | null
+          last_sync_at?: string | null
+          organization_id: string
+          provider: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          auto_sync?: boolean
+          client_id?: string
+          config?: Json
+          created_at?: string
+          display_name?: string | null
+          external_account_id?: string | null
+          id?: string
+          last_error?: string | null
+          last_sync_at?: string | null
+          organization_id?: string
+          provider?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_integrations_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_integrations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       client_messages: {
         Row: {
           content: string
@@ -241,6 +304,7 @@ export type Database = {
           meta_ad_account_id: string | null
           mrr: number | null
           niche: string
+          organization_id: string
           plan: string
           services: Json | null
           start_date: string | null
@@ -266,6 +330,7 @@ export type Database = {
           meta_ad_account_id?: string | null
           mrr?: number | null
           niche?: string
+          organization_id: string
           plan?: string
           services?: Json | null
           start_date?: string | null
@@ -291,12 +356,21 @@ export type Database = {
           meta_ad_account_id?: string | null
           mrr?: number | null
           niche?: string
+          organization_id?: string
           plan?: string
           services?: Json | null
           start_date?: string | null
           status?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "clients_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       content_posts: {
         Row: {
@@ -437,6 +511,83 @@ export type Database = {
           },
         ]
       }
+      integration_credentials: {
+        Row: {
+          integration_id: string
+          secrets: Json
+          updated_at: string
+        }
+        Insert: {
+          integration_id: string
+          secrets?: Json
+          updated_at?: string
+        }
+        Update: {
+          integration_id?: string
+          secrets?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_credentials_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: true
+            referencedRelation: "client_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integration_sync_runs: {
+        Row: {
+          client_id: string
+          created_at: string
+          duration_ms: number | null
+          id: string
+          integration_id: string
+          message: string | null
+          provider: string
+          records_written: number
+          status: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          integration_id: string
+          message?: string | null
+          provider: string
+          records_written?: number
+          status: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          integration_id?: string
+          message?: string | null
+          provider?: string
+          records_written?: number
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_sync_runs_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "integration_sync_runs_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "client_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           created_at: string | null
@@ -513,6 +664,62 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      organization_members: {
+        Row: {
+          created_at: string
+          id: string
+          organization_id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          organization_id: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          organization_id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_members_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       pipeline_leads: {
         Row: {
@@ -940,6 +1147,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_org_member: { Args: { _org: string }; Returns: boolean }
       verify_client_password: {
         Args: { _plain_password: string; _stored_hash: string }
         Returns: boolean
