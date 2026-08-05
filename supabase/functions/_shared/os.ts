@@ -95,6 +95,7 @@ export async function audit(a: AuditInput) {
     duration_ms: a.duration_ms ?? null,
   });
   if (error) console.error("audit failed", error.message);
+  else await pushRealtime(a.client_id, "activity", { action_type: a.action_type, status: a.status ?? "success" });
 }
 
 /* ------------------------------------------------------------------ *
