@@ -31,6 +31,7 @@ import Pipeline from "./pages/admin/Pipeline";
 import TestimonialsAdmin from "./pages/admin/Testimonials";
 import ClientDetail from "./pages/admin/ClientDetail";
 import Integrations from "./pages/admin/Integrations";
+import ClientMemory from "./pages/admin/ClientMemory";
 
 import ClientLogin from "./pages/clientes/ClientLogin";
 import ClientPortal from "./pages/clientes/ClientPortal";
@@ -64,6 +65,7 @@ const App = () => (
                 <Route index element={<Home />} />
                 <Route path="ia" element={<Intelligence />} />
                 <Route path="integracoes" element={<Integrations />} />
+                <Route path="memoria" element={<ClientMemory />} />
                 <Route path="websites" element={<Websites />} />
                 <Route path="meta-ads" element={<MetaAds />} />
                 <Route path="automacao" element={<Automation />} />

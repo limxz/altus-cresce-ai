@@ -1,59 +1,250 @@
-import { Panel, Label } from "@/components/admin/os/Primitives";
-import { CheckCircle2, CircleDashed } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { Panel, Label, Skeleton, EmptyHint, severityColor } from "@/components/admin/os/Primitives";
+import { CheckCircle2, CircleDashed, RefreshCw, Zap, Clock, AlertTriangle } from "lucide-react";
 
-interface Job {
+interface Rule {
+  id: string;
   name: string;
-  detail: string;
-  status: "ativo" | "por-ligar";
+  trigger_type: string;
+  config: Record<string, any>;
+  actions: { type: string }[];
+  is_active: boolean;
+  last_triggered_at: string | null;
+  client_id: string | null;
 }
 
-const JOBS: Job[] = [
-  { name: "Sincronização diária de métricas", detail: "sync-client-data · 06:00 UTC · Instagram + Meta Ads", status: "ativo" },
-  { name: "Recomendações de IA", detail: "generate-recommendations · a pedido por cliente", status: "ativo" },
-  { name: "Briefing operacional", detail: "altus-intelligence · gerado a cada abertura da Home", status: "ativo" },
-  { name: "Agentes WhatsApp", detail: "whatsapp-multi-agent · respostas automáticas por cliente", status: "ativo" },
-  { name: "Onboarding de cliente", detail: "on-client-created · credenciais por email", status: "ativo" },
-  { name: "Relatório mensal", detail: "generate-monthly-report · envio automático", status: "ativo" },
-  { name: "Google Search Console", detail: "Indexação, queries e posições médias", status: "por-ligar" },
-  { name: "Stripe", detail: "Receita, pagamentos pendentes e churn", status: "por-ligar" },
-  { name: "Calendário", detail: "Reuniões marcadas e no-shows", status: "por-ligar" },
-];
+interface Run {
+  id: string;
+  trigger_type: string;
+  status: string;
+  message: string | null;
+  created_at: string;
+}
 
-const Automation = () => (
-  <div className="space-y-7">
-    <header>
-      <h1 className="text-[22px] font-medium tracking-[-0.02em]">Automação</h1>
-      <p className="os-dim text-[14px] mt-1">Tudo o que corre sozinho — e o que falta ligar.</p>
-    </header>
+interface Sched {
+  id: string;
+  provider: string;
+  status: string;
+  auto_sync: boolean;
+  sync_interval_minutes: number;
+  next_sync_at: string;
+  last_sync_at: string | null;
+  failure_count: number;
+  last_error: string | null;
+  client_id: string;
+}
 
-    <section className="space-y-3">
-      <Label>Rotinas</Label>
-      <div className="space-y-2">
-        {JOBS.map((j) => (
-          <Panel key={j.name} hover className="p-4 flex items-center gap-3.5">
-            {j.status === "ativo" ? (
-              <CheckCircle2 size={15} style={{ color: "var(--os-green)" }} />
-            ) : (
-              <CircleDashed size={15} className="os-faint" />
-            )}
-            <div className="min-w-0 flex-1">
-              <p className="text-[14px]">{j.name}</p>
-              <p className="text-xs os-faint mt-0.5">{j.detail}</p>
-            </div>
-            <span
-              className="text-[10px] uppercase tracking-wider px-2 py-1 rounded-md shrink-0"
-              style={{
-                background: j.status === "ativo" ? "rgba(52,211,153,.1)" : "rgba(255,255,255,.04)",
-                color: j.status === "ativo" ? "var(--os-green)" : "var(--os-faint)",
-              }}
-            >
-              {j.status === "ativo" ? "Ativo" : "Por ligar"}
-            </span>
+const TRIGGER_LABEL: Record<string, string> = {
+  ctr_drop: "CTR em queda",
+  lead_no_reply: "Lead sem resposta",
+  client_silent: "Cliente sem atividade",
+  website_slow: "Website lento",
+  spend_no_conversions: "Investimento sem conversões",
+  new_leads: "Novos leads",
+};
+
+const INTERVALS = [15, 30, 60, 180, 360, 720, 1440];
+
+const fmt = (iso?: string | null) =>
+  iso ? new Date(iso).toLocaleString("pt-PT", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) : "—";
+
+const Automation = () => {
+  const { toast } = useToast();
+  const [rules, setRules] = useState<Rule[]>([]);
+  const [runs, setRuns] = useState<Run[]>([]);
+  const [scheds, setScheds] = useState<Sched[]>([]);
+  const [clients, setClients] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+
+  const load = useCallback(async () => {
+    const [r, ru, s, c] = await Promise.all([
+      supabase.from("automation_rules").select("*").order("created_at"),
+      supabase.from("automation_runs").select("id, trigger_type, status, message, created_at").order("created_at", { ascending: false }).limit(25),
+      supabase.from("client_integrations").select("id, provider, status, auto_sync, sync_interval_minutes, next_sync_at, last_sync_at, failure_count, last_error, client_id").neq("status", "disconnected"),
+      supabase.from("clients").select("id, business_name"),
+    ]);
+    setRules((r.data ?? []) as unknown as Rule[]);
+    setRuns((ru.data ?? []) as Run[]);
+    setScheds((s.data ?? []) as unknown as Sched[]);
+    setClients(Object.fromEntries((c.data ?? []).map((x: any) => [x.id, x.business_name])));
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    load();
+    const channel = supabase
+      .channel("os-automation")
+      .on("postgres_changes", { event: "*", schema: "public", table: "automation_runs" }, () => load())
+      .on("postgres_changes", { event: "*", schema: "public", table: "client_integrations" }, () => load())
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [load]);
+
+  const toggleRule = async (rule: Rule) => {
+    setRules((prev) => prev.map((r) => (r.id === rule.id ? { ...r, is_active: !r.is_active } : r)));
+    await supabase.from("automation_rules").update({ is_active: !rule.is_active }).eq("id", rule.id);
+  };
+
+  const setInterval_ = async (s: Sched, minutes: number) => {
+    setScheds((prev) => prev.map((x) => (x.id === s.id ? { ...x, sync_interval_minutes: minutes } : x)));
+    const { error } = await supabase.functions.invoke("integrations", {
+      body: { action: "schedule", integration_id: s.id, sync_interval_minutes: minutes },
+    });
+    if (error) toast({ title: "Não foi possível guardar", description: error.message, variant: "destructive" });
+  };
+
+  const toggleAuto = async (s: Sched) => {
+    setScheds((prev) => prev.map((x) => (x.id === s.id ? { ...x, auto_sync: !x.auto_sync } : x)));
+    await supabase.functions.invoke("integrations", {
+      body: { action: "schedule", integration_id: s.id, auto_sync: !s.auto_sync },
+    });
+  };
+
+  const runNow = async () => {
+    setBusy(true);
+    const { error } = await supabase.functions.invoke("automation-engine", { body: { trigger: "manual" } });
+    setBusy(false);
+    if (error) toast({ title: "Falhou", description: error.message, variant: "destructive" });
+    else { toast({ title: "Automações avaliadas", description: "Alertas atualizados com dados reais." }); load(); }
+  };
+
+  return (
+    <div className="space-y-8">
+      <header className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-[22px] font-medium tracking-[-0.02em]">Automação</h1>
+          <p className="os-dim text-[14px] mt-1">
+            Sincronizações agendadas, regras por evento e histórico de execuções — tudo sobre dados reais.
+          </p>
+        </div>
+        <button onClick={runNow} disabled={busy} className="os-btn shrink-0">
+          {busy ? <RefreshCw size={13} className="animate-spin" /> : <Zap size={13} />}
+          Avaliar agora
+        </button>
+      </header>
+
+      <section className="space-y-3">
+        <Label>Sincronizações agendadas</Label>
+        {loading ? (
+          <Skeleton className="h-[120px] !rounded-2xl" />
+        ) : scheds.length === 0 ? (
+          <Panel className="p-2">
+            <EmptyHint title="Nenhuma integração ligada" hint="Liga Instagram, Meta Ads ou Website em Integrações para o agendamento arrancar." />
           </Panel>
-        ))}
-      </div>
-    </section>
-  </div>
-);
+        ) : (
+          <div className="space-y-2">
+            {scheds.map((s) => (
+              <Panel key={s.id} hover className="p-4 flex flex-wrap items-center gap-3.5">
+                {s.status === "error" ? (
+                  <AlertTriangle size={15} style={{ color: "var(--os-red)" }} />
+                ) : (
+                  <CheckCircle2 size={15} style={{ color: "var(--os-green)" }} />
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="text-[14px] capitalize">
+                    {s.provider.replace("_", " ")} · <span className="os-dim">{clients[s.client_id] ?? "Cliente"}</span>
+                  </p>
+                  <p className="text-xs os-faint mt-0.5">
+                    Última: {fmt(s.last_sync_at)} · Próxima: {fmt(s.next_sync_at)}
+                    {s.failure_count > 0 && ` · ${s.failure_count} falhas (backoff ativo)`}
+                  </p>
+                  {s.last_error && <p className="text-xs mt-1" style={{ color: "var(--os-red)" }}>{s.last_error.slice(0, 140)}</p>}
+                </div>
+                <select
+                  value={s.sync_interval_minutes}
+                  onChange={(e) => setInterval_(s, Number(e.target.value))}
+                  className="os-btn !px-2.5 text-xs bg-transparent"
+                >
+                  {INTERVALS.map((m) => (
+                    <option key={m} value={m} style={{ background: "#09090b" }}>
+                      {m < 60 ? `${m} min` : m === 1440 ? "24 h" : `${m / 60} h`}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  onClick={() => toggleAuto(s)}
+                  className="text-[10px] uppercase tracking-wider px-2 py-1 rounded-md shrink-0"
+                  style={{
+                    background: s.auto_sync ? "rgba(52,211,153,.1)" : "rgba(255,255,255,.04)",
+                    color: s.auto_sync ? "var(--os-green)" : "var(--os-faint)",
+                  }}
+                >
+                  {s.auto_sync ? "Auto" : "Manual"}
+                </button>
+              </Panel>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="space-y-3">
+        <Label>Regras por evento</Label>
+        {loading ? (
+          <Skeleton className="h-[120px] !rounded-2xl" />
+        ) : rules.length === 0 ? (
+          <Panel className="p-5 space-y-2">
+            <p className="text-sm">A correr com as regras padrão do sistema.</p>
+            <p className="text-xs os-faint">
+              CTR em queda, lead sem resposta há 4h, cliente sem atividade há 7 dias, website lento,
+              investimento sem conversões e novos leads por qualificar. Personaliza criando regras próprias.
+            </p>
+          </Panel>
+        ) : (
+          <div className="space-y-2">
+            {rules.map((r) => (
+              <Panel key={r.id} hover className="p-4 flex items-center gap-3.5">
+                {r.is_active ? (
+                  <CheckCircle2 size={15} style={{ color: "var(--os-green)" }} />
+                ) : (
+                  <CircleDashed size={15} className="os-faint" />
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="text-[14px]">{r.name}</p>
+                  <p className="text-xs os-faint mt-0.5">
+                    {TRIGGER_LABEL[r.trigger_type] ?? r.trigger_type} · último disparo {fmt(r.last_triggered_at)}
+                  </p>
+                </div>
+                <button onClick={() => toggleRule(r)} className="os-btn shrink-0 text-xs">
+                  {r.is_active ? "Desativar" : "Ativar"}
+                </button>
+              </Panel>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="space-y-3">
+        <Label>Execuções recentes</Label>
+        {loading ? (
+          <Skeleton className="h-[100px] !rounded-2xl" />
+        ) : runs.length === 0 ? (
+          <Panel className="p-2">
+            <EmptyHint title="Ainda sem execuções" hint="Assim que existirem dados reais, as automações começam a disparar sozinhas." />
+          </Panel>
+        ) : (
+          <Panel className="divide-y" style={{ borderColor: "var(--os-line)" }}>
+            {runs.map((run) => (
+              <div key={run.id} className="px-4 py-3 flex items-start gap-3">
+                <span
+                  className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
+                  style={{ background: severityColor(run.status === "error" ? "critico" : "oportunidade") }}
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-[13px] truncate">{run.message ?? TRIGGER_LABEL[run.trigger_type] ?? run.trigger_type}</p>
+                  <p className="text-xs os-faint mt-0.5 flex items-center gap-1.5">
+                    <Clock size={10} /> {fmt(run.created_at)} · {TRIGGER_LABEL[run.trigger_type] ?? run.trigger_type}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </Panel>
+        )}
+      </section>
+    </div>
+  );
+};
 
 export default Automation;
