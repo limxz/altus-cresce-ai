@@ -107,15 +107,28 @@ export async function syncMetaAds(clientId: string, secrets: any, config: any): 
   return { records: written, summary: `${written} dias de campanha sincronizados` };
 }
 
-export async function syncWebsite(_clientId: string, _secrets: any, config: any): Promise<SyncResult> {
+export async function syncWebsite(_clientId: string, secrets: any, config: any): Promise<SyncResult> {
   const url = config.url;
   if (!url) throw new Error("Falta o endereço do website.");
+  const key = secrets?.api_key ?? Deno.env.get("PAGESPEED_API_KEY") ?? "";
   const api =
     `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=mobile` +
-    `&category=performance&category=seo&category=accessibility&category=best-practices`;
+    `&category=performance&category=seo&category=accessibility&category=best-practices` +
+    (key ? `&key=${encodeURIComponent(key)}` : "");
   const res = await fetch(api);
   const body = await res.json();
-  if (!res.ok) throw new Error(body?.error?.message ?? "PageSpeed Insights indisponível.");
+  if (!res.ok) {
+    const msg = body?.error?.message ?? "PageSpeed Insights indisponível.";
+    if (res.status === 429 || /quota/i.test(msg)) {
+      throw new Error(
+        key
+          ? "Limite diário da API PageSpeed atingido para a tua chave. Nova tentativa automática mais tarde."
+          : "Limite da API PageSpeed atingido (utilização anónima partilhada). Configura a chave PAGESPEED_API_KEY para teres quota própria.",
+      );
+    }
+    throw new Error(msg);
+  }
+
 
   const cat = body.lighthouseResult?.categories ?? {};
   const audits = body.lighthouseResult?.audits ?? {};
