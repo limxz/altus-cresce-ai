@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Panel, Label, Skeleton, EmptyHint, severityColor } from "@/components/admin/os/Primitives";
-import { CheckCircle2, CircleDashed, RefreshCw, Zap, Clock, AlertTriangle } from "lucide-react";
+import { CheckCircle2, CircleDashed, RefreshCw, Zap, Clock, AlertTriangle, ShieldCheck, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface Rule {
   id: string;
@@ -13,6 +14,18 @@ interface Rule {
   is_active: boolean;
   last_triggered_at: string | null;
   client_id: string | null;
+  requires_approval: boolean;
+}
+
+interface Approval {
+  id: string;
+  client_id: string | null;
+  trigger_type: string;
+  action_type: string;
+  title: string;
+  detail: string | null;
+  status: string;
+  created_at: string;
 }
 
 interface Run {
@@ -55,17 +68,22 @@ const Automation = () => {
   const [rules, setRules] = useState<Rule[]>([]);
   const [runs, setRuns] = useState<Run[]>([]);
   const [scheds, setScheds] = useState<Sched[]>([]);
+  const [approvals, setApprovals] = useState<Approval[]>([]);
   const [clients, setClients] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
-    const [r, ru, s, c] = await Promise.all([
+    const [r, ru, s, c, ap] = await Promise.all([
       supabase.from("automation_rules").select("*").order("created_at"),
       supabase.from("automation_runs").select("id, trigger_type, status, message, created_at").order("created_at", { ascending: false }).limit(25),
       supabase.from("client_integrations").select("id, provider, status, auto_sync, sync_interval_minutes, next_sync_at, last_sync_at, failure_count, last_error, client_id").neq("status", "disconnected"),
       supabase.from("clients").select("id, business_name"),
+      supabase.from("automation_approvals")
+        .select("id, client_id, trigger_type, action_type, title, detail, status, created_at")
+        .order("created_at", { ascending: false }).limit(30),
     ]);
+    setApprovals((ap.data ?? []) as Approval[]);
     setRules((r.data ?? []) as unknown as Rule[]);
     setRuns((ru.data ?? []) as Run[]);
     setScheds((s.data ?? []) as unknown as Sched[]);
@@ -79,6 +97,7 @@ const Automation = () => {
       .channel("os-automation")
       .on("postgres_changes", { event: "*", schema: "public", table: "automation_runs" }, () => load())
       .on("postgres_changes", { event: "*", schema: "public", table: "client_integrations" }, () => load())
+      .on("postgres_changes", { event: "*", schema: "public", table: "automation_approvals" }, () => load())
       .subscribe();
     return () => { supabase.removeChannel(channel); };
   }, [load]);
@@ -86,6 +105,22 @@ const Automation = () => {
   const toggleRule = async (rule: Rule) => {
     setRules((prev) => prev.map((r) => (r.id === rule.id ? { ...r, is_active: !r.is_active } : r)));
     await supabase.from("automation_rules").update({ is_active: !rule.is_active }).eq("id", rule.id);
+  };
+
+  const toggleApprovalMode = async (rule: Rule) => {
+    setRules((prev) => prev.map((r) => (r.id === rule.id ? { ...r, requires_approval: !r.requires_approval } : r)));
+    await supabase.from("automation_rules").update({ requires_approval: !rule.requires_approval }).eq("id", rule.id);
+  };
+
+  const decide = async (a: Approval, approved: boolean) => {
+    setApprovals((prev) => prev.filter((x) => x.id !== a.id));
+    const { error } = await supabase.from("automation_approvals")
+      .update({ status: approved ? "approved" : "rejected", decided_at: new Date().toISOString() })
+      .eq("id", a.id);
+    if (error) { toast({ title: "Não foi possível decidir", description: error.message, variant: "destructive" }); load(); return; }
+    if (approved) await supabase.functions.invoke("automation-engine", { body: { action: "execute_approvals" } });
+    toast({ title: approved ? "Follow-up aprovado" : "Follow-up rejeitado" });
+    load();
   };
 
   const setInterval_ = async (s: Sched, minutes: number) => {
@@ -120,10 +155,13 @@ const Automation = () => {
             Sincronizações agendadas, regras por evento e histórico de execuções — tudo sobre dados reais.
           </p>
         </div>
+        <div className="flex gap-2 shrink-0">
+        <Link to="/admin/auditoria" className="os-btn">Ver auditoria</Link>
         <button onClick={runNow} disabled={busy} className="os-btn shrink-0">
           {busy ? <RefreshCw size={13} className="animate-spin" /> : <Zap size={13} />}
           Avaliar agora
         </button>
+        </div>
       </header>
 
       <section className="space-y-3">
@@ -181,6 +219,42 @@ const Automation = () => {
       </section>
 
       <section className="space-y-3">
+        <Label>Aprovações pendentes</Label>
+        {loading ? (
+          <Skeleton className="h-[100px] !rounded-2xl" />
+        ) : approvals.filter((a) => a.status === "pending").length === 0 ? (
+          <Panel className="p-2">
+            <EmptyHint
+              title="Nada à espera de ti"
+              hint="Follow-ups gerados pelas automações aparecem aqui para aprovares antes de saírem pelas integrações."
+            />
+          </Panel>
+        ) : (
+          <div className="space-y-2">
+            {approvals.filter((a) => a.status === "pending").map((a) => (
+              <Panel key={a.id} hover className="p-4 flex flex-wrap items-center gap-3.5">
+                <ShieldCheck size={15} style={{ color: "var(--os-amber, #fbbf24)" }} />
+                <div className="min-w-0 flex-1">
+                  <p className="text-[14px]">{a.title}</p>
+                  {a.detail && <p className="text-xs os-dim mt-0.5 line-clamp-2">{a.detail}</p>}
+                  <p className="text-xs os-faint mt-0.5">
+                    {a.action_type} · {TRIGGER_LABEL[a.trigger_type] ?? a.trigger_type}
+                    {clients[a.client_id ?? ""] ? ` · ${clients[a.client_id ?? ""]}` : ""} · {fmt(a.created_at)}
+                  </p>
+                </div>
+                <button onClick={() => decide(a, true)} className="os-btn shrink-0 text-xs">
+                  <CheckCircle2 size={12} /> Aprovar
+                </button>
+                <button onClick={() => decide(a, false)} className="os-btn shrink-0 text-xs">
+                  <X size={12} /> Rejeitar
+                </button>
+              </Panel>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="space-y-3">
         <Label>Regras por evento</Label>
         {loading ? (
           <Skeleton className="h-[120px] !rounded-2xl" />
@@ -207,6 +281,17 @@ const Automation = () => {
                     {TRIGGER_LABEL[r.trigger_type] ?? r.trigger_type} · último disparo {fmt(r.last_triggered_at)}
                   </p>
                 </div>
+                <button
+                  onClick={() => toggleApprovalMode(r)}
+                  className="text-[10px] uppercase tracking-wider px-2 py-1 rounded-md shrink-0"
+                  title="Follow-ups pelas integrações precisam de aprovação manual"
+                  style={{
+                    background: r.requires_approval ? "rgba(251,191,36,.12)" : "rgba(255,255,255,.04)",
+                    color: r.requires_approval ? "#fbbf24" : "var(--os-faint)",
+                  }}
+                >
+                  {r.requires_approval ? "Requer aprovação" : "Automático"}
+                </button>
                 <button onClick={() => toggleRule(r)} className="os-btn shrink-0 text-xs">
                   {r.is_active ? "Desativar" : "Ativar"}
                 </button>
