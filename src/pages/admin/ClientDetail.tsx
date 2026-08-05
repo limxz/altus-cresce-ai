@@ -361,6 +361,13 @@ const ClientDetail = () => {
 
         {id && (
           <section className="space-y-3">
+            <h2 className="text-lg font-medium">Inscrições de sites externos</h2>
+            <ExternalSignups clientId={id} clientName={clientName} />
+          </section>
+        )}
+
+        {id && (
+          <section className="space-y-3">
             <h2 className="text-lg font-medium">Portal do cliente</h2>
             <p className="text-sm text-muted-foreground">
               O que partilhas aqui aparece imediatamente no painel do cliente.
