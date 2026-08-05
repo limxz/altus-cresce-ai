@@ -111,6 +111,79 @@ export type Database = {
           },
         ]
       }
+      audit_log: {
+        Row: {
+          action_type: string
+          actor: string
+          actor_id: string | null
+          client_id: string | null
+          created_at: string
+          detail: string | null
+          duration_ms: number | null
+          id: string
+          integration_id: string | null
+          metadata: Json
+          organization_id: string
+          provider: string | null
+          status: string
+          title: string
+        }
+        Insert: {
+          action_type: string
+          actor?: string
+          actor_id?: string | null
+          client_id?: string | null
+          created_at?: string
+          detail?: string | null
+          duration_ms?: number | null
+          id?: string
+          integration_id?: string | null
+          metadata?: Json
+          organization_id: string
+          provider?: string | null
+          status?: string
+          title: string
+        }
+        Update: {
+          action_type?: string
+          actor?: string
+          actor_id?: string | null
+          client_id?: string | null
+          created_at?: string
+          detail?: string | null
+          duration_ms?: number | null
+          id?: string
+          integration_id?: string | null
+          metadata?: Json
+          organization_id?: string
+          provider?: string | null
+          status?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_log_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "audit_log_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "client_integrations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "audit_log_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audits: {
         Row: {
           audit_json: Json | null
@@ -147,6 +220,85 @@ export type Database = {
         }
         Relationships: []
       }
+      automation_approvals: {
+        Row: {
+          action_type: string
+          client_id: string | null
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_note: string | null
+          dedupe_key: string | null
+          detail: string | null
+          id: string
+          organization_id: string
+          payload: Json
+          rule_id: string | null
+          status: string
+          title: string
+          trigger_type: string
+          updated_at: string
+        }
+        Insert: {
+          action_type: string
+          client_id?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_note?: string | null
+          dedupe_key?: string | null
+          detail?: string | null
+          id?: string
+          organization_id: string
+          payload?: Json
+          rule_id?: string | null
+          status?: string
+          title: string
+          trigger_type: string
+          updated_at?: string
+        }
+        Update: {
+          action_type?: string
+          client_id?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_note?: string | null
+          dedupe_key?: string | null
+          detail?: string | null
+          id?: string
+          organization_id?: string
+          payload?: Json
+          rule_id?: string | null
+          status?: string
+          title?: string
+          trigger_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "automation_approvals_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "automation_approvals_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "automation_approvals_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "automation_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       automation_rules: {
         Row: {
           actions: Json
@@ -158,6 +310,7 @@ export type Database = {
           last_triggered_at: string | null
           name: string
           organization_id: string
+          requires_approval: boolean
           trigger_type: string
           updated_at: string
         }
@@ -171,6 +324,7 @@ export type Database = {
           last_triggered_at?: string | null
           name: string
           organization_id: string
+          requires_approval?: boolean
           trigger_type: string
           updated_at?: string
         }
@@ -184,6 +338,7 @@ export type Database = {
           last_triggered_at?: string | null
           name?: string
           organization_id?: string
+          requires_approval?: boolean
           trigger_type?: string
           updated_at?: string
         }
