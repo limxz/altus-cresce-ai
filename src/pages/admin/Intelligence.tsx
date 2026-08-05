@@ -7,6 +7,16 @@ import { Panel, Skeleton, Label, severityColor, HealthRing } from "@/components/
 import { RefreshCw, Wand2, ArrowUpRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
+interface Report {
+  id: string;
+  client_id: string;
+  summary: string | null;
+  highlights: string[] | null;
+  risks: string[] | null;
+  created_at: string;
+  source: string;
+}
+
 interface Rec {
   id: string;
   client_id: string;
@@ -21,6 +31,7 @@ const Intelligence = () => {
   const os = useOs();
   const { toast } = useToast();
   const [recs, setRecs] = useState<Rec[]>([]);
+  const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [running, setRunning] = useState<string | null>(null);
 
@@ -31,6 +42,12 @@ const Intelligence = () => {
       .order("generated_at", { ascending: false })
       .limit(30);
     setRecs((data ?? []) as unknown as Rec[]);
+    const { data: rep } = await supabase
+      .from("client_reports")
+      .select("id, client_id, summary, highlights, risks, created_at, source")
+      .order("created_at", { ascending: false })
+      .limit(10);
+    setReports((rep ?? []) as unknown as Report[]);
     setLoading(false);
   };
 
@@ -77,6 +94,50 @@ const Intelligence = () => {
                 </Panel>
               ))}
         </div>
+      </section>
+
+      <section className="space-y-3">
+        <Label>Relatórios executivos automáticos</Label>
+        {loading ? (
+          <Skeleton className="h-[110px] !rounded-2xl" />
+        ) : reports.length === 0 ? (
+          <Panel className="p-5">
+            <p className="text-sm">Ainda não há relatórios automáticos.</p>
+            <p className="text-xs os-faint mt-1">
+              São gerados sozinhos depois de cada sincronização de integrações com dados reais.
+            </p>
+          </Panel>
+        ) : (
+          <div className="space-y-2">
+            {reports.map((rep) => (
+              <Panel key={rep.id} className="p-5">
+                <div className="flex items-center justify-between gap-3 mb-2">
+                  <Link to={`/admin/client/${rep.client_id}`} className="text-[14px] hover:opacity-80 flex items-center gap-1">
+                    {nameOf(rep.client_id)} <ArrowUpRight size={12} />
+                  </Link>
+                  <span className="text-[11px] os-faint">
+                    {new Date(rep.created_at).toLocaleString("pt-PT", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })} · {rep.source}
+                  </span>
+                </div>
+                {rep.summary && <p className="text-[13px] os-dim leading-relaxed">{rep.summary}</p>}
+                {(rep.highlights?.length || rep.risks?.length) && (
+                  <div className="grid gap-2 md:grid-cols-2 mt-3">
+                    {(rep.highlights ?? []).map((h, i) => (
+                      <p key={`h${i}`} className="text-xs os-dim flex gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ background: severityColor("oportunidade") }} />{h}
+                      </p>
+                    ))}
+                    {(rep.risks ?? []).map((r, i) => (
+                      <p key={`r${i}`} className="text-xs os-dim flex gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ background: severityColor("critico") }} />{r}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </Panel>
+            ))}
+          </div>
+        )}
       </section>
 
       <section className="space-y-3">
