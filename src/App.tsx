@@ -17,6 +17,7 @@ import Intelligence from "./pages/admin/Intelligence";
 import Websites from "./pages/admin/Websites";
 import MetaAds from "./pages/admin/MetaAds";
 import Automation from "./pages/admin/Automation";
+import Audit from "./pages/admin/Audit";
 import LeadsPage from "./pages/admin/Leads";
 import Conversations from "./pages/admin/Conversations";
 import ClientsManagement from "./pages/admin/ClientsManagement";
@@ -69,6 +70,7 @@ const App = () => (
                 <Route path="websites" element={<Websites />} />
                 <Route path="meta-ads" element={<MetaAds />} />
                 <Route path="automacao" element={<Automation />} />
+                <Route path="auditoria" element={<Audit />} />
                 <Route path="leads" element={<LeadsPage />} />
                 <Route path="conversations" element={<Conversations />} />
                 <Route path="clients" element={<ClientsManagement />} />
