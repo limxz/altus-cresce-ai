@@ -8,7 +8,7 @@ import AltusChat from "./os/AltusChat";
 import "@/styles/altus-os.css";
 import {
   Home, Users, Kanban, BrainCircuit, Globe, Megaphone, LineChart,
-  Workflow, MessagesSquare, Plug, Settings, LogOut, Menu, X, Sparkles, RefreshCw, Brain,
+  Workflow, MessagesSquare, Plug, ScrollText, Settings, LogOut, Menu, X, Sparkles, RefreshCw, Brain,
 } from "lucide-react";
 
 const nav = [
@@ -22,6 +22,7 @@ const nav = [
   { label: "Meta Ads", path: "/admin/meta-ads", icon: Megaphone },
   { label: "Analytics", path: "/admin/analytics", icon: LineChart },
   { label: "Automação", path: "/admin/automacao", icon: Workflow },
+  { label: "Auditoria", path: "/admin/auditoria", icon: ScrollText },
   { label: "Conversas", path: "/admin/conversations", icon: MessagesSquare },
   { label: "Configurações", path: "/admin/settings", icon: Settings },
 ];

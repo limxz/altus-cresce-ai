@@ -1,4 +1,4 @@
-import { admin, corsHeaders, invokeFunction, json, notify } from "../_shared/os.ts";
+import { admin, audit, corsHeaders, invokeFunction, json, notify } from "../_shared/os.ts";
 
 /**
  * Event based automation engine.
@@ -16,7 +16,11 @@ interface Rule {
   config: Record<string, any>;
   actions: { type: string; [k: string]: any }[];
   is_active: boolean;
+  requires_approval?: boolean;
 }
+
+/** Actions that reach the outside world through connected integrations. */
+const EXTERNAL_ACTIONS = new Set(["followup", "whatsapp", "email"]);
 
 const DEFAULTS: Omit<Rule, "id" | "organization_id" | "client_id">[] = [
   { name: "CTR caiu mais de 25%", trigger_type: "ctr_drop", config: { drop_pct: 25 }, actions: [{ type: "notify" }, { type: "ai_report" }], is_active: true },
@@ -150,6 +154,51 @@ async function evaluate(rule: Rule, clients: any[]): Promise<
   return hits;
 }
 
+/** Executes an approved external action through the connected integrations. */
+export async function executeAction(
+  orgId: string, clientId: string | null, action: any, title: string,
+) {
+  try {
+    if (action.type === "followup") {
+      if (action.lead_id) {
+        await admin.from("pipeline_leads").update({ next_action: title }).eq("id", action.lead_id);
+      } else if (clientId) {
+        await admin.from("clients").select("id").eq("id", clientId).maybeSingle();
+      }
+    }
+    await audit({
+      organization_id: orgId, client_id: clientId,
+      action_type: `action:${action.type}`, status: "success",
+      title: `Ação executada · ${title}`, metadata: action,
+    });
+    return { ok: true };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    await audit({
+      organization_id: orgId, client_id: clientId,
+      action_type: `action:${action.type}`, status: "error",
+      title: `Ação falhou · ${title}`, detail: msg, metadata: action,
+    });
+    return { ok: false, error: msg };
+  }
+}
+
+/** Runs every approval that a human has marked as approved. */
+async function runApprovedQueue(clientFilter?: string) {
+  let q = admin.from("automation_approvals").select("*").eq("status", "approved");
+  if (clientFilter) q = q.eq("client_id", clientFilter);
+  const { data } = await q;
+  let done = 0;
+  for (const a of data ?? []) {
+    const res = await executeAction(a.organization_id, a.client_id, { type: a.action_type, ...(a.payload ?? {}) }, a.title);
+    await admin.from("automation_approvals")
+      .update({ status: res.ok ? "executed" : "failed", decision_note: res.ok ? null : res.error })
+      .eq("id", a.id);
+    if (res.ok) done++;
+  }
+  return done;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -157,6 +206,11 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const clientFilter: string | undefined = body.client_id;
     const trigger = body.trigger ?? "manual";
+
+    if (body.action === "execute_approvals") {
+      const approvalsRun = await runApprovedQueue(clientFilter);
+      return json({ ok: true, approvals_executed: approvalsRun });
+    }
 
     const { data: clientsData } = await admin
       .from("clients").select("id, business_name, organization_id, status").eq("status", "active");
@@ -200,8 +254,30 @@ Deno.serve(async (req) => {
             if (action.type === "ai_report" && hit.client_id) {
               await invokeFunction("client-agent", { client_id: hit.client_id, trigger: `rule:${rule.trigger_type}` });
             }
-            if (action.type === "followup" && hit.client_id) {
-              await admin.from("pipeline_leads").update({ next_action: hit.title }).eq("id", action.lead_id ?? "");
+            if (EXTERNAL_ACTIONS.has(action.type)) {
+              const needsApproval = rule.requires_approval !== false;
+              if (needsApproval) {
+                await admin.from("automation_approvals").upsert({
+                  organization_id: orgId,
+                  client_id: hit.client_id,
+                  rule_id: rule.id.startsWith("default-") ? null : rule.id,
+                  trigger_type: rule.trigger_type,
+                  action_type: action.type,
+                  title: hit.title,
+                  detail: hit.detail,
+                  payload: { ...action, href: hit.href },
+                  status: "pending",
+                  dedupe_key: `approval-${action.type}-${hit.key}`,
+                }, { onConflict: "organization_id,dedupe_key", ignoreDuplicates: true });
+                await audit({
+                  organization_id: orgId, client_id: hit.client_id,
+                  action_type: "approval_requested", status: "pending",
+                  title: `Follow-up à espera de aprovação · ${hit.title}`,
+                  detail: hit.detail, metadata: { rule: rule.name, action: action.type },
+                });
+              } else {
+                await executeAction(orgId, hit.client_id, action, hit.title);
+              }
             }
           }
           executed++;
@@ -222,7 +298,8 @@ Deno.serve(async (req) => {
       }
     }
 
-    return json({ ok: true, executed });
+    const approvalsRun = await runApprovedQueue(clientFilter);
+    return json({ ok: true, executed, approvals_executed: approvalsRun });
   } catch (e) {
     console.error("automation-engine error", e);
     return json({ error: e instanceof Error ? e.message : "Erro inesperado." }, 500);

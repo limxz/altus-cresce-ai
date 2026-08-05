@@ -1,4 +1,4 @@
-import { admin, invokeFunction, notify } from "./os.ts";
+import { admin, audit, invokeFunction, notify } from "./os.ts";
 import { SYNCERS } from "./providers.ts";
 
 /** Exponential backoff in minutes per consecutive failure. */
@@ -59,6 +59,15 @@ export async function runIntegrationSync(integration: any, opts: { attempts?: nu
       await admin.from("notifications").delete()
         .eq("organization_id", orgId).eq("dedupe_key", `sync-fail-${integration.id}`);
 
+      await audit({
+        organization_id: orgId, client_id: clientId, integration_id: integration.id,
+        action_type: "sync", provider, status: "success",
+        title: `Sincronização concluída · ${provider}`,
+        detail: result.summary ?? null,
+        metadata: { records: result.records ?? 0, attempt },
+        duration_ms: duration,
+      });
+
       // AI agent + automations run right after fresh data lands
       await invokeFunction("client-agent", { client_id: clientId, trigger: `sync:${provider}` });
       await invokeFunction("automation-engine", { client_id: clientId, trigger: `sync:${provider}` });
@@ -85,6 +94,15 @@ export async function runIntegrationSync(integration: any, opts: { attempts?: nu
   await admin.from("integration_sync_runs").insert({
     integration_id: integration.id, client_id: clientId, provider,
     status: "error", message: lastError, duration_ms: Date.now() - started,
+  });
+
+  await audit({
+    organization_id: orgId, client_id: clientId, integration_id: integration.id,
+    action_type: "sync", provider, status: "error",
+    title: `Sincronização falhou · ${provider}`,
+    detail: lastError.slice(0, 500),
+    metadata: { failure_count: failures, next_attempt_at: nextAt },
+    duration_ms: Date.now() - started,
   });
 
   await notify({
