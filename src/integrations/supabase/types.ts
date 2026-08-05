@@ -511,6 +511,32 @@ export type Database = {
           },
         ]
       }
+      integration_credentials: {
+        Row: {
+          integration_id: string
+          secrets: Json
+          updated_at: string
+        }
+        Insert: {
+          integration_id: string
+          secrets?: Json
+          updated_at?: string
+        }
+        Update: {
+          integration_id?: string
+          secrets?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_credentials_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: true
+            referencedRelation: "client_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       integration_sync_runs: {
         Row: {
           client_id: string
