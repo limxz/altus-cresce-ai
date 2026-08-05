@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Loader2, Plus, Sparkles } from "lucide-react";
 import AddMetricsModal from "@/components/admin/AddMetricsModal";
 import ClientPortalManager from "@/components/admin/ClientPortalManager";
+import ExternalSignups from "@/components/admin/ExternalSignups";
 import {
   LineChart,
   Line,
