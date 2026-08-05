@@ -357,8 +357,19 @@ const ClientDetail = () => {
             })}
           </div>
         )}
+
+        {id && (
+          <section className="space-y-3">
+            <h2 className="text-lg font-medium">Portal do cliente</h2>
+            <p className="text-sm text-muted-foreground">
+              O que partilhas aqui aparece imediatamente no painel do cliente.
+            </p>
+            <ClientPortalManager clientId={id} />
+          </section>
+        )}
       </div>
     </div>
+
   );
 };
 
