@@ -140,10 +140,23 @@ async function snapshot(clientId: string) {
     })),
   ].sort((a, b) => +new Date(b.at) - +new Date(a.at)).slice(0, 60);
 
+  const signupRows = (signups.data ?? []) as any[];
+  const signups7 = signupRows.filter((s) => s.occurred_at >= daysAgo(7)).length;
+  const signupsPrev = signupRows.filter(
+    (s) => s.occurred_at >= daysAgo(14) && s.occurred_at < daysAgo(7),
+  ).length;
+  const signupsByDay = new Map<string, number>();
+  for (let i = 29; i >= 0; i--) signupsByDay.set(dateAgo(i), 0);
+  for (const s of signupRows) {
+    const d = String(s.occurred_at).slice(0, 10);
+    if (signupsByDay.has(d)) signupsByDay.set(d, (signupsByDay.get(d) ?? 0) + 1);
+  }
+
   return {
     client,
     memory: memory.data ?? null,
     kpis: {
+      signups: { value: signups7, delta: pct(signups7, signupsPrev) },
       leads: { value: leads7, delta: pct(leads7, leadsPrev) },
       conversions: { value: conv7, delta: pct(conv7, convPrev) },
       meetings: { value: upcomingMeetings.length, delta: null },
