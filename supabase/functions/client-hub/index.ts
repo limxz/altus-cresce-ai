@@ -206,6 +206,13 @@ async function snapshot(clientId: string) {
       last_sync_at: i.last_sync_at,
     })),
     leads: convoRows,
+    signups: {
+      total: signupRows.length,
+      last7: signups7,
+      delta: pct(signups7, signupsPrev),
+      recent: signupRows.slice(0, 20),
+      series: [...signupsByDay.entries()].map(([date, count]) => ({ date, count })),
+    },
     recommendations: recs.data ?? [],
     reports: reports.data ?? [],
     documents: docs.data ?? [],
