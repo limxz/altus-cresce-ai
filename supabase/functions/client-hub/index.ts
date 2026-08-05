@@ -57,7 +57,14 @@ async function snapshot(clientId: string) {
     admin.from("integration_sync_runs").select("*").eq("client_id", clientId).gte("created_at", daysAgo(14)).order("created_at", { ascending: false }).limit(40),
     admin.from("automation_runs").select("*").eq("client_id", clientId).gte("created_at", daysAgo(14)).order("created_at", { ascending: false }).limit(40),
     admin.from("client_memory").select("*").eq("client_id", clientId).maybeSingle(),
+    admin
+      .from("external_signups")
+      .select("id, source, name, email, phone, occurred_at")
+      .eq("client_id", clientId)
+      .gte("occurred_at", daysAgo(60))
+      .order("occurred_at", { ascending: false }),
   ]);
+
 
   const igRows = ig.data ?? [];
   const adRows = ads.data ?? [];
