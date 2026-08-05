@@ -12,7 +12,7 @@ const CATEGORIES: Record<string, string> = {
   criativo: "Criativo",
 };
 
-const DocumentsModule = ({ data }: { data: HubSnapshot }) => {
+const DocumentsModule = ({ data, session }: { data: HubSnapshot; session: string | null }) => {
   const [busy, setBusy] = useState<string | null>(null);
   const [filter, setFilter] = useState("todos");
 
@@ -23,7 +23,7 @@ const DocumentsModule = ({ data }: { data: HubSnapshot }) => {
   const open = async (doc: any) => {
     setBusy(doc.id);
     try {
-      const url = await openDocument(data.client.id, doc.id);
+      const url = await openDocument(data.client.id, session, doc.id);
       window.open(url, "_blank", "noopener");
     } catch (e) {
       toast({ title: "Não foi possível abrir", description: (e as Error).message, variant: "destructive" });

@@ -13,7 +13,9 @@ const SUGGESTIONS = [
   "O que a Altus fez por mim nos últimos dias?",
 ];
 
-const AssistantModule = ({ data }: { data: HubSnapshot }) => {
+const AssistantModule = ({
+  data, session, onNavigate,
+}: { data: HubSnapshot; session: string | null; onNavigate?: (module: string) => void }) => {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -27,7 +29,7 @@ const AssistantModule = ({ data }: { data: HubSnapshot }) => {
     setInput("");
     setBusy(true);
     try {
-      const reply = await askAssistant(data.client.id, next);
+      const reply = await askAssistant(data.client.id, session, next);
       setMessages([...next, { role: "assistant", content: reply }]);
     } catch {
       setMessages([...next, { role: "assistant", content: "Não consegui responder agora. Tenta novamente dentro de momentos." }]);
