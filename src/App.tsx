@@ -12,7 +12,11 @@ import NotFound from "./pages/NotFound";
 
 import Login from "./pages/admin/Login";
 import AdminLayout from "./components/admin/AdminLayout";
-import Dashboard from "./pages/admin/Dashboard";
+import Home from "./pages/admin/Home";
+import Intelligence from "./pages/admin/Intelligence";
+import Websites from "./pages/admin/Websites";
+import MetaAds from "./pages/admin/MetaAds";
+import Automation from "./pages/admin/Automation";
 import LeadsPage from "./pages/admin/Leads";
 import Conversations from "./pages/admin/Conversations";
 import ClientsManagement from "./pages/admin/ClientsManagement";
@@ -56,7 +60,11 @@ const App = () => (
                   </ProtectedRoute>
                 }
               >
-                <Route index element={<Dashboard />} />
+                <Route index element={<Home />} />
+                <Route path="ia" element={<Intelligence />} />
+                <Route path="websites" element={<Websites />} />
+                <Route path="meta-ads" element={<MetaAds />} />
+                <Route path="automacao" element={<Automation />} />
                 <Route path="leads" element={<LeadsPage />} />
                 <Route path="conversations" element={<Conversations />} />
                 <Route path="clients" element={<ClientsManagement />} />
