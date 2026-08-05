@@ -46,6 +46,7 @@ export async function notify(n: NotifyInput) {
     { onConflict: "organization_id,dedupe_key", ignoreDuplicates: true },
   );
   if (error) console.error("notify failed", error.message);
+  else await pushRealtime(n.client_id, "notification", { category: n.category, severity: n.severity ?? "info" });
 }
 
 /** Call another edge function with the service role key (fire and forget friendly). */
