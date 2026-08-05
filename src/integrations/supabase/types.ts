@@ -111,6 +111,56 @@ export type Database = {
           },
         ]
       }
+      audit_export_settings: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          frequency: string
+          id: string
+          last_error: string | null
+          last_sent_at: string | null
+          last_status: string | null
+          organization_id: string
+          recipients: string[]
+          send_hour_utc: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          frequency?: string
+          id?: string
+          last_error?: string | null
+          last_sent_at?: string | null
+          last_status?: string | null
+          organization_id: string
+          recipients?: string[]
+          send_hour_utc?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          frequency?: string
+          id?: string
+          last_error?: string | null
+          last_sent_at?: string | null
+          last_status?: string | null
+          organization_id?: string
+          recipients?: string[]
+          send_hour_utc?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_export_settings_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: true
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_log: {
         Row: {
           action_type: string
@@ -420,6 +470,7 @@ export type Database = {
       client_conversations: {
         Row: {
           bot_type: string
+          channel: string
           client_id: string
           contact_name: string | null
           contact_phone: string | null
@@ -430,6 +481,7 @@ export type Database = {
         }
         Insert: {
           bot_type?: string
+          channel?: string
           client_id: string
           contact_name?: string | null
           contact_phone?: string | null
@@ -440,6 +492,7 @@ export type Database = {
         }
         Update: {
           bot_type?: string
+          channel?: string
           client_id?: string
           contact_name?: string | null
           contact_phone?: string | null
@@ -454,6 +507,69 @@ export type Database = {
             columns: ["client_id"]
             isOneToOne: false
             referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      client_documents: {
+        Row: {
+          category: string
+          client_id: string
+          created_at: string
+          description: string | null
+          external_url: string | null
+          file_path: string | null
+          id: string
+          mime_type: string | null
+          organization_id: string
+          size_bytes: number | null
+          title: string
+          updated_at: string
+          visible_to_client: boolean
+        }
+        Insert: {
+          category?: string
+          client_id: string
+          created_at?: string
+          description?: string | null
+          external_url?: string | null
+          file_path?: string | null
+          id?: string
+          mime_type?: string | null
+          organization_id: string
+          size_bytes?: number | null
+          title: string
+          updated_at?: string
+          visible_to_client?: boolean
+        }
+        Update: {
+          category?: string
+          client_id?: string
+          created_at?: string
+          description?: string | null
+          external_url?: string | null
+          file_path?: string | null
+          id?: string
+          mime_type?: string | null
+          organization_id?: string
+          size_bytes?: number | null
+          title?: string
+          updated_at?: string
+          visible_to_client?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_documents_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_documents_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -526,6 +642,72 @@ export type Database = {
           },
           {
             foreignKeyName: "client_integrations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      client_meetings: {
+        Row: {
+          ai_summary: string | null
+          client_id: string
+          created_at: string
+          duration_minutes: number
+          id: string
+          location: string | null
+          notes: string | null
+          organization_id: string
+          recording_url: string | null
+          scheduled_at: string
+          status: string
+          title: string
+          updated_at: string
+          visible_to_client: boolean
+        }
+        Insert: {
+          ai_summary?: string | null
+          client_id: string
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          location?: string | null
+          notes?: string | null
+          organization_id: string
+          recording_url?: string | null
+          scheduled_at: string
+          status?: string
+          title: string
+          updated_at?: string
+          visible_to_client?: boolean
+        }
+        Update: {
+          ai_summary?: string | null
+          client_id?: string
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          location?: string | null
+          notes?: string | null
+          organization_id?: string
+          recording_url?: string | null
+          scheduled_at?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          visible_to_client?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_meetings_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_meetings_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Loader2, Plus, Sparkles } from "lucide-react";
 import AddMetricsModal from "@/components/admin/AddMetricsModal";
+import ClientPortalManager from "@/components/admin/ClientPortalManager";
 import {
   LineChart,
   Line,
@@ -357,8 +358,19 @@ const ClientDetail = () => {
             })}
           </div>
         )}
+
+        {id && (
+          <section className="space-y-3">
+            <h2 className="text-lg font-medium">Portal do cliente</h2>
+            <p className="text-sm text-muted-foreground">
+              O que partilhas aqui aparece imediatamente no painel do cliente.
+            </p>
+            <ClientPortalManager clientId={id} />
+          </section>
+        )}
       </div>
     </div>
+
   );
 };
 
