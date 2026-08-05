@@ -147,6 +147,121 @@ export type Database = {
         }
         Relationships: []
       }
+      automation_rules: {
+        Row: {
+          actions: Json
+          client_id: string | null
+          config: Json
+          created_at: string
+          id: string
+          is_active: boolean
+          last_triggered_at: string | null
+          name: string
+          organization_id: string
+          trigger_type: string
+          updated_at: string
+        }
+        Insert: {
+          actions?: Json
+          client_id?: string | null
+          config?: Json
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          last_triggered_at?: string | null
+          name: string
+          organization_id: string
+          trigger_type: string
+          updated_at?: string
+        }
+        Update: {
+          actions?: Json
+          client_id?: string | null
+          config?: Json
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          last_triggered_at?: string | null
+          name?: string
+          organization_id?: string
+          trigger_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "automation_rules_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "automation_rules_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      automation_runs: {
+        Row: {
+          client_id: string | null
+          created_at: string
+          id: string
+          message: string | null
+          organization_id: string
+          payload: Json
+          rule_id: string | null
+          status: string
+          trigger_type: string
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          organization_id: string
+          payload?: Json
+          rule_id?: string | null
+          status?: string
+          trigger_type: string
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          organization_id?: string
+          payload?: Json
+          rule_id?: string | null
+          status?: string
+          trigger_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "automation_runs_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "automation_runs_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "automation_runs_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "automation_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       client_conversations: {
         Row: {
           bot_type: string
@@ -191,47 +306,59 @@ export type Database = {
       client_integrations: {
         Row: {
           auto_sync: boolean
+          backoff_until: string | null
           client_id: string
           config: Json
           created_at: string
           display_name: string | null
           external_account_id: string | null
+          failure_count: number
           id: string
           last_error: string | null
           last_sync_at: string | null
+          next_sync_at: string
           organization_id: string
           provider: string
           status: string
+          sync_interval_minutes: number
           updated_at: string
         }
         Insert: {
           auto_sync?: boolean
+          backoff_until?: string | null
           client_id: string
           config?: Json
           created_at?: string
           display_name?: string | null
           external_account_id?: string | null
+          failure_count?: number
           id?: string
           last_error?: string | null
           last_sync_at?: string | null
+          next_sync_at?: string
           organization_id: string
           provider: string
           status?: string
+          sync_interval_minutes?: number
           updated_at?: string
         }
         Update: {
           auto_sync?: boolean
+          backoff_until?: string | null
           client_id?: string
           config?: Json
           created_at?: string
           display_name?: string | null
           external_account_id?: string | null
+          failure_count?: number
           id?: string
           last_error?: string | null
           last_sync_at?: string | null
+          next_sync_at?: string
           organization_id?: string
           provider?: string
           status?: string
+          sync_interval_minutes?: number
           updated_at?: string
         }
         Relationships: [
@@ -244,6 +371,72 @@ export type Database = {
           },
           {
             foreignKeyName: "client_integrations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      client_memory: {
+        Row: {
+          audience: string | null
+          city: string | null
+          client_id: string
+          competitors: Json
+          created_at: string
+          goals: string | null
+          history: string | null
+          id: string
+          kpis: Json
+          niche: string | null
+          offers: string | null
+          organization_id: string
+          tone: string | null
+          updated_at: string
+        }
+        Insert: {
+          audience?: string | null
+          city?: string | null
+          client_id: string
+          competitors?: Json
+          created_at?: string
+          goals?: string | null
+          history?: string | null
+          id?: string
+          kpis?: Json
+          niche?: string | null
+          offers?: string | null
+          organization_id: string
+          tone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          audience?: string | null
+          city?: string | null
+          client_id?: string
+          competitors?: Json
+          created_at?: string
+          goals?: string | null
+          history?: string | null
+          id?: string
+          kpis?: Json
+          niche?: string | null
+          offers?: string | null
+          organization_id?: string
+          tone?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_memory_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: true
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_memory_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
@@ -279,6 +472,63 @@ export type Database = {
             columns: ["conversation_id"]
             isOneToOne: false
             referencedRelation: "client_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      client_reports: {
+        Row: {
+          actions: Json
+          client_id: string
+          created_at: string
+          highlights: Json
+          id: string
+          organization_id: string
+          period_end: string | null
+          period_start: string | null
+          risks: Json
+          source: string
+          summary: string | null
+        }
+        Insert: {
+          actions?: Json
+          client_id: string
+          created_at?: string
+          highlights?: Json
+          id?: string
+          organization_id: string
+          period_end?: string | null
+          period_start?: string | null
+          risks?: Json
+          source?: string
+          summary?: string | null
+        }
+        Update: {
+          actions?: Json
+          client_id?: string
+          created_at?: string
+          highlights?: Json
+          id?: string
+          organization_id?: string
+          period_end?: string | null
+          period_start?: string | null
+          risks?: Json
+          source?: string
+          summary?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_reports_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_reports_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -661,6 +911,63 @@ export type Database = {
             columns: ["client_id"]
             isOneToOne: false
             referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          category: string
+          client_id: string | null
+          created_at: string
+          dedupe_key: string | null
+          detail: string | null
+          href: string | null
+          id: string
+          organization_id: string
+          read_at: string | null
+          severity: string
+          title: string
+        }
+        Insert: {
+          category: string
+          client_id?: string | null
+          created_at?: string
+          dedupe_key?: string | null
+          detail?: string | null
+          href?: string | null
+          id?: string
+          organization_id: string
+          read_at?: string | null
+          severity?: string
+          title: string
+        }
+        Update: {
+          category?: string
+          client_id?: string | null
+          created_at?: string
+          dedupe_key?: string | null
+          detail?: string | null
+          href?: string | null
+          id?: string
+          organization_id?: string
+          read_at?: string | null
+          severity?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
