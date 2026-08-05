@@ -60,7 +60,11 @@ const App = () => (
                   </ProtectedRoute>
                 }
               >
-                <Route index element={<Dashboard />} />
+                <Route index element={<Home />} />
+                <Route path="ia" element={<Intelligence />} />
+                <Route path="websites" element={<Websites />} />
+                <Route path="meta-ads" element={<MetaAds />} />
+                <Route path="automacao" element={<Automation />} />
                 <Route path="leads" element={<LeadsPage />} />
                 <Route path="conversations" element={<Conversations />} />
                 <Route path="clients" element={<ClientsManagement />} />
