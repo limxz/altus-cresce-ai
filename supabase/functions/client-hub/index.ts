@@ -1,4 +1,4 @@
-import { admin, corsHeaders, json } from "../_shared/os.ts";
+import { admin, corsHeaders, json, verifyClientSession } from "../_shared/os.ts";
 
 const daysAgo = (n: number) => new Date(Date.now() - n * 864e5).toISOString();
 const dateAgo = (n: number) => new Date(Date.now() - n * 864e5).toISOString().slice(0, 10);
@@ -285,6 +285,10 @@ async function chat(snap: any, messages: any[]) {
 
   const context = {
     negocio: snap.client.business_name,
+    documentos: (snap.documents ?? []).slice(0, 15).map((d: any) => ({ id: d.id, titulo: d.title, categoria: d.category })),
+    relatorios: (snap.reports ?? []).slice(0, 5).map((r: any) => ({ periodo: `${r.period_start} a ${r.period_end}`, resumo: r.summary })),
+    recomendacoes: (snap.recommendations ?? []).slice(0, 6),
+    alertas: (snap.notifications ?? []).slice(0, 10).map((n: any) => ({ titulo: n.title, detalhe: n.detail, severidade: n.severity })),
     kpis: snap.kpis,
     ads: { ...snap.ads, series: snap.ads.series.slice(-14) },
     instagram: { ...snap.instagram, series: snap.instagram.series.slice(-14), posts: undefined },
@@ -307,7 +311,13 @@ async function chat(snap: any, messages: any[]) {
           content:
             "És o assistente Altus do cliente " + snap.client.business_name +
             ". Português de Portugal, tom profissional e próximo. Responde apenas com base nos DADOS abaixo. " +
-            "Se não tiveres o dado, diz que ainda não está ligado e sugere falar com a equipa. Nunca inventes números.\n\nDADOS:\n" +
+            "Se não tiveres o dado, diz que ainda não está ligado e sugere falar com a equipa. Nunca inventes números.\n\n" +
+            "CITAÇÕES: sempre que usares um número ou facto, liga-o à fonte dentro do portal com um link markdown. " +
+            "Usa exatamente estes destinos: [Resultados](hub:resultados), [Leads](hub:leads), [Website](hub:website), " +
+            "[Documentos](hub:documentos), [Reuniões](hub:reunioes), [Alertas](hub:alertas), [Início](hub:inicio). " +
+            "Para um documento específico usa [nome do documento](hub:documentos?doc=ID). " +
+            "Termina sempre com uma linha \"**Fontes:** \" seguida dos links usados. Não inventes links nem uses URLs externos.\n\n" +
+            "DADOS:\n" +
             JSON.stringify(context),
         },
         ...messages.slice(-10),
@@ -327,8 +337,41 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
-    const { client_id, action = "snapshot", messages = [], document_id } = await req.json();
+    const { client_id, action = "snapshot", messages = [], document_id, session, notification_id } =
+      await req.json();
     if (!client_id || typeof client_id !== "string") return json({ error: "client_id obrigatório" }, 400);
+
+    /* Authorisation: a signed client-portal session for THIS client, or an
+       org member / admin using their Supabase session. */
+    const sessionClientId = await verifyClientSession(session);
+    let allowed = sessionClientId === client_id;
+    if (!allowed) {
+      const jwt = req.headers.get("Authorization")?.replace("Bearer ", "");
+      const { data: userData } = jwt ? await admin.auth.getUser(jwt) : { data: null as any };
+      const user = userData?.user;
+      if (user) {
+        const { data: client } = await admin.from("clients").select("organization_id").eq("id", client_id).maybeSingle();
+        const [{ data: member }, { data: role }] = await Promise.all([
+          admin.from("organization_members").select("id")
+            .eq("organization_id", client?.organization_id ?? "").eq("user_id", user.id).maybeSingle(),
+          admin.from("user_roles").select("id").eq("user_id", user.id).eq("role", "admin").maybeSingle(),
+        ]);
+        allowed = !!(member || role);
+      }
+    }
+    if (!allowed) return json({ error: "Sessão inválida ou expirada." }, 401);
+
+    if (action === "mark_read") {
+      await admin.from("notifications").update({ read_at: new Date().toISOString() })
+        .eq("client_id", client_id).is("read_at", null)
+        .in("id", notification_id ? [notification_id] : []);
+      return json({ ok: true });
+    }
+    if (action === "mark_all_read") {
+      await admin.from("notifications").update({ read_at: new Date().toISOString() })
+        .eq("client_id", client_id).is("read_at", null);
+      return json({ ok: true });
+    }
 
     const snap = await snapshot(client_id);
     if (!snap) return json({ error: "Cliente não encontrado" }, 404);

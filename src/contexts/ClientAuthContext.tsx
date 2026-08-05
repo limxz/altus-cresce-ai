@@ -21,6 +21,7 @@ interface ClientData {
 
 interface ClientAuthContextType {
   client: ClientData | null;
+  session: string | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
@@ -36,6 +37,7 @@ export const useClientAuth = () => {
 
 export const ClientAuthProvider = ({ children }: { children: ReactNode }) => {
   const [client, setClient] = useState<ClientData | null>(null);
+  const [session, setSession] = useState<string | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem("altus_client");
@@ -48,7 +50,9 @@ export const ClientAuthProvider = ({ children }: { children: ReactNode }) => {
           localStorage.removeItem("altus_client");
           return;
         }
-        const { loginAt: _t, ...clientData } = decoded;
+        const { loginAt: _t, session: storedSession, ...clientData } = decoded;
+        if (!storedSession) { localStorage.removeItem("altus_client"); return; }
+        setSession(storedSession);
         setClient(clientData);
       } catch { localStorage.removeItem("altus_client"); }
     }
@@ -79,8 +83,9 @@ export const ClientAuthProvider = ({ children }: { children: ReactNode }) => {
         mrr: d.mrr || null,
       };
       setClient(clientData);
+      setSession(data.session ?? null);
       // Guardar encriptado com timestamp de login
-      const encoded = btoa(JSON.stringify({ ...clientData, loginAt: Date.now() }));
+      const encoded = btoa(JSON.stringify({ ...clientData, session: data.session ?? null, loginAt: Date.now() }));
       localStorage.setItem("altus_client", encoded);
       return true;
     } catch {
@@ -90,11 +95,12 @@ export const ClientAuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setClient(null);
+    setSession(null);
     localStorage.removeItem("altus_client");
   };
 
   return (
-    <ClientAuthContext.Provider value={{ client, isAuthenticated: !!client, login, logout }}>
+    <ClientAuthContext.Provider value={{ client, session, isAuthenticated: !!client && !!session, login, logout }}>
       {children}
     </ClientAuthContext.Provider>
   );

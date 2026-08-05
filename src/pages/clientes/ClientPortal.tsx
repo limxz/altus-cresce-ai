@@ -14,6 +14,7 @@ import WebsiteModule from "@/components/clientes/hub/WebsiteModule";
 import DocumentsModule from "@/components/clientes/hub/DocumentsModule";
 import MeetingsModule from "@/components/clientes/hub/MeetingsModule";
 import AssistantModule from "@/components/clientes/hub/AssistantModule";
+import NotificationsModule from "@/components/clientes/hub/NotificationsModule";
 import ClientSupportTab from "@/components/clientes/SupportTab";
 
 const MODULES = [
@@ -23,15 +24,19 @@ const MODULES = [
   { key: "website", label: "Website", icon: Globe },
   { key: "documentos", label: "Documentos", icon: FileText },
   { key: "reunioes", label: "Reuniões", icon: CalendarDays },
+  { key: "alertas", label: "Alertas", icon: Bell },
   { key: "assistente", label: "Assistente IA", icon: Sparkles },
   { key: "suporte", label: "Suporte", icon: LifeBuoy },
 ];
 
 const ClientPortal = () => {
-  const { client, logout } = useClientAuth();
+  const { client, session, logout } = useClientAuth();
   const [module, setModule] = useState("inicio");
   const [navOpen, setNavOpen] = useState(false);
-  const { data, briefing, loading, refreshing, error, updatedAt, reload } = useClientHub(client?.id);
+  const {
+    data, briefing, loading, refreshing, error, updatedAt, liveAt, reload,
+    markNotificationRead, markAllRead,
+  } = useClientHub(client?.id, session);
 
   if (!client) return null;
 
@@ -93,15 +98,18 @@ const ClientPortal = () => {
           <div className="min-w-0">
             <h1 className="text-[15px] font-medium tracking-[-0.01em] truncate">{active.label}</h1>
             <p className="text-xs os-faint">
-              {refreshing ? "A atualizar…" : updatedAt ? `Atualizado às ${updatedAt.toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" })}` : "A carregar…"}
+              {refreshing
+                ? "A atualizar…"
+                : updatedAt
+                  ? `${liveAt ? "Em direto · a" : "A"}tualizado às ${updatedAt.toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" })}`
+                  : "A carregar…"}
             </p>
           </div>
           <div className="ml-auto flex items-center gap-2">
-            {unread > 0 && (
-              <span className="os-btn !px-2.5 text-xs" title={`${unread} alertas`}>
-                <Bell size={13} /> {unread}
-              </span>
-            )}
+            <button onClick={() => go("alertas")} className="os-btn !px-2.5 text-xs" title={`${unread} alertas por ler`}>
+              <Bell size={13} />
+              {unread > 0 && <span style={{ color: "var(--os-accent)" }}>{unread}</span>}
+            </button>
             <button onClick={reload} className="os-btn" disabled={refreshing}>
               <RefreshCw size={13} className={refreshing ? "animate-spin" : ""} /> Atualizar
             </button>
@@ -128,9 +136,12 @@ const ClientPortal = () => {
               {module === "resultados" && <ResultsModule data={data} />}
               {module === "leads" && <LeadsModule data={data} />}
               {module === "website" && <WebsiteModule data={data} />}
-              {module === "documentos" && <DocumentsModule data={data} />}
+              {module === "documentos" && <DocumentsModule data={data} session={session} />}
               {module === "reunioes" && <MeetingsModule data={data} />}
-              {module === "assistente" && <AssistantModule data={data} />}
+              {module === "alertas" && (
+                <NotificationsModule data={data} onRead={markNotificationRead} onReadAll={markAllRead} onNavigate={go} />
+              )}
+              {module === "assistente" && <AssistantModule data={data} session={session} onNavigate={go} />}
               {module === "suporte" && <ClientSupportTab />}
             </>
           )}

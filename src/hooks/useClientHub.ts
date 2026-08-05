@@ -3,6 +3,17 @@ import { supabase } from "@/integrations/supabase/client";
 
 export interface HubKpi { value: number | null; delta: number | null }
 
+export interface HubNotification {
+  id: string;
+  category: string;
+  severity: "critico" | "atencao" | "oportunidade" | "info" | string;
+  title: string;
+  detail: string | null;
+  href: string | null;
+  read_at: string | null;
+  created_at: string;
+}
+
 export interface HubSnapshot {
   client: any;
   memory: any;
@@ -23,7 +34,7 @@ export interface HubSnapshot {
   reports: any[];
   documents: any[];
   meetings: any[];
-  notifications: any[];
+  notifications: HubNotification[];
   timeline: any[];
 }
 
@@ -33,24 +44,27 @@ export interface Briefing {
   risk: string | null;
 }
 
-const POLL_MS = 60_000;
+/** Fallback poll — realtime broadcast carries the fast path. */
+const POLL_MS = 300_000;
 
-export const useClientHub = (clientId: string | undefined) => {
+const invokeHub = async (clientId: string, session: string | null, body: Record<string, unknown>) =>
+  supabase.functions.invoke("client-hub", { body: { client_id: clientId, session, ...body } });
+
+export const useClientHub = (clientId: string | undefined, session: string | null = null) => {
   const [data, setData] = useState<HubSnapshot | null>(null);
   const [briefing, setBriefing] = useState<Briefing | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
+  const [liveAt, setLiveAt] = useState<Date | null>(null);
   const briefingFor = useRef<string | null>(null);
 
   const load = useCallback(
     async (silent = false) => {
       if (!clientId) return;
       silent ? setRefreshing(true) : setLoading(true);
-      const { data: res, error: err } = await supabase.functions.invoke("client-hub", {
-        body: { client_id: clientId },
-      });
+      const { data: res, error: err } = await invokeHub(clientId, session, {});
       if (err || (res as any)?.error) {
         setError((res as any)?.error ?? err?.message ?? "Não foi possível carregar os dados.");
       } else {
@@ -61,17 +75,15 @@ export const useClientHub = (clientId: string | undefined) => {
       setLoading(false);
       setRefreshing(false);
     },
-    [clientId],
+    [clientId, session],
   );
 
   const loadBriefing = useCallback(async () => {
     if (!clientId || briefingFor.current === clientId) return;
     briefingFor.current = clientId;
-    const { data: res } = await supabase.functions.invoke("client-hub", {
-      body: { client_id: clientId, action: "briefing" },
-    });
+    const { data: res } = await invokeHub(clientId, session, { action: "briefing" });
     if ((res as any)?.briefing) setBriefing((res as any).briefing);
-  }, [clientId]);
+  }, [clientId, session]);
 
   useEffect(() => {
     load();
@@ -83,36 +95,57 @@ export const useClientHub = (clientId: string | undefined) => {
     if (data && !briefing) loadBriefing();
   }, [data, briefing, loadBriefing]);
 
-  // Live refresh when the backend writes new data for this client
+  /* Realtime: the backend broadcasts a hint on `client:<id>` whenever it writes
+     something for this client. The hint carries no data — we refetch through the
+     authorised endpoint so the client only ever sees what it is allowed to see. */
   useEffect(() => {
     if (!clientId) return;
-    const filter = `client_id=eq.${clientId}`;
-    const channel = supabase.channel(`hub-${clientId}`);
-    for (const table of [
-      "ad_metrics", "instagram_metrics", "notifications", "audit_log", "external_signups",
-      "client_documents", "client_meetings", "whatsapp_conversations", "client_reports",
-    ]) {
-      channel.on("postgres_changes", { event: "*", schema: "public", table, filter }, () => load(true));
-    }
-    channel.subscribe();
+    const channel = supabase
+      .channel(`client:${clientId}`, { config: { private: false } })
+      .on("broadcast", { event: "*" }, () => {
+        setLiveAt(new Date());
+        load(true);
+      })
+      .subscribe();
     return () => { supabase.removeChannel(channel); };
   }, [clientId, load]);
 
-  return { data, briefing, loading, refreshing, error, updatedAt, reload: () => load(true) };
+  const markNotificationRead = useCallback(
+    async (id: string) => {
+      if (!clientId) return;
+      setData((d) =>
+        d ? { ...d, notifications: d.notifications.map((n) => (n.id === id ? { ...n, read_at: new Date().toISOString() } : n)) } : d,
+      );
+      await invokeHub(clientId, session, { action: "mark_read", notification_id: id });
+    },
+    [clientId, session],
+  );
+
+  const markAllRead = useCallback(async () => {
+    if (!clientId) return;
+    const now = new Date().toISOString();
+    setData((d) => (d ? { ...d, notifications: d.notifications.map((n) => ({ ...n, read_at: n.read_at ?? now })) } : d));
+    await invokeHub(clientId, session, { action: "mark_all_read" });
+  }, [clientId, session]);
+
+  return {
+    data, briefing, loading, refreshing, error, updatedAt, liveAt,
+    reload: () => load(true), markNotificationRead, markAllRead,
+  };
 };
 
-export const askAssistant = async (clientId: string, messages: { role: string; content: string }[]) => {
-  const { data, error } = await supabase.functions.invoke("client-hub", {
-    body: { client_id: clientId, action: "chat", messages },
-  });
+export const askAssistant = async (
+  clientId: string,
+  session: string | null,
+  messages: { role: string; content: string }[],
+) => {
+  const { data, error } = await invokeHub(clientId, session, { action: "chat", messages });
   if (error) throw new Error(error.message);
   return (data as any)?.reply ?? "";
 };
 
-export const openDocument = async (clientId: string, documentId: string) => {
-  const { data, error } = await supabase.functions.invoke("client-hub", {
-    body: { client_id: clientId, action: "document_url", document_id: documentId },
-  });
+export const openDocument = async (clientId: string, session: string | null, documentId: string) => {
+  const { data, error } = await invokeHub(clientId, session, { action: "document_url", document_id: documentId });
   if (error || (data as any)?.error) throw new Error((data as any)?.error ?? error?.message);
   return (data as any).url as string;
 };

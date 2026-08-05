@@ -151,3 +151,16 @@
   border-radius: 99px;
 }
 .os-scroll::-webkit-scrollbar-track { background: transparent; }
+
+/* Inline source citations rendered inside assistant answers */
+.altus-os .os-source-link {
+  color: var(--os-accent);
+  border-bottom: 1px dashed rgba(124, 58, 237, 0.55);
+  font: inherit;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.altus-os .os-source-link:hover {
+  color: #fff;
+  border-color: #fff;
+}

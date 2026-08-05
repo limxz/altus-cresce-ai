@@ -13,7 +13,9 @@ const SUGGESTIONS = [
   "O que a Altus fez por mim nos últimos dias?",
 ];
 
-const AssistantModule = ({ data }: { data: HubSnapshot }) => {
+const AssistantModule = ({
+  data, session, onNavigate,
+}: { data: HubSnapshot; session: string | null; onNavigate?: (module: string) => void }) => {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -27,7 +29,7 @@ const AssistantModule = ({ data }: { data: HubSnapshot }) => {
     setInput("");
     setBusy(true);
     try {
-      const reply = await askAssistant(data.client.id, next);
+      const reply = await askAssistant(data.client.id, session, next);
       setMessages([...next, { role: "assistant", content: reply }]);
     } catch {
       setMessages([...next, { role: "assistant", content: "Não consegui responder agora. Tenta novamente dentro de momentos." }]);
@@ -72,7 +74,33 @@ const AssistantModule = ({ data }: { data: HubSnapshot }) => {
                   : { background: "var(--os-panel-2)", border: "1px solid var(--os-line)" }}
               >
                 {m.role === "assistant"
-                  ? <div className="prose prose-invert prose-sm max-w-none prose-p:my-1.5 prose-ul:my-1.5"><ReactMarkdown>{m.content}</ReactMarkdown></div>
+                  ? (
+                    <div className="prose prose-invert prose-sm max-w-none prose-p:my-1.5 prose-ul:my-1.5">
+                      <ReactMarkdown
+                        components={{
+                          a: ({ href, children }) => {
+                            const target = String(href ?? "");
+                            if (!target.startsWith("hub:")) {
+                              return <span>{children}</span>;
+                            }
+                            const [module, query] = target.slice(4).split("?");
+                            return (
+                              <button
+                                type="button"
+                                onClick={() => onNavigate?.(module)}
+                                title={query ? "Abrir no portal" : undefined}
+                                className="os-source-link"
+                              >
+                                {children}
+                              </button>
+                            );
+                          },
+                        }}
+                      >
+                        {m.content}
+                      </ReactMarkdown>
+                    </div>
+                  )
                   : m.content}
               </div>
             </div>

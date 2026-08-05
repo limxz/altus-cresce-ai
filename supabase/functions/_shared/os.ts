@@ -46,6 +46,7 @@ export async function notify(n: NotifyInput) {
     { onConflict: "organization_id,dedupe_key", ignoreDuplicates: true },
   );
   if (error) console.error("notify failed", error.message);
+  else await pushRealtime(n.client_id, "notification", { category: n.category, severity: n.severity ?? "info" });
 }
 
 /** Call another edge function with the service role key (fire and forget friendly). */
@@ -94,4 +95,73 @@ export async function audit(a: AuditInput) {
     duration_ms: a.duration_ms ?? null,
   });
   if (error) console.error("audit failed", error.message);
+  else await pushRealtime(a.client_id, "activity", { action_type: a.action_type, status: a.status ?? "success" });
+}
+
+/* ------------------------------------------------------------------ *
+ * Realtime broadcast — pushes a "something changed" hint to a client  *
+ * portal channel. The payload never carries data, only a hint, so the *
+ * portal refetches through the authorised client-hub endpoint.        *
+ * ------------------------------------------------------------------ */
+export async function pushRealtime(
+  clientId: string | null | undefined,
+  event: string,
+  payload: Record<string, unknown> = {},
+) {
+  if (!clientId) return;
+  try {
+    const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const res = await fetch(`${Deno.env.get("SUPABASE_URL")}/realtime/v1/api/broadcast`, {
+      method: "POST",
+      headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        messages: [{ topic: `client:${clientId}`, event, payload: { ...payload, at: new Date().toISOString() } }],
+      }),
+    });
+    if (!res.ok) console.error("broadcast failed", res.status, (await res.text()).slice(0, 200));
+  } catch (e) {
+    console.error("broadcast error", (e as Error).message);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Client portal sessions — signed HMAC tokens issued by client-login  *
+ * and verified by every endpoint that returns client data.            *
+ * ------------------------------------------------------------------ */
+const enc = new TextEncoder();
+const b64url = (bytes: Uint8Array) =>
+  btoa(String.fromCharCode(...bytes)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+const unb64url = (s: string) =>
+  Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0));
+
+async function sessionKey() {
+  const secret = Deno.env.get("CLIENT_SESSION_SECRET");
+  if (!secret) throw new Error("CLIENT_SESSION_SECRET em falta");
+  return crypto.subtle.importKey("raw", enc.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, [
+    "sign",
+    "verify",
+  ]);
+}
+
+const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+
+export async function signClientSession(clientId: string) {
+  const payload = b64url(enc.encode(JSON.stringify({ cid: clientId, exp: Date.now() + SESSION_TTL_MS })));
+  const sig = new Uint8Array(await crypto.subtle.sign("HMAC", await sessionKey(), enc.encode(payload)));
+  return `${payload}.${b64url(sig)}`;
+}
+
+/** Returns the client id when the token is valid and unexpired, otherwise null. */
+export async function verifyClientSession(token: unknown): Promise<string | null> {
+  if (typeof token !== "string" || !token.includes(".")) return null;
+  try {
+    const [payload, sig] = token.split(".");
+    const ok = await crypto.subtle.verify("HMAC", await sessionKey(), unb64url(sig), enc.encode(payload));
+    if (!ok) return null;
+    const data = JSON.parse(new TextDecoder().decode(unb64url(payload)));
+    if (!data?.cid || typeof data.exp !== "number" || Date.now() > data.exp) return null;
+    return data.cid as string;
+  } catch {
+    return null;
+  }
 }
