@@ -1,152 +1,142 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
+import { useState, createContext, useContext } from "react";
+import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAltusData, OsData } from "@/hooks/useAltusData";
+import NotificationCenter from "./os/NotificationCenter";
+import AltusChat from "./os/AltusChat";
+import "@/styles/altus-os.css";
 import {
-  LayoutDashboard,
-  Users,
-  Inbox,
-  MessageCircle,
-  Settings,
-  LogOut,
-  Menu,
-  X,
-  DollarSign,
-  Presentation,
-  Stethoscope,
-  Bot,
-  BookOpen,
-  BarChart3,
-  Kanban,
-  Sparkles,
+  Home, Users, Kanban, BrainCircuit, Globe, Megaphone, LineChart,
+  Workflow, MessagesSquare, Settings, LogOut, Menu, X, Sparkles, RefreshCw,
 } from "lucide-react";
-import { useState } from "react";
 
-const navItems = [
-  { label: "Dashboard", path: "/admin", icon: LayoutDashboard },
-  { label: "Leads", path: "/admin/leads", icon: Inbox },
-  { label: "Conversas", path: "/admin/conversations", icon: MessageCircle },
+const nav = [
+  { label: "Home", path: "/admin", icon: Home },
   { label: "Clientes", path: "/admin/clients", icon: Users },
-  { label: "WhatsApp Agents", path: "/admin/whatsapp", icon: Bot },
-  { label: "Analytics", path: "/admin/analytics", icon: BarChart3 },
   { label: "Pipeline", path: "/admin/pipeline", icon: Kanban },
-  { label: "Testemunhos", path: "/admin/testimonials", icon: Sparkles },
-  { label: "Preços", path: "/admin/pricing", icon: DollarSign },
-  { label: "Diagnósticos", path: "/admin/diagnosticos", icon: Stethoscope },
-  { label: "Apresentações", path: "/admin/presentations", icon: Presentation },
-  { label: "Setup", path: "/admin/setup", icon: BookOpen },
+  { label: "IA", path: "/admin/ia", icon: BrainCircuit },
+  { label: "Websites", path: "/admin/websites", icon: Globe },
+  { label: "Meta Ads", path: "/admin/meta-ads", icon: Megaphone },
+  { label: "Analytics", path: "/admin/analytics", icon: LineChart },
+  { label: "Automação", path: "/admin/automacao", icon: Workflow },
+  { label: "Conversas", path: "/admin/conversations", icon: MessagesSquare },
   { label: "Configurações", path: "/admin/settings", icon: Settings },
 ];
+
+const OsContext = createContext<OsData | null>(null);
+export const useOs = () => {
+  const ctx = useContext(OsContext);
+  if (!ctx) throw new Error("useOs must be used inside AdminLayout");
+  return ctx;
+};
 
 const AdminLayout = () => {
   const { logout } = useAuth();
   const location = useLocation();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const os = useAltusData();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
 
   const isActive = (path: string) =>
-    path === "/admin"
-      ? location.pathname === "/admin"
-      : location.pathname.startsWith(path);
+    path === "/admin" ? location.pathname === "/admin" : location.pathname.startsWith(path);
+
+  const current = nav.find((n) => isActive(n.path))?.label ?? "Altus Intelligence";
 
   const sidebar = (
-    <div className="flex flex-col h-full">
-      <div className="p-6 mb-2" style={{ borderBottom: "1px solid rgba(42,32,64,0.5)" }}>
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-[10px] flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))" }}>
-            <span className="text-white font-bold text-xs">A</span>
-          </div>
-          <span className="font-display text-sm tracking-[0.15em] uppercase text-foreground font-bold">
-            Admin
-          </span>
+    <div className="flex flex-col h-full px-4 py-5">
+      <div className="flex items-center gap-2.5 px-2 mb-7">
+        <div
+          className="w-7 h-7 rounded-lg flex items-center justify-center"
+          style={{ background: "linear-gradient(150deg,#8b5cf6,#5b21b6)", boxShadow: "0 4px 18px -6px rgba(124,58,237,.9)" }}
+        >
+          <Sparkles size={13} className="text-white" />
+        </div>
+        <div className="leading-tight">
+          <p className="text-[13px] font-medium tracking-tight">Altus Intelligence</p>
+          <p className="text-[10px] os-faint">Centro operacional</p>
         </div>
       </div>
 
-      <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
-        {navItems.map((item) => (
+      <nav className="flex-1 space-y-0.5 overflow-y-auto os-scroll">
+        {nav.map((item) => (
           <Link
             key={item.path}
             to={item.path}
-            onClick={() => setSidebarOpen(false)}
-            className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-[10px] text-sm transition-all duration-150 ${
-              isActive(item.path)
-                ? "text-accent font-semibold"
-                : "text-muted-foreground hover:text-foreground font-medium"
-            }`}
-            style={isActive(item.path) ? {
-              background: "rgba(139,92,246,0.12)",
-              borderLeft: "2px solid hsl(var(--primary))",
-              paddingLeft: "12px",
-            } : {
-              borderLeft: "2px solid transparent",
-            }}
-            onMouseEnter={(e) => {
-              if (!isActive(item.path)) {
-                e.currentTarget.style.background = "rgba(255,255,255,0.04)";
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!isActive(item.path)) {
-                e.currentTarget.style.background = "transparent";
-              }
-            }}
+            onClick={() => setMobileOpen(false)}
+            className="os-nav"
+            data-active={isActive(item.path)}
           >
-            <item.icon size={16} className={isActive(item.path) ? "text-primary" : ""} />
+            <item.icon size={15} strokeWidth={1.7} />
             {item.label}
           </Link>
         ))}
       </nav>
 
-      <div className="p-3" style={{ borderTop: "1px solid rgba(42,32,64,0.5)" }}>
-        <button
-          onClick={logout}
-          className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-[10px] text-sm text-muted-foreground hover:text-foreground transition-all duration-150 w-full font-medium"
-          onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
-        >
-          <LogOut size={16} />
-          Sair
-        </button>
-      </div>
+      <button onClick={logout} className="os-nav mt-3">
+        <LogOut size={15} strokeWidth={1.7} />
+        Sair
+      </button>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-background flex">
-      {/* Desktop sidebar */}
-      <aside className="hidden lg:block w-[256px] fixed inset-y-0 left-0" style={{ background: "hsl(var(--sidebar-background))", borderRight: "1px solid rgba(42,32,64,0.8)" }}>
-        {sidebar}
-      </aside>
+    <OsContext.Provider value={os}>
+      <div className="altus-os min-h-screen flex">
+        <aside
+          className="hidden lg:block w-[228px] fixed inset-y-0 left-0 z-30"
+          style={{ background: "#0b0b0d", borderRight: "1px solid var(--os-line)" }}
+        >
+          {sidebar}
+        </aside>
 
-      {/* Mobile sidebar */}
-      {sidebarOpen && (
-        <div className="lg:hidden fixed inset-0 z-50">
-          <div
-            className="absolute inset-0 bg-background/80 backdrop-blur-sm"
-            onClick={() => setSidebarOpen(false)}
-          />
-          <aside className="absolute left-0 top-0 bottom-0 w-[256px]" style={{ background: "hsl(var(--sidebar-background))", borderRight: "1px solid rgba(42,32,64,0.8)" }}>
-            {sidebar}
-          </aside>
-        </div>
-      )}
+        {mobileOpen && (
+          <div className="lg:hidden fixed inset-0 z-[70]">
+            <div className="absolute inset-0 bg-black/60" onClick={() => setMobileOpen(false)} />
+            <aside className="absolute left-0 top-0 bottom-0 w-[240px] os-glass">
+              <button onClick={() => setMobileOpen(false)} className="os-btn !h-8 !w-8 !p-0 justify-center absolute right-3 top-4">
+                <X size={14} />
+              </button>
+              {sidebar}
+            </aside>
+          </div>
+        )}
 
-      {/* Main content */}
-      <div className="flex-1 lg:ml-[256px]">
-        <header className="h-[60px] flex items-center px-6 sticky top-0 z-40" style={{ background: "hsl(var(--background))", borderBottom: "1px solid rgba(42,32,64,0.6)", backdropFilter: "blur(10px)" }}>
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="lg:hidden text-muted-foreground hover:text-foreground mr-4 transition-colors duration-200"
+        <div className="flex-1 lg:ml-[228px] min-w-0">
+          <header
+            className="h-[56px] flex items-center gap-3 px-5 sticky top-0 z-40 os-glass"
+            style={{ borderBottom: "1px solid var(--os-line)", borderTop: 0, borderLeft: 0, borderRight: 0 }}
           >
-            <Menu size={20} />
-          </button>
-          <h1 className="font-display text-base text-foreground" style={{ fontWeight: 600 }}>
-            {navItems.find((i) => isActive(i.path))?.label || "Dashboard"}
-          </h1>
-        </header>
+            <button onClick={() => setMobileOpen(true)} className="lg:hidden os-btn !h-8 !w-8 !p-0 justify-center">
+              <Menu size={15} />
+            </button>
+            <span className="text-[13px] font-medium">{current}</span>
+            <div className="ml-auto flex items-center gap-2">
+              <button onClick={os.refresh} className="os-btn !h-8 !w-8 !p-0 justify-center" title="Atualizar dados">
+                <RefreshCw size={13} className={os.loading ? "animate-spin" : ""} />
+              </button>
+              <NotificationCenter items={os.notifications} />
+              <button onClick={() => setChatOpen(true)} className="os-btn os-btn-accent">
+                <Sparkles size={13} />
+                <span className="hidden sm:inline">Perguntar</span>
+              </button>
+            </div>
+          </header>
 
-        <main className="p-6">
-          <Outlet />
-        </main>
+          <motion.main
+            key={location.pathname}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+            className="px-5 lg:px-8 py-7 max-w-[1320px]"
+          >
+            <Outlet />
+          </motion.main>
+        </div>
+
+        <AltusChat open={chatOpen} onClose={() => setChatOpen(false)} />
       </div>
-    </div>
+    </OsContext.Provider>
   );
 };
 
