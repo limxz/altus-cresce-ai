@@ -208,9 +208,8 @@ Deno.serve(async (req) => {
     const trigger = body.trigger ?? "manual";
 
     if (body.action === "execute_approvals") {
-      const executed = await runApprovedQueue(clientFilter);
       const approvalsRun = await runApprovedQueue(clientFilter);
-    return json({ ok: true, executed, approvals_executed: approvalsRun });
+      return json({ ok: true, approvals_executed: approvalsRun });
     }
 
     const { data: clientsData } = await admin
