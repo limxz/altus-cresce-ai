@@ -61,3 +61,37 @@ export async function invokeFunction(name: string, body: unknown) {
   if (!res.ok) console.error(`invoke ${name} [${res.status}] ${text.slice(0, 300)}`);
   return { ok: res.ok, body: text };
 }
+
+export interface AuditInput {
+  organization_id: string;
+  client_id?: string | null;
+  integration_id?: string | null;
+  actor?: "system" | "user" | "ai";
+  actor_id?: string | null;
+  action_type: string;
+  provider?: string | null;
+  status?: "success" | "error" | "pending" | "skipped";
+  title: string;
+  detail?: string | null;
+  metadata?: Record<string, unknown>;
+  duration_ms?: number | null;
+}
+
+/** Append an immutable audit-log entry. Never throws. */
+export async function audit(a: AuditInput) {
+  const { error } = await admin.from("audit_log").insert({
+    organization_id: a.organization_id,
+    client_id: a.client_id ?? null,
+    integration_id: a.integration_id ?? null,
+    actor: a.actor ?? "system",
+    actor_id: a.actor_id ?? null,
+    action_type: a.action_type,
+    provider: a.provider ?? null,
+    status: a.status ?? "success",
+    title: a.title,
+    detail: a.detail ?? null,
+    metadata: a.metadata ?? {},
+    duration_ms: a.duration_ms ?? null,
+  });
+  if (error) console.error("audit failed", error.message);
+}
