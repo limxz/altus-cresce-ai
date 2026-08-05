@@ -35,6 +35,7 @@ async function snapshot(clientId: string) {
     syncRows,
     automationRows,
     memory,
+    signups,
   ] = await Promise.all([
     admin.from("instagram_metrics").select("*").eq("client_id", clientId).gte("date", dateAgo(60)).order("date"),
     admin.from("ad_metrics").select("*").eq("client_id", clientId).gte("date", dateAgo(60)).order("date"),
@@ -56,7 +57,14 @@ async function snapshot(clientId: string) {
     admin.from("integration_sync_runs").select("*").eq("client_id", clientId).gte("created_at", daysAgo(14)).order("created_at", { ascending: false }).limit(40),
     admin.from("automation_runs").select("*").eq("client_id", clientId).gte("created_at", daysAgo(14)).order("created_at", { ascending: false }).limit(40),
     admin.from("client_memory").select("*").eq("client_id", clientId).maybeSingle(),
+    admin
+      .from("external_signups")
+      .select("id, source, name, email, phone, occurred_at")
+      .eq("client_id", clientId)
+      .gte("occurred_at", daysAgo(60))
+      .order("occurred_at", { ascending: false }),
   ]);
+
 
   const igRows = ig.data ?? [];
   const adRows = ads.data ?? [];
@@ -132,10 +140,23 @@ async function snapshot(clientId: string) {
     })),
   ].sort((a, b) => +new Date(b.at) - +new Date(a.at)).slice(0, 60);
 
+  const signupRows = (signups.data ?? []) as any[];
+  const signups7 = signupRows.filter((s) => s.occurred_at >= daysAgo(7)).length;
+  const signupsPrev = signupRows.filter(
+    (s) => s.occurred_at >= daysAgo(14) && s.occurred_at < daysAgo(7),
+  ).length;
+  const signupsByDay = new Map<string, number>();
+  for (let i = 29; i >= 0; i--) signupsByDay.set(dateAgo(i), 0);
+  for (const s of signupRows) {
+    const d = String(s.occurred_at).slice(0, 10);
+    if (signupsByDay.has(d)) signupsByDay.set(d, (signupsByDay.get(d) ?? 0) + 1);
+  }
+
   return {
     client,
     memory: memory.data ?? null,
     kpis: {
+      signups: { value: signups7, delta: pct(signups7, signupsPrev) },
       leads: { value: leads7, delta: pct(leads7, leadsPrev) },
       conversions: { value: conv7, delta: pct(conv7, convPrev) },
       meetings: { value: upcomingMeetings.length, delta: null },
@@ -185,6 +206,13 @@ async function snapshot(clientId: string) {
       last_sync_at: i.last_sync_at,
     })),
     leads: convoRows,
+    signups: {
+      total: signupRows.length,
+      last7: signups7,
+      delta: pct(signups7, signupsPrev),
+      recent: signupRows.slice(0, 20),
+      series: [...signupsByDay.entries()].map(([date, count]) => ({ date, count })),
+    },
     recommendations: recs.data ?? [],
     reports: reports.data ?? [],
     documents: docs.data ?? [],
@@ -202,6 +230,8 @@ async function briefing(snap: any) {
     negocio: snap.client.business_name,
     nicho: snap.client.niche,
     leads_7d: snap.kpis.leads.value,
+    inscricoes_7d: snap.signups?.last7 ?? null,
+    inscricoes_variacao_pct: snap.signups?.delta ?? null,
     leads_variacao_pct: snap.kpis.leads.delta,
     conversoes_7d: snap.kpis.conversions.value,
     investimento_7d: snap.ads.spend,
@@ -260,6 +290,7 @@ async function chat(snap: any, messages: any[]) {
     instagram: { ...snap.instagram, series: snap.instagram.series.slice(-14), posts: undefined },
     website: snap.website,
     leads_recentes: snap.leads.slice(0, 10),
+    inscricoes: snap.signups ? { total: snap.signups.total, ultimos_7_dias: snap.signups.last7 } : null,
     trabalho_recente: snap.timeline.slice(0, 20),
     reunioes: snap.meetings.slice(0, 5),
     memoria: snap.memory,

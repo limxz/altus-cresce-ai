@@ -3,7 +3,7 @@ import { KpiCard, Panel, SectionTitle, Empty, money, fmtDate } from "./HubUI";
 import {
   Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from "recharts";
-import { Euro, MousePointerClick, Target, Instagram } from "lucide-react";
+import { Euro, MousePointerClick, Target, Instagram, ClipboardCheck } from "lucide-react";
 
 const axis = { stroke: "#5b616e", fontSize: 11 };
 const tooltipStyle = {
@@ -33,9 +33,19 @@ const ResultsModule = ({ data }: { data: HubSnapshot }) => {
   const hasAds = ads.length > 0;
   const hasIg = ig.length > 0;
 
+  const signupSeries = (data.signups?.series ?? []).map((r) => ({
+    date: fmtDate(r.date),
+    inscricoes: r.count,
+  }));
+  const hasSignups = (data.signups?.total ?? 0) > 0;
+
   return (
     <div className="space-y-8">
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <section className={`grid grid-cols-2 gap-3 ${hasSignups ? "lg:grid-cols-5" : "lg:grid-cols-4"}`}>
+        {hasSignups && (
+          <KpiCard label="Inscrições (7 dias)" value={data.signups!.last7} delta={data.signups!.delta} icon={ClipboardCheck}
+            hint={`${data.signups!.total} no total dos últimos 60 dias`} />
+        )}
         <KpiCard label="Investimento (7 dias)" value={money(data.ads.spend)} delta={null} icon={Euro} />
         <KpiCard label="CTR" value={data.ads.ctr} unit="%" delta={data.ads.ctrDelta} icon={MousePointerClick}
           hint="Percentagem de pessoas que clicam depois de ver" />
@@ -43,6 +53,24 @@ const ResultsModule = ({ data }: { data: HubSnapshot }) => {
         <KpiCard label="Seguidores Instagram" value={data.instagram.followers} delta={null} icon={Instagram}
           hint={data.instagram.followersDelta != null ? `${data.instagram.followersDelta >= 0 ? "+" : ""}${data.instagram.followersDelta} nos últimos 7 dias` : undefined} />
       </section>
+
+      {hasSignups && (
+        <section>
+          <SectionTitle title="Inscrições" hint="Inscrições recebidas do teu site, dia a dia (últimos 30 dias)" />
+          <Panel className="p-4">
+            <ResponsiveContainer width="100%" height={240}>
+              <BarChart data={signupSeries}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,.06)" />
+                <XAxis dataKey="date" {...axis} />
+                <YAxis allowDecimals={false} {...axis} />
+                <Tooltip contentStyle={tooltipStyle} />
+                <Bar dataKey="inscricoes" fill="#22d3ee" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </Panel>
+        </section>
+      )}
+
 
       <section>
         <SectionTitle title="Investimento e conversões" hint="Últimos 60 dias de campanhas" />

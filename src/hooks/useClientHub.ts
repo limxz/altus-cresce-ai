@@ -12,6 +12,13 @@ export interface HubSnapshot {
   website: any;
   integrations: any[];
   leads: any[];
+  signups: {
+    total: number;
+    last7: number;
+    delta: number | null;
+    recent: any[];
+    series: { date: string; count: number }[];
+  } | null;
   recommendations: any[];
   reports: any[];
   documents: any[];
@@ -82,7 +89,7 @@ export const useClientHub = (clientId: string | undefined) => {
     const filter = `client_id=eq.${clientId}`;
     const channel = supabase.channel(`hub-${clientId}`);
     for (const table of [
-      "ad_metrics", "instagram_metrics", "notifications", "audit_log",
+      "ad_metrics", "instagram_metrics", "notifications", "audit_log", "external_signups",
       "client_documents", "client_meetings", "whatsapp_conversations", "client_reports",
     ]) {
       channel.on("postgres_changes", { event: "*", schema: "public", table, filter }, () => load(true));
