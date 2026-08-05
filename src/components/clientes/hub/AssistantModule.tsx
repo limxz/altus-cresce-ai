@@ -74,7 +74,33 @@ const AssistantModule = ({
                   : { background: "var(--os-panel-2)", border: "1px solid var(--os-line)" }}
               >
                 {m.role === "assistant"
-                  ? <div className="prose prose-invert prose-sm max-w-none prose-p:my-1.5 prose-ul:my-1.5"><ReactMarkdown>{m.content}</ReactMarkdown></div>
+                  ? (
+                    <div className="prose prose-invert prose-sm max-w-none prose-p:my-1.5 prose-ul:my-1.5">
+                      <ReactMarkdown
+                        components={{
+                          a: ({ href, children }) => {
+                            const target = String(href ?? "");
+                            if (!target.startsWith("hub:")) {
+                              return <span>{children}</span>;
+                            }
+                            const [module, query] = target.slice(4).split("?");
+                            return (
+                              <button
+                                type="button"
+                                onClick={() => onNavigate?.(module)}
+                                title={query ? "Abrir no portal" : undefined}
+                                className="os-source-link"
+                              >
+                                {children}
+                              </button>
+                            );
+                          },
+                        }}
+                      >
+                        {m.content}
+                      </ReactMarkdown>
+                    </div>
+                  )
                   : m.content}
               </div>
             </div>
