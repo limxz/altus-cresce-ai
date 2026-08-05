@@ -161,6 +161,13 @@ const Integrations = () => {
   );
 
   const call = async (body: Record<string, unknown>) => {
+    // A sessão de admin expira; sem ela o backend responde "Sessão inválida".
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      await supabase.auth.signOut();
+      window.location.assign("/admin/login");
+      throw new Error("A tua sessão expirou. Entra novamente.");
+    }
     const { data, error } = await supabase.functions.invoke("integrations", { body });
     if (error) {
       let detail = error.message;
