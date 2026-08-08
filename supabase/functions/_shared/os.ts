@@ -165,3 +165,76 @@ export async function verifyClientSession(token: unknown): Promise<string | null
     return null;
   }
 }
+
+/* ------------------------------------------------------------------ *
+ * Shared activity timeline — every relevant Admin/system write lands   *
+ * here so the Client Portal reflects it without duplicating state.     *
+ * ------------------------------------------------------------------ */
+export interface EventInput {
+  organization_id: string;
+  client_id?: string | null;
+  actor?: "system" | "admin" | "ai" | "client";
+  actor_id?: string | null;
+  entity: string;
+  entity_id?: string | null;
+  action: string;
+  title: string;
+  detail?: string | null;
+  metadata?: Record<string, unknown>;
+  visible_to_client?: boolean;
+}
+
+/** Append a shared timeline event and notify the client portal in realtime. */
+export async function emitEvent(e: EventInput) {
+  const { error } = await admin.from("activity_events").insert({
+    organization_id: e.organization_id,
+    client_id: e.client_id ?? null,
+    actor: e.actor ?? "system",
+    actor_id: e.actor_id ?? null,
+    entity: e.entity,
+    entity_id: e.entity_id ?? null,
+    action: e.action,
+    title: e.title,
+    detail: e.detail ?? null,
+    metadata: e.metadata ?? {},
+    visible_to_client: e.visible_to_client ?? true,
+  });
+  if (error) console.error("emitEvent failed", error.message);
+  await pushRealtime(e.client_id, "activity", { entity: e.entity, action: e.action });
+}
+
+export interface MetricFact {
+  organization_id: string;
+  client_id: string;
+  source: string;
+  metric: string;
+  value: number;
+  unit?: string | null;
+  period?: string;
+  date: string;
+  campaign_id?: string | null;
+  entity_id?: string | null;
+  metadata?: Record<string, unknown>;
+}
+
+/** Normalized ingestion layer — every integration writes its metrics here. */
+export async function writeMetricFacts(facts: MetricFact[]) {
+  if (!facts.length) return;
+  const rows = facts.map((f) => ({
+    organization_id: f.organization_id,
+    client_id: f.client_id,
+    source: f.source,
+    metric: f.metric,
+    value: f.value,
+    unit: f.unit ?? null,
+    period: f.period ?? "day",
+    date: f.date,
+    campaign_id: f.campaign_id ?? "",
+    entity_id: f.entity_id ?? "",
+    metadata: f.metadata ?? {},
+  }));
+  const { error } = await admin
+    .from("metric_facts")
+    .upsert(rows, { onConflict: "client_id,source,metric,period,date,campaign_id,entity_id" });
+  if (error) console.error("writeMetricFacts failed", error.message);
+}
