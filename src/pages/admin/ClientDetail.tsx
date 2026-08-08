@@ -232,6 +232,9 @@ const ClientDetail = () => {
         />
       )}
 
+      {id && <BusinessWorkspace clientId={id} />}
+
+
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
