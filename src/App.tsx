@@ -36,6 +36,15 @@ import ClientMemory from "./pages/admin/ClientMemory";
 
 import ClientLogin from "./pages/clientes/ClientLogin";
 import ClientPortal from "./pages/clientes/ClientPortal";
+import HomeView from "./pages/clientes/views/HomeView";
+import AltusOSView from "./pages/clientes/views/AltusOSView";
+import ResultsView from "./pages/clientes/views/ResultsView";
+import LeadsView from "./pages/clientes/views/LeadsView";
+import WebsiteView from "./pages/clientes/views/WebsiteView";
+import DocumentsView from "./pages/clientes/views/DocumentsView";
+import MeetingsView from "./pages/clientes/views/MeetingsView";
+import AlertsView from "./pages/clientes/views/AlertsView";
+import ClientSupportTab from "./components/clientes/SupportTab";
 import OAuthConsent from "./pages/OAuthConsent";
 
 const queryClient = new QueryClient();
