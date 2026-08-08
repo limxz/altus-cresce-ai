@@ -36,6 +36,15 @@ import ClientMemory from "./pages/admin/ClientMemory";
 
 import ClientLogin from "./pages/clientes/ClientLogin";
 import ClientPortal from "./pages/clientes/ClientPortal";
+import HomeView from "./pages/clientes/views/HomeView";
+import AltusOSView from "./pages/clientes/views/AltusOSView";
+import ResultsView from "./pages/clientes/views/ResultsView";
+import LeadsView from "./pages/clientes/views/LeadsView";
+import WebsiteView from "./pages/clientes/views/WebsiteView";
+import DocumentsView from "./pages/clientes/views/DocumentsView";
+import MeetingsView from "./pages/clientes/views/MeetingsView";
+import AlertsView from "./pages/clientes/views/AlertsView";
+import ClientSupportTab from "./components/clientes/SupportTab";
 import OAuthConsent from "./pages/OAuthConsent";
 
 const queryClient = new QueryClient();
@@ -93,7 +102,18 @@ const App = () => (
                     <ClientPortal />
                   </ProtectedClientRoute>
                 }
-              />
+              >
+                <Route index element={<HomeView />} />
+                <Route path="altusos" element={<AltusOSView />} />
+                <Route path="altusos/:conversationId" element={<AltusOSView />} />
+                <Route path="resultados" element={<ResultsView />} />
+                <Route path="leads" element={<LeadsView />} />
+                <Route path="website" element={<WebsiteView />} />
+                <Route path="documentos" element={<DocumentsView />} />
+                <Route path="reunioes" element={<MeetingsView />} />
+                <Route path="alertas" element={<AlertsView />} />
+                <Route path="suporte" element={<ClientSupportTab />} />
+              </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
