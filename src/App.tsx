@@ -102,7 +102,18 @@ const App = () => (
                     <ClientPortal />
                   </ProtectedClientRoute>
                 }
-              />
+              >
+                <Route index element={<HomeView />} />
+                <Route path="altusos" element={<AltusOSView />} />
+                <Route path="altusos/:conversationId" element={<AltusOSView />} />
+                <Route path="resultados" element={<ResultsView />} />
+                <Route path="leads" element={<LeadsView />} />
+                <Route path="website" element={<WebsiteView />} />
+                <Route path="documentos" element={<DocumentsView />} />
+                <Route path="reunioes" element={<MeetingsView />} />
+                <Route path="alertas" element={<AlertsView />} />
+                <Route path="suporte" element={<ClientSupportTab />} />
+              </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
