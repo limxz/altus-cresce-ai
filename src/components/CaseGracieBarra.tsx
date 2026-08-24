@@ -23,7 +23,7 @@ const CaseGracieBarra = () => {
             Como enchemos uma academia <em className="text-gradient not-italic">antes de abrir</em>.
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-base">
-            Gracie Barra Viana do Castelo · Instagram criado a 1 de julho · Resultados em 16 dias.
+            Gracie Barra Viana do Castelo · Instagram criado a 1 de julho · +700 seguidores e 100 inscrições.
           </p>
         </FadeIn>
 
