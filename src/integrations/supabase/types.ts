@@ -1230,6 +1230,57 @@ export type Database = {
           },
         ]
       }
+      client_notes: {
+        Row: {
+          author_id: string | null
+          client_id: string | null
+          content: string
+          created_at: string
+          id: string
+          organization_id: string
+          pinned: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string | null
+          client_id?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          organization_id: string
+          pinned?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string | null
+          client_id?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          organization_id?: string
+          pinned?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_notes_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_notes_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       client_reports: {
         Row: {
           actions: Json
