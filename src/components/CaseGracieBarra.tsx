@@ -6,10 +6,10 @@ import gracieLogo from "@/assets/gracie-barra-viana.png.asset.json";
 const services = ["Instagram Orgânico", "Meta Ads", "Landing Page"];
 
 const bigStats = [
-  { icon: Users, value: "+407", label: "Novos seguidores no Instagram", sub: "Em apenas 16 dias · começámos do zero (1 julho)" },
-  { icon: UserPlus, value: "32", label: "Pré-inscrições geradas", sub: "Em 9 dias · desde 7 de julho" },
-  { icon: Wallet, value: "2,50€", label: "Custo por inscrição", sub: "Média do mercado: ~60€ · 24× mais eficiente" },
-  { icon: TrendingUp, value: "24×", label: "ROAS projetado", sub: "80€ investidos · retorno recorrente estimado" },
+  { icon: Users, value: "+700", label: "Novos seguidores no Instagram", sub: "Em ~8 semanas · começámos do zero (1 julho)" },
+  { icon: UserPlus, value: "100", label: "Pré-inscrições geradas", sub: "Em ~7 semanas · desde 7 de julho" },
+  { icon: Wallet, value: "2,50€", label: "Custo por inscrição", sub: "250€ investidos · média do mercado ~60€" },
+  { icon: TrendingUp, value: "24×", label: "Eficiência vs. mercado", sub: "24× mais barato por inscrição" },
 ];
 
 const CaseGracieBarra = () => {
