@@ -8,7 +8,7 @@ import AltusChat from "./os/AltusChat";
 import "@/styles/altus-os.css";
 import {
   Home, Users, Kanban, BrainCircuit, Globe, Megaphone, LineChart,
-  Workflow, MessagesSquare, Plug, ScrollText, Settings, LogOut, Menu, X, Sparkles, RefreshCw, Brain,
+  Workflow, MessagesSquare, Plug, ScrollText, Settings, LogOut, Menu, X, Sparkles, RefreshCw, Brain, NotebookPen,
 } from "lucide-react";
 
 const nav = [
