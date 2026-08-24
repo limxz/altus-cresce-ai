@@ -21,6 +21,7 @@ import Audit from "./pages/admin/Audit";
 import LeadsPage from "./pages/admin/Leads";
 import Conversations from "./pages/admin/Conversations";
 import ClientsManagement from "./pages/admin/ClientsManagement";
+import Notes from "./pages/admin/Notes";
 import Settings from "./pages/admin/Settings";
 import AdminPricing from "./pages/admin/Pricing";
 import Presentations from "./pages/admin/Presentations";
@@ -83,6 +84,7 @@ const App = () => (
                 <Route path="leads" element={<LeadsPage />} />
                 <Route path="conversations" element={<Conversations />} />
                 <Route path="clients" element={<ClientsManagement />} />
+                <Route path="notas" element={<Notes />} />
                 <Route path="client/:id" element={<ClientDetail />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path="pricing" element={<AdminPricing />} />

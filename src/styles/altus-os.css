@@ -164,3 +164,17 @@
   color: #fff;
   border-color: #fff;
 }
+
+.os-input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--os-line);
+  border-radius: 9px;
+  padding: 8px 11px;
+  font-size: 13px;
+  color: var(--os-text);
+  outline: none;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+.os-input::placeholder { color: var(--os-faint); }
+.os-input:focus { border-color: var(--os-line-strong); background: rgba(255, 255, 255, 0.05); }
+.os-input option { background: #0b0b0d; color: var(--os-text); }
