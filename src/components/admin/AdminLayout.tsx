@@ -17,6 +17,7 @@ const nav = [
   { label: "Pipeline", path: "/admin/pipeline", icon: Kanban },
   { label: "IA", path: "/admin/ia", icon: BrainCircuit },
   { label: "Memória", path: "/admin/memoria", icon: Brain },
+  { label: "Anotações", path: "/admin/notas", icon: NotebookPen },
   { label: "Integrações", path: "/admin/integracoes", icon: Plug },
   { label: "Websites", path: "/admin/websites", icon: Globe },
   { label: "Meta Ads", path: "/admin/meta-ads", icon: Megaphone },
